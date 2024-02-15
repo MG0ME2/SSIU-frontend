@@ -1,9 +1,16 @@
+import React, { useState } from 'react';
+import LayoutH from '../../Components/LayoutHome'
+
 function Home() {
-    return (
-        <div className='w-600 h-700 bg-black text-white'>
-            hola mundo de una vite de la tab a la tab a la tab a la tab a la tab
-        </div>
-    )
+
+  return (
+    <LayoutH>
+      <div className="flex-grow flex items-center justify-center">
+        info
+      </div>
+    </LayoutH>
+  )
+
 }
 
-export default Home
+export default Home;

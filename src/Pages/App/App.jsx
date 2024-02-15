@@ -1,15 +1,16 @@
 import { useRoutes, BrowserRouter } from 'react-router-dom'
 
 import Home from '../Home'
-import Navbar from '../../Components/Navbar'
+import PageUno from '../Home/page1'
+import Login from '../Home/Login'
 import './App.css'
 
 const AppRoutes = () => {
   let routes = useRoutes([
     { path: '/', element: <Home /> },
-    /* { path: '/clothes', element: <Home /> },
-    { path: '/electronics', element: <Home /> },
-    { path: '/furnitures', element: <Home /> },
+    { path: '/1', element: <PageUno /> },
+    { path: '/login', element: <Login /> },
+    /*{ path: '/furnitures', element: <Home /> },
     { path: '/toys', element: <Home /> },
     { path: '/othes', element: <Home /> },
     { path: '/my-account', element: <MyAccount /> },
@@ -29,7 +30,6 @@ const App = () => {
   return (
     <BrowserRouter>
       <AppRoutes />
-      <Navbar />
     </BrowserRouter>
   )
 }
