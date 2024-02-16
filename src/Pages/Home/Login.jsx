@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect  } from "react";
 import { Link } from "react-router-dom";
 import LayoutH from "../../Components/LayoutHome/index";
-
 
 import IconLogin from "../../Assets/Img/IconLogin.svg";
 import IconRegister from "../../Assets/Img/IconRegister.svg";
@@ -70,13 +69,13 @@ function Login() {
                   <img
                     className="h-5 w-5 text-gray-400"
                     src={IconEye}
-                    alt="Ícono sesión"
+                    alt="ÍconoEyeOn"
                   />
                 ) : (
                   <img
                     className="h-5 w-5 text-gray-400 "
                     src={IconOffEye}
-                    alt="Ícono sesión"
+                    alt="ÍconoEyeOff"
                   />
                 )}
               </button>
