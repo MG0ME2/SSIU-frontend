@@ -1,22 +1,51 @@
-import { useState, useEffect  } from "react";
-import { Link } from "react-router-dom";
-import LayoutH from "../../Components/LayoutHome/index";
+import { useState, useEffect, useContext } from "react";
+import { Link, json, useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { useLocalStorage } from 'react-use';
 
+import LayoutH from "../../Components/LayoutHome/index";
 import IconLogin from "../../Assets/Img/IconLogin.svg";
 import IconRegister from "../../Assets/Img/IconRegister.svg";
 import IconHomeLogin from "../../Assets/Img/IconHomeLogin.svg";
 import IconEye from "../../Assets/Img/IconEye.svg";
 import IconOffEye from "../../Assets/Img/IconOffEye.svg";
 
+import { AppContext } from '../../Context/index';
+
 function Login() {
-  const [username, setUsername] = useState("");
+  const context = useContext(AppContext)
+
+  const [dataStorage, setDataStorage] = useLocalStorage("data");
+  let navigate = useNavigate();
+  const [userEmail, setUserEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = () => {
-    setIsLoggedIn(true);
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const form = {
+      email: formData.get("email"),
+      password: formData.get("password"),
+    };
+    console.log(form.email, form.password);
+    const { data } = await axios.post("http://localhost:9000/auth/login", form);
+    if (data.status === parseInt("401")) {
+      setErrorMessage(data.response);
+    } else {
+      localStorage.setItem("token", data.access_token);
+      localStorage.setItem('data', JSON.stringify(data.user))
+
+      context.setUserToken(data.access_token)
+      context.setUserData(data.user)
+
+      setIsLoggedIn(true);
+      
+      console.log('Local storage: ',localStorage.getItem('data'));
+      navigate(`/${data.user.role}`)
+    }
   };
 
   const togglePasswordVisibility = () => {
@@ -35,18 +64,16 @@ function Login() {
                 className="h-20 w-20 mb-3"
               />
             </div>
-
             <h2 className="text-2xl text-center font-bold mb-2">
               Bienvenido !
             </h2>
-
             <div className="mb-3">
               <input
-                type="text"
-                id="username"
+                type="email"
+                id="email"
+                name="email"
                 placeholder="Ingresar correo electronico"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => setUserEmail(e.target.value)}
                 className="mt-1 p-2 border rounded w-full
                "
               />
@@ -55,8 +82,8 @@ function Login() {
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
+                name="password"
                 placeholder="Ingresar contraseña"
-                value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="mt-1 p-2 border rounded w-full"
               />
@@ -80,7 +107,6 @@ function Login() {
                 )}
               </button>
             </div>
-
             <div className="text-right mb-2">
               <Link
                 to="/resetPassword"
@@ -115,7 +141,6 @@ function Login() {
               items-center w-auto h-auto"
               >
                 <span className="ml-1 text-xs">Iniciar Sesión</span>
-
                 <img
                   src={IconLogin}
                   alt="Ícono sesión"
@@ -126,7 +151,7 @@ function Login() {
           </form>
         ) : (
           <div>
-            <h2 className="text-2xl font-bold mb-4">Bienvenido, {username}!</h2>
+            <h2 className="text-2xl font-bold mb-4">Bienvenido, {userEmail}!</h2>
             <button
               onClick={() => setIsLoggedIn(false)}
               className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"

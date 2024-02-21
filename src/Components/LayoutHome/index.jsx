@@ -80,7 +80,6 @@ const LayoutH = ({ children }) => {
           mb-4"
             >
               <span className="ml-1 text-xs"> <NavLink to='/login'>Iniciar Sesión </NavLink></span>
-
               <img
                 src={IconLoginMenu}
                 alt="Ícono de inicio de sesión"
