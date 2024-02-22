@@ -10,15 +10,11 @@ import IconHomeLogin from "../../Assets/Img/IconHomeLogin.svg";
 import IconEye from "../../Assets/Img/IconEye.svg";
 import IconOffEye from "../../Assets/Img/IconOffEye.svg";
 
-import { AppContext } from '../../Context/index';
-
 function Login() {
-  const context = useContext(AppContext)
 
-  const [dataStorage, setDataStorage] = useLocalStorage("data");
   let navigate = useNavigate();
   const [userEmail, setUserEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [userPassword, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -35,12 +31,9 @@ function Login() {
     if (data.status === parseInt("401")) {
       setErrorMessage(data.response);
     } else {
-      localStorage.setItem("token", data.access_token);
+      localStorage.setItem("token", data.access_token)
       localStorage.setItem('data', JSON.stringify(data.user))
-
-      context.setUserToken(data.access_token)
-      context.setUserData(data.user)
-
+      
       setIsLoggedIn(true);
       
       console.log('Local storage: ',localStorage.getItem('data'));
