@@ -1,8 +1,11 @@
 import React from 'react'
-
+import LogOut from "../../Components/Logout";
 const AdminHome = () => {
   return (
-    <div>AdminHome</div>
+    <div>AdminHome
+      <div> <LogOut /></div>
+    </div>
+    
   )
 }
 

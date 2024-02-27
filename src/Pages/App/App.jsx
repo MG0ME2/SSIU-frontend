@@ -29,9 +29,14 @@ import './App.css'
 import ProtectedRoute from '../../Components/ProtectedRoutes';
 
 // Context
-import { AppContextProvider, AppContext } from '../../Context';
+import { AppContextProvider } from '../../Context';
 
 const AppRoutes = () => {
+
+  let roleUser =  'defaul';
+  if (window.localStorage.getItem('data') !== null ){
+    roleUser = JSON.parse(window.localStorage.getItem('data')).role
+  }
 
   return (
     <Routes>
@@ -43,8 +48,7 @@ const AppRoutes = () => {
       {/*SuperAdmin*/}
       <Route element={
         <ProtectedRoute
-        isAllowed={!!localStorage.getItem('token') && JSON.parse(localStorage.getItem('data')).role.includes('spadmin')}
-        redirectTo='/'
+        role='superadmin' redirectTo='/'
         />
       }>
         <Route path= '/superadmin' element={<SuperAdminHome />}/>
@@ -53,8 +57,7 @@ const AppRoutes = () => {
       {/*Admin*/}
       <Route element={
         <ProtectedRoute
-        isAllowed={!!localStorage.getItem('token') && JSON.parse(localStorage.getItem('data')).role.includes('admin')}
-        redirectTo='/'
+        role='admin' redirectTo='/'
         />
       }>
         <Route path= '/admin' element={<AdminHome />}/>
@@ -63,8 +66,7 @@ const AppRoutes = () => {
       {/*QualityInstitutional*/}
       <Route element={
         <ProtectedRoute
-        isAllowed={!!localStorage.getItem('token') && JSON.parse(localStorage.getItem('data')).role.includes('quality_institutional')}
-        redirectTo='/'
+        role='qualityinstitutional' redirectTo='/'
         />
       }>
         <Route path= '/qualityinstitutional' element={<QualityInstitutionalHome />}/>
@@ -73,19 +75,16 @@ const AppRoutes = () => {
       {/*QualityLeader*/}
       <Route element={
         <ProtectedRoute
-        isAllowed={!!localStorage.getItem('token') && JSON.parse(localStorage.getItem('data')).role.includes('quality_leader')}
-        redirectTo='/'
+        role='qualityleader' redirectTo='/'
         />
       }>
         <Route path= '/qualityleader' element={<QualityLeaderHome />}/>
       </Route>
 
       {/*Teacher*/}
-      {console.log('Local storage: ',localStorage.getItem('token'))}
       <Route element={
-        <ProtectedRoute
-        isAllowed={!!localStorage.getItem('token') && JSON.parse(localStorage.getItem('data')).role.includes('teacher')}
-        redirectTo='/'
+        <ProtectedRoute        
+        role='teacher' redirectTo='/'
         />
       }>
         <Route path= '/teacher' element={<TeacherHome />} />
@@ -96,8 +95,7 @@ const AppRoutes = () => {
       {/*Graduates*/}
       <Route element={
         <ProtectedRoute
-        isAllowed={!!localStorage.getItem('token') && JSON.parse(localStorage.getItem('data')).role.includes('graduates')}
-        redirectTo='/'
+        role='graduates' redirectTo='/'
         />
       }>
         <Route path= '/graduates' element={<GraduatesHome />}/>
@@ -106,14 +104,13 @@ const AppRoutes = () => {
       {/*Employers*/}
       <Route element={
         <ProtectedRoute
-        isAllowed={!!localStorage.getItem('token') && JSON.parse(localStorage.getItem('data')).role.includes('employer')}
-        redirectTo='/'
+        role='employers' redirectTo='/'
         />
       }>
         <Route path= '/employers' element={<EmployersHome />}/>
       </Route>
-    </Routes>
-  )
+    </Routes>
+  )
 }
 
 const App = () => {

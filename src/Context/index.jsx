@@ -7,16 +7,17 @@ export const AppContextProvider = ({ children }) => {
   const [userToken, setUserToken] = useState(null)
   // User Data
   const [userData, setUserData] = useState({})
-
-  // console.log('context t: ', userToken);
-  // console.log('context d: ', userData);
+  // User Login
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   return (
     <AppContext.Provider value={{
       userToken,
       setUserToken,
       userData,
-      setUserData
+      setUserData,
+      isLoggedIn,
+      setIsLoggedIn
     }}>
         { children }
     </AppContext.Provider>

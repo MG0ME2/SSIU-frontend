@@ -10,7 +10,7 @@ import IconLoginMenu from "../../Assets/Img/IconLoginMenu.svg";
 import { AppContext } from '../../Context';
 import LogOut from "../../Components/Logout";
 
-const LayoutH = ({ children }) => {
+const LayoutT = ({ children }) => {
   let context = useContext(AppContext)
 
   return (
@@ -77,7 +77,7 @@ const LayoutH = ({ children }) => {
           </div>
 
           <div>
-            {!context.isLoggedIn ? (
+          {!context.isLoggedIn ? (
             <button
               className="flex items-center px-1 py-1
                         mt-20 md:mb-0 mx-auto 
@@ -92,12 +92,12 @@ const LayoutH = ({ children }) => {
                 className="px-1 mb-0,5 w-5 h-5"
               />
             </button>
-            ):(
+          ):(
             <div>
-              <h2 className="text-xs font-bold mb-4">Bienvenido, {JSON.parse(window.localStorage.getItem('data')).name}!</h2>
-              <LogOut />
-            </div>
-            )}
+            <h2 className="text-2xl font-bold mb-4">Bienvenido, {JSON.parse(window.localStorage.getItem('data')).name}!</h2>
+            <LogOut />
+          </div>
+          )}
           </div>
         </div>
       </div>
@@ -107,4 +107,4 @@ const LayoutH = ({ children }) => {
   );
 };
 
-export default LayoutH;
+export default LayoutT;

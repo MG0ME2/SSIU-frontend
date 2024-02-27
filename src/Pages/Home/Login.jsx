@@ -10,14 +10,19 @@ import IconHomeLogin from "../../Assets/Img/IconHomeLogin.svg";
 import IconEye from "../../Assets/Img/IconEye.svg";
 import IconOffEye from "../../Assets/Img/IconOffEye.svg";
 
+import { AppContext } from '../../Context';
+
+
 function Login() {
-
+  let context = useContext(AppContext)
   let navigate = useNavigate();
-  const [userEmail, setUserEmail] = useState("");
-  const [userPassword, setPassword] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  const [userPassword, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -26,7 +31,7 @@ function Login() {
       email: formData.get("email"),
       password: formData.get("password"),
     };
-    console.log(form.email, form.password);
+
     const { data } = await axios.post("http://localhost:9000/auth/login", form);
     if (data.status === parseInt("401")) {
       setErrorMessage(data.response);
@@ -34,21 +39,14 @@ function Login() {
       localStorage.setItem("token", data.access_token)
       localStorage.setItem('data', JSON.stringify(data.user))
       
-      setIsLoggedIn(true);
-      
-      console.log('Local storage: ',localStorage.getItem('data'));
+      context.setIsLoggedIn(true);
       navigate(`/${data.user.role}`)
     }
-  };
-
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
   };
 
   return (
     <LayoutH>
       <div className="flex-grow flex items-center justify-center">
-        {!isLoggedIn ? (
           <form className="w-72 h-96" onSubmit={handleLogin}>
             <div className="flex items-center justify-center">
               <img
@@ -66,7 +64,6 @@ function Login() {
                 id="email"
                 name="email"
                 placeholder="Ingresar correo electronico"
-                onChange={(e) => setUserEmail(e.target.value)}
                 className="mt-1 p-2 border rounded w-full
                "
               />
@@ -141,18 +138,7 @@ function Login() {
                 />
               </button>
             </div>
-          </form>
-        ) : (
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Bienvenido, {userEmail}!</h2>
-            <button
-              onClick={() => setIsLoggedIn(false)}
-              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-            >
-              Cerrar sesión
-            </button>
-          </div>
-        )}
+          </form>        
       </div>
     </LayoutH>
   );
