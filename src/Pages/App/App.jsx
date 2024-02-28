@@ -5,6 +5,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from '../Home'
 import PageUno from '../Home/page1'
 import Login from '../Home/Login'
+import SignUpForm from '../Home/SignUp'
 /// Teachers
 import TeacherHome from '../Teachers';
 import Page1 from '../Teachers/page1';
@@ -44,6 +45,7 @@ const AppRoutes = () => {
       <Route path= '/' element={<Home />}/>
       <Route path= '/1' element={<PageUno />}/>
       <Route path= '/login' element={<Login />}/>
+      <Route path= '/signup' element={<SignUpForm />}/>
 
       {/*SuperAdmin*/}
       <Route element={

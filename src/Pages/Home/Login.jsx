@@ -23,6 +23,11 @@ function Login() {
     setShowPassword(!showPassword);
   };
 
+  const navRegisterPage = (event)=>{
+    event.preventDefault();
+    navigate('/signup')
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -108,14 +113,13 @@ function Login() {
             </div>
             <div className="flex items-center justify-between">
               <button
-                type="submit"
+                onClick={navRegisterPage}
                 className="flex bg-[#28537E] text-white px-2 py-0 
               rounded hover:bg-[#46525e] 
               items-center w-auto h-auto
               "
               >
                 <span className=" text-xs">Registrarse</span>
-
                 <img
                   src={IconRegister}
                   alt="Ícono sesión"
