@@ -1,8 +1,19 @@
 import React from 'react'
 
+import LogOut from "../../Components/Logout";
+import LayoutGraduates from '../../Components/LayoutGraduates'
+
+
 const GraduatesHome = () => {
   return (
-    <div>GraduatesHome</div>
+    <LayoutGraduates>
+      <div className="flex items-center m-7">
+        <div className='flex justify-center items-center gap-8'>
+          <h1 className='text-lg font-semibold'>Graduates Home</h1>
+          <LogOut></LogOut>
+        </div>
+      </div>
+    </LayoutGraduates>
   )
 }
 

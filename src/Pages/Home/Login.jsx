@@ -12,7 +12,6 @@ import IconOffEye from "../../Assets/Img/IconOffEye.svg";
 
 import { AppContext } from '../../Context';
 
-
 function Login() {
   let context = useContext(AppContext)
   let navigate = useNavigate();
@@ -32,7 +31,7 @@ function Login() {
       password: formData.get("password"),
     };
 
-    const { data } = await axios.post("http://localhost:9000/auth/login", form);
+    const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, form);
     if (data.status === parseInt("401")) {
       setErrorMessage(data.response);
     } else {
