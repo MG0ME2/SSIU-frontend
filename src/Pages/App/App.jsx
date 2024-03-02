@@ -32,8 +32,9 @@ import ProtectedRoute from '../../Components/ProtectedRoutes';
 // Context
 import { AppContextProvider } from '../../Context';
 
-const AppRoutes = () => {
+//hooks
 
+const AppRoutes = () => {
   let roleUser =  'defaul';
   if (window.localStorage.getItem('data') !== null ){
     roleUser = JSON.parse(window.localStorage.getItem('data')).role

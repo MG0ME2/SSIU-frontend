@@ -10,6 +10,7 @@ import IconLoginMenu from "../../Assets/Img/IconLoginMenu.svg";
 import { AppContext } from '../../Context';
 import LogOut from "../../Components/Logout";
 
+
 const LayoutT = ({ children }) => {
   let context = useContext(AppContext)
 
@@ -94,7 +95,7 @@ const LayoutT = ({ children }) => {
             </button>
           ):(
             <div>
-            <h2 className="text-2xl font-bold mb-4">Bienvenido, {JSON.parse(window.localStorage.getItem('data')).name}!</h2>
+            <h2 className="text-2xl font-bold mb-4">Bienvenido, {JSON.parse(window.localStorage.getItem("data")).name} !</h2>
             <LogOut />
           </div>
           )}

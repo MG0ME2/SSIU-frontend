@@ -1,7 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, json, useNavigate } from "react-router-dom";
 import axios from 'axios';
-import { useLocalStorage } from 'react-use';
 
 import LayoutH from "../../Components/LayoutHome/index";
 import IconLogin from "../../Assets/Img/IconLogin.svg";
