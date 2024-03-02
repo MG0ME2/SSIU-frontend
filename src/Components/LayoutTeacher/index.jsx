@@ -6,6 +6,8 @@ import IconBook from "../../Assets/Img/IconBook.svg";
 import IconHome from "../../Assets/Img/IconHome.svg";
 import IconLoginMenu from "../../Assets/Img/IconLoginMenu.svg";
 
+import { useLocalStoragee } from '../../LocalStorage';
+
 //import
 import { AppContext } from '../../Context';
 import LogOut from "../../Components/Logout";
@@ -13,6 +15,8 @@ import LogOut from "../../Components/Logout";
 
 const LayoutT = ({ children }) => {
   let context = useContext(AppContext)
+
+  const [username, setUser] = useLocalStoragee('data', '');
 
   return (
     <div className="flex h-screen p-1 ">
@@ -95,7 +99,7 @@ const LayoutT = ({ children }) => {
             </button>
           ):(
             <div>
-            <h2 className="text-2xl font-bold mb-4">Bienvenido, {JSON.parse(window.localStorage.getItem("data")).name} !</h2>
+            <h2 className="text-2xl font-bold mb-4">Bienvenido, {username.name} !</h2>
             <LogOut />
           </div>
           )}
