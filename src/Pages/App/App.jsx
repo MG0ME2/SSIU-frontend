@@ -6,6 +6,8 @@ import Home from '../Home'
 import PageUno from '../Home/page1'
 import Login from '../Home/Login'
 import SignUpForm from '../Home/SignUp'
+import ForgotPassword from '../Home/ForgotPassword'
+import ResetPassword from '../Home/ResetPassword'
 /// Teachers
 import TeacherHome from '../Teachers';
 import Page1 from '../Teachers/page1';
@@ -48,7 +50,10 @@ const AppRoutes = () => {
       <Route path= '/1' element={<PageUno />}/>
       <Route path= '/login' element={<Login />}/>
       <Route path= '/signup' element={<SignUpForm />}/>
-
+      <Route path= '/forgotpassword' element={<ForgotPassword />}/>
+      {/*Reestablecimiento de constraseña debe enviarse por correo*/}
+      <Route path= '/resetpassword' element={<ResetPassword />}/>
+      
       {/*SuperAdmin*/}
       <Route element={
         <ProtectedRoute
@@ -96,15 +101,16 @@ const AppRoutes = () => {
         <Route path= '/teacher/page2' element={<Page2 />} />
       </Route>
 
-      {/*Graduates
+      {/*Graduates*/}
       <Route element={
         <ProtectedRoute
-        role='graduates' redirectTo='/'
+        role='graduate' redirectTo='/'
         />
       }>
-        <Route path= '/graduates' element={<GraduatesHome />}/>
-      </Route>*/}<Route path= '/graduates' element={<GraduatesHome />}/>
-      <Route path= '/graduates/Perfil' element={<GraduatesPerfil />}/>
+        <Route path= '/graduate' element={<GraduatesHome />}/>
+        <Route path= '/graduate/Perfil' element={<GraduatesPerfil />}/>
+      </Route>
+      
 
       {/*Employers*/}
       <Route element={

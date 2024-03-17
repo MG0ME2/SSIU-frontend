@@ -102,7 +102,7 @@ function Login() {
             </div>
             <div className="text-right mb-2">
               <Link
-                to="/resetPassword"
+                to="/forgotpassword"
                 className="text-[14px]
              text-blue-600"
               >

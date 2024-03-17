@@ -8,8 +8,6 @@ import IconDelete from "../../Assets/Img/IconDelete.svg";
 import IconUpload from "../../Assets/Img/IconUpload.svg";
 import IconSave from "../../Assets/Img/IconSave.svg";
 
-
-
 function DatosPersonales() {
   const { register } = useForm();
   return (
@@ -134,7 +132,7 @@ const GraduatesPerfil = () => {
         </div>
         <div>
           <p className="flex text-[#428BCA] justify-center text-base mt-2 mb-2">
-            <NavLink to="/graduates/Perfil">Cambiar contraseña</NavLink>
+            <NavLink to="/graduate/Perfil">Cambiar contraseña</NavLink>
           </p>
         </div>
 

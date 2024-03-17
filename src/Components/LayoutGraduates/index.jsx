@@ -41,7 +41,7 @@ const LayoutGraduates = ({ children }) => {
                   className="w-4 h-4 mr-2"
                 />
                 <p className="text-xs">
-                  <NavLink to="/graduates">Home</NavLink>
+                  <NavLink to="/graduate">Home</NavLink>
                 </p>
               </li>
 
@@ -59,7 +59,7 @@ const LayoutGraduates = ({ children }) => {
                 />
                 <p className="text-xs">
                   {" "}
-                  <NavLink to="/graduates/Perfil">Perfil </NavLink>{" "}
+                  <NavLink to="/graduate/Perfil">Perfil </NavLink>{" "}
                 </p>
               </li>
 
