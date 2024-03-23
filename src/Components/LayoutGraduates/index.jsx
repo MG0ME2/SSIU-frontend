@@ -1,10 +1,10 @@
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
 
-import IconMenu from "../../Assets/Img/IconMenu.svg";
+
+import ImgGraduat from "../../Assets/Img/ReemplaceImg.svg";
 import IconBook from "../../Assets/Img/IconBook.svg";
 import IconHome from "../../Assets/Img/IconHome.svg";
-import IconLoginMenu from "../../Assets/Img/IconLoginMenu.svg";
 
 //import
 import { AppContext } from "../../Context";
@@ -20,32 +20,35 @@ const LayoutGraduates = ({ children }) => {
         className="bg-[#28537E] rounded-lg p-2
        text-white w-52 flex gap-2 flex-col"
       >
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-start mt-2 px-2">
           <img
-            src={IconMenu}
+            src={ImgGraduat}
             alt="Icono para home"
-            className="w-44 object-cover"
+            className="w-12 mr-4 object-cover"
           />
+          <p className="text-xs">
+                  Graduado
+                </p>
         </div>
 
         <div className="flex justify-between flex-col h-full ">
           <div className="my-4">
             <ul className="flex flex-col gap-2">
-              <li className="flex items-center mb-3 mt-3 px-2 cursor-pointer">
+              <li className="flex items-center mb-3 mt-0 px-2 cursor-pointer">
                 <img
                   src={IconHome}
                   alt="Icono book 1"
                   className="w-4 h-4 mr-2"
                 />
                 <p className="text-xs">
-                  <NavLink to="/">Home</NavLink>
+                  <NavLink to="/graduate">Home</NavLink>
                 </p>
               </li>
 
               <li className="text-white opacity-70 sm:p-0">
-                <p className="text-xs flex items-center justify-center">
-                  Programas académicos:
-                </p>
+                
+                <hr className="border-t border-gray-300 mx-4" />
+             
               </li>
 
               <li className="flex items-center mb-3 mt-3 px-2 cursor-pointer">
@@ -56,7 +59,7 @@ const LayoutGraduates = ({ children }) => {
                 />
                 <p className="text-xs">
                   {" "}
-                  <NavLink to="/1">Ingeniería de sistemas </NavLink>{" "}
+                  <NavLink to="/graduate/Perfil">Perfil </NavLink>{" "}
                 </p>
               </li>
 
@@ -66,7 +69,7 @@ const LayoutGraduates = ({ children }) => {
                   alt="Icono book 3"
                   className="w-4 h-4 mr-2"
                 />
-                <p className="text-xs"> Comercio exterior </p>
+                <p className="text-xs"> Responder Instrumento MDI </p>
               </li>
 
               <li className="flex items-center mb-3 mt-3 px-2 cursor-pointer">
@@ -75,7 +78,7 @@ const LayoutGraduates = ({ children }) => {
                   alt="Icono book 4"
                   className="w-4 h-4 mr-2"
                 />
-                <p className="text-xs"> Ingenieria Industrial </p>
+                <p className="text-xs"> Registrar Proyecto </p>
               </li>
             </ul>
           </div>
@@ -91,13 +94,8 @@ const LayoutGraduates = ({ children }) => {
               >
                 <span className="ml-1 text-xs">
                   {" "}
-                  <NavLink to="/login">Iniciar Sesión </NavLink>
+                  <NavLink to="/"> Cerrar sesión</NavLink>
                 </span>
-                <img
-                  src={IconLoginMenu}
-                  alt="Ícono de inicio de sesión"
-                  className="px-1 mb-0,5 w-5 h-5"
-                />
               </button>
             ) : (
               <div>
