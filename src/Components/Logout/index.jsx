@@ -1,15 +1,16 @@
 import {useContext} from "react";
 import { useNavigate } from "react-router-dom";
 
-import { AppContext } from '../../Context';
+import { useLocalStorage } from '../../components/localStorage'
 
-const LogOut = () => {    
-  let context = useContext(AppContext)
+
+const LogOut = () => {
+  const [getIsLogged, setIsLogged] = useLocalStorage('isLogged');
   let navigate = useNavigate();
 
   const logoutEvent = () => {
     window.localStorage.clear();
-    context.setIsLoggedIn(false)
+    setIsLogged('false');
     navigate('/');
   };
   

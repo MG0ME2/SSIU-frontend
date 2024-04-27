@@ -2,25 +2,29 @@ import { useState, useEffect, useContext } from "react";
 import { Link, json, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-import LayoutH from "../../Components/LayoutHome/index";
-import IconLogin from "../../Assets/Img/IconLogin.svg";
-import IconRegister from "../../Assets/Img/IconRegister.svg";
-import IconHomeLogin from "../../Assets/Img/IconHomeLogin.svg";
-import IconEye from "../../Assets/Img/IconEye.svg";
-import IconOffEye from "../../Assets/Img/IconOffEye.svg";
+import LayoutH from "../../components/LayoutHome/index";
+import IconLogin from "../../assets/Img/IconLogin.svg";
+import IconRegister from "../../assets/Img/IconRegister.svg";
+import IconHomeLogin from "../../assets/Img/IconHomeLogin.svg";
+import IconEye from "../../assets/Img/IconEye.svg";
+import IconOffEye from "../../assets/Img/IconOffEye.svg";
 
-import { AppContext } from '../../Context';
+import { useLocalStorage } from '../../components/localStorage'
 
 function Login() {
-  let context = useContext(AppContext)
   let navigate = useNavigate();
 
+  //Variables para manejo de la contraseña
   const [userPassword, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  //manejo de Local Storage
+  const [getToken, setToken] = useLocalStorage('token');
+  const [getUser, setUser] = useLocalStorage('user');
+  const [getIsLogged, setIsLogged] = useLocalStorage('isLogged');
 
   const navRegisterPage = (event)=>{
     event.preventDefault();
@@ -34,15 +38,18 @@ function Login() {
       email: formData.get("email"),
       password: formData.get("password"),
     };
-
+    
     const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, form);
     if (data.status === parseInt("401")) {
       setErrorMessage(data.response);
     } else {
-      localStorage.setItem("token", data.access_token)
-      localStorage.setItem('data', JSON.stringify(data.user))
-      
-      context.setIsLoggedIn(true);
+      //localStorage.setItem('token', data.access_token)
+      //localStorage.setItem('data', JSON.stringify(data.user))
+
+      setToken(data.access_token);
+      setUser(data.user);      
+      setIsLogged('true');
+
       navigate(`/${data.user.role}`)
     }
   };

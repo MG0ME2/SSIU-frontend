@@ -1,9 +1,9 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 
-import LayoutH from "../../Components/LayoutHome";
-import IconRegister from "../../Assets/Img/IconRegister.svg";
-import IconHomeLogin from "../../Assets/Img/IconHomeLogin.svg";
+import LayoutH from "../../components/LayoutHome";
+import IconRegister from "../../assets/Img/IconRegister.svg";
+import IconHomeLogin from "../../assets/Img/IconHomeLogin.svg";
 
 const SignUpForm = () => {
   // funcion register: registrar los difrentes campos

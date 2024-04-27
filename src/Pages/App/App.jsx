@@ -1,11 +1,11 @@
 // Nucleos
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-
+import {Home, PageUno, SignUpForm, Login} from '../Home/index';
 // Pages
-import Home from '../Home'
-import PageUno from '../Home/page1'
-import Login from '../Home/Login'
-import SignUpForm from '../Home/SignUp'
+// import Home from '../Home'
+// import PageUno from '../Home/Page1'
+// import Login from '../Home/Login'
+// import SignUpForm from '../Home/SignUp'
 /// Teachers
 import TeacherHome from '../Teachers';
 import Page1 from '../Teachers/page1';
@@ -26,20 +26,13 @@ import AdminHome from '../Admin';
 // Styles
 import './App.css'
 
-// Components
-import ProtectedRoute from '../../Components/ProtectedRoutes';
+// components
+import ProtectedRoute from '../../components/ProtectedRoutes/index';
 
 // Context
-import { AppContextProvider } from '../../Context';
-
-//hooks
 
 const AppRoutes = () => {
-  let roleUser =  'defaul';
-  if (window.localStorage.getItem('data') !== null ){
-    roleUser = JSON.parse(window.localStorage.getItem('data')).role
-  }
-
+  
   return (
     <Routes>
       {/*Home*/}
@@ -118,11 +111,9 @@ const AppRoutes = () => {
 
 const App = () => {
   return (
-    <AppContextProvider>
       <BrowserRouter>
         <AppRoutes />
       </BrowserRouter>
-    </AppContextProvider>
   )
 }
 

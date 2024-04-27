@@ -1,14 +1,20 @@
 import { Navigate, Outlet } from "react-router-dom";
 
+import { useLocalStorage } from '../../components/localStorage'
+
 const ProtectedRoute = ({ role, children, redirectTo = "/login" }) => {
+
+  const [getToken, setToken] = useLocalStorage('token');
+  const [getUser, setUser] = useLocalStorage('user');
+
   if (
-    localStorage.getItem("token") == null &&
-    localStorage.getItem("data") == null
+    getToken() == null &&
+    getUser() == null
   ) {
     return <Navigate to={redirectTo} />;
   } else if (
-    localStorage.getItem("token") &&
-    JSON.parse(localStorage.getItem("data")).role.includes(role)
+    getToken() &&
+    getUser().role.includes(role)
   ) {
     return children ? children : <Outlet />;
   }

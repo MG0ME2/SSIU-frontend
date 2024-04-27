@@ -1,7 +1,7 @@
 import React from 'react'
 
-import LogOut from "../../Components/Logout";
-import LayoutGraduates from '../../Components/LayoutGraduates'
+import LogOut from "../../components/Logout";
+import LayoutGraduates from '../../components/LayoutGraduates'
 
 
 const GraduatesHome = () => {

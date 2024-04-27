@@ -1,8 +1,8 @@
 import React from "react";
 import { NavLink } from 'react-router-dom'
 
-import LayoutT from '../../Components/LayoutTeacher'
-import LogOut from "../../Components/Logout";
+import LayoutT from '../../components/LayoutTeacher'
+import LogOut from "../../components/Logout";
 
 const TeacherHome = () => {
   
