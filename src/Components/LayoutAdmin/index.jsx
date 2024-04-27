@@ -1,17 +1,21 @@
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
 
-import IconMenu from "../../Assets/Img/IconMenu.svg";
-import IconBook from "../../Assets/Img/IconBook.svg";
-import IconHome from "../../Assets/Img/IconHome.svg";
-import IconLoginMenu from "../../Assets/Img/IconLoginMenu.svg";
+import IconMenu from "../../assets/Img/IconMenu.svg";
+import IconBook from "../../assets/Img/IconBook.svg";
+import IconHome from "../../assets/Img/IconHome.svg";
+import IconLoginMenu from "../../assets/Img/IconLoginMenu.svg";
 
 //import
-import { AppContext } from "../../Context";
-import LogOut from "../../Components/Logout";
+//import
+import LogOut from "../../components/Logout";
+import { useLocalStorage } from '../../components/localStorage'
 
 const LayoutAdmin = ({ children }) => {
-  let context = useContext(AppContext);
+  
+  const [getUser, setUser] = useLocalStorage('user');  
+  const [getIsLogged, setIsLogged] = useLocalStorage('isLogged');
+
   return (
     <div className="flex h-screen p-1 ">
       <div
@@ -79,7 +83,7 @@ const LayoutAdmin = ({ children }) => {
           </div>
 
           <div>
-            {!context.isLoggedIn ? (
+            {!getIsLogged() ? (
               <button
                 className="flex items-center px-1 py-1
                         mt-20 md:mb-0 mx-auto 
@@ -100,7 +104,7 @@ const LayoutAdmin = ({ children }) => {
             ) : (
               <div>
                 <h2 className="text-2xl font-bold mb-4">
-                  Bienvenido,{" "}
+                  Bienvenido,{getUser.name}!
                   {JSON.parse(window.localStorage.getItem("data")).name}!
                 </h2>
                 <LogOut />

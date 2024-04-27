@@ -1,7 +1,7 @@
 import React from 'react'
 
-import LogOut from "../../Components/Logout";
-import LayoutAdmin from '../../Components/LayoutAdmin'
+import LogOut from "../../components/Logout";
+import LayoutAdmin from '../../components/LayoutAdmin'
 
 const AdminHome = () => {
   return (

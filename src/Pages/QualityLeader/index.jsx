@@ -1,7 +1,7 @@
 import React from 'react'
 
-import LogOut from "../../Components/Logout";
-import LayoutQualityLeader from '../../Components/LayoutQualityLeader'
+import LogOut from "../../components/Logout";
+import LayoutQualityLeader from '../../components/LayoutQualityLeader'
 
 const QualityLeaderHome = () => {
   return (

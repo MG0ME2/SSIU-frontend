@@ -1,5 +1,5 @@
 //import React, { useState } from 'react';
-import LayoutH from '../../Components/LayoutHome'
+import LayoutH from '../../components/LayoutHome'
 
 function Home() {
 

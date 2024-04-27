@@ -1,13 +1,11 @@
 // Nucleos
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-
+import {Home, PageUno, SignUpForm, Login} from '../Home/index';
 // Pages
-import Home from '../Home'
-import PageUno from '../Home/page1'
-import Login from '../Home/Login'
-import SignUpForm from '../Home/SignUp'
-import ForgotPassword from '../Home/ForgotPassword'
-import ResetPassword from '../Home/ResetPassword'
+// import Home from '../Home'
+// import PageUno from '../Home/Page1'
+// import Login from '../Home/Login'
+// import SignUpForm from '../Home/SignUp'
 /// Teachers
 import TeacherHome from '../Teachers';
 import Page1 from '../Teachers/page1';
@@ -16,7 +14,6 @@ import Page2 from '../Teachers/page2';
 import EmployersHome from '../Employers';
 /// Graduates
 import GraduatesHome from '../Graduates';
-import GraduatesPerfil from '../Graduates/Perfil'
 /// QualityInstitutional
 import QualityInstitutionalHome from '../QualityInstitutional';
 /// QualityLeader
@@ -29,20 +26,13 @@ import AdminHome from '../Admin';
 // Styles
 import './App.css'
 
-// Components
-import ProtectedRoute from '../../Components/ProtectedRoutes';
+// components
+import ProtectedRoute from '../../components/ProtectedRoutes/index';
 
 // Context
-import { AppContextProvider } from '../../Context';
-
-//hooks
 
 const AppRoutes = () => {
-  let roleUser =  'defaul';
-  if (window.localStorage.getItem('data') !== null ){
-    roleUser = JSON.parse(window.localStorage.getItem('data')).role
-  }
-
+  
   return (
     <Routes>
       {/*Home*/}
@@ -50,10 +40,7 @@ const AppRoutes = () => {
       <Route path= '/1' element={<PageUno />}/>
       <Route path= '/login' element={<Login />}/>
       <Route path= '/signup' element={<SignUpForm />}/>
-      <Route path= '/forgotpassword' element={<ForgotPassword />}/>
-      {/*Reestablecimiento de constraseña debe enviarse por correo*/}
-      <Route path= '/resetpassword' element={<ResetPassword />}/>
-      
+
       {/*SuperAdmin*/}
       <Route element={
         <ProtectedRoute
@@ -104,13 +91,11 @@ const AppRoutes = () => {
       {/*Graduates*/}
       <Route element={
         <ProtectedRoute
-        role='graduate' redirectTo='/'
+        role='graduates' redirectTo='/'
         />
       }>
-        <Route path= '/graduate' element={<GraduatesHome />}/>
-        <Route path= '/graduate/Perfil' element={<GraduatesPerfil />}/>
+        <Route path= '/graduates' element={<GraduatesHome />}/>
       </Route>
-      
 
       {/*Employers*/}
       <Route element={
@@ -126,11 +111,9 @@ const AppRoutes = () => {
 
 const App = () => {
   return (
-    <AppContextProvider>
       <BrowserRouter>
         <AppRoutes />
       </BrowserRouter>
-    </AppContextProvider>
   )
 }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import LogOut from "../../Components/Logout";
-import LayoutEmployer from '../../Components/LayoutEmployers'
+import LogOut from "../../components/Logout";
+import LayoutEmployer from '../../components/LayoutEmployers'
 const EmployersHome = () => {
   return (
     <LayoutEmployer>

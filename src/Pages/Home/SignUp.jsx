@@ -1,9 +1,9 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 
-import LayoutH from "../../Components/LayoutHome";
-import IconRegister from "../../Assets/Img/IconRegister.svg";
-import IconHomeLogin from "../../Assets/Img/IconHomeLogin.svg";
+import LayoutH from "../../components/LayoutHome";
+import IconRegister from "../../assets/Img/IconRegister.svg";
+import IconHomeLogin from "../../assets/Img/IconHomeLogin.svg";
 
 const SignUpForm = () => {
   // funcion register: registrar los difrentes campos
@@ -45,18 +45,11 @@ const SignUpForm = () => {
             )}
           </div>
           <div className="mb-2 flex flex-col gap-1 items-center">
-          <select
-          className="mt-1 p-2 border rounded w-full"
-          {...register("typeDni")}
-        >
-          <optgroup label="Tipo de documento">
-            <option disabled selected hidden>
-              Tipo de documento
-            </option>
-            <option value="T.I">Tarjeta de identidad</option>
-            <option value="C.C">Cedula de ciudadania</option>
-          </optgroup>
-        </select>
+            <label className="font-semibold">Tipo de documento</label>
+            <select className="mt-1 p-2 border rounded w-full" {...register("typeDni")}>
+              <option value="T.I">Tarjeta de identidad</option>
+              <option value="C.C">Cedula de ciudadania</option>
+            </select>
           </div>
           <div className="mb-2 flex flex-col gap-1 items-center">
             <label className="font-semibold">Numero de documento</label>

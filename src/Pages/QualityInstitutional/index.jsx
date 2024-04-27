@@ -1,7 +1,7 @@
 import React from 'react'
 
-import LogOut from "../../Components/Logout";
-import LayoutQualityInstitutional from '../../Components/LayoutQualityInstitutional'
+import LogOut from "../../components/Logout";
+import LayoutQualityInstitutional from '../../components/LayoutQualityInstitutional'
 
 const QualityInstitutionalHome = () => {
   return (
