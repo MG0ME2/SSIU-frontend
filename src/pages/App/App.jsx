@@ -91,19 +91,19 @@ const AppRoutes = () => {
       {/*Graduates*/}
       <Route element={
         <ProtectedRoute
-        role='graduates' redirectTo='/'
+        role='graduate' redirectTo='/'
         />
       }>
-        <Route path= '/graduates' element={<GraduatesHome />}/>
+        <Route path= '/graduate' element={<GraduatesHome />}/>
       </Route>
 
       {/*Employers*/}
       <Route element={
         <ProtectedRoute
-        role='employers' redirectTo='/'
+        role='employer' redirectTo='/'
         />
       }>
-        <Route path= '/employers' element={<EmployersHome />}/>
+        <Route path= '/employer' element={<EmployersHome />}/>
       </Route>
     </Routes>
   )
