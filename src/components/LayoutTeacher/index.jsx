@@ -1,21 +1,17 @@
-import { NavLink } from 'react-router-dom'
-import { useContext } from "react";
+import { NavLink } from 'react-router-dom';
 
-import IconMenu from "../../assets/Img/IconMenu.svg";
-import IconBook from "../../assets/Img/IconBook.svg";
-import IconHome from "../../assets/Img/IconHome.svg";
-import IconLoginMenu from "../../assets/Img/IconLoginMenu.svg";
+//IMAGENES
+import IconMenu from '../../assets/Img/IconMenu.svg';
+import IconBook from '../../assets/Img/IconBook.svg';
+import IconHome from '../../assets/Img/IconHome.svg';
+import IconLoginMenu from '../../assets/Img/IconLoginMenu.svg';
 
-import { useLocalStoragee } from '../../LocalStorage';
-
-//import
-import LogOut from "../../components/Logout";
-import { useLocalStorage } from '../../components/localStorage'
-
+//COMPONENTES
+import LogOut from '../../components/Logout';
+import { useLocalStorage } from '../../components/localStorage';
 
 const LayoutT = ({ children }) => {
-  
-  const [getUser, setUser] = useLocalStorage('user');  
+  const [getUser, setUser] = useLocalStorage('user');
   const [getIsLogged, setIsLogged] = useLocalStorage('isLogged');
 
   return (
@@ -42,7 +38,7 @@ const LayoutT = ({ children }) => {
                   className="w-4 h-4 mr-2"
                 />
                 <p className="text-xs">
-                <NavLink to='/'>Home</NavLink>
+                  <NavLink to="/">Home</NavLink>
                 </p>
               </li>
 
@@ -58,7 +54,10 @@ const LayoutT = ({ children }) => {
                   alt="Icono book 2"
                   className="w-4 h-4 mr-2"
                 />
-                <p className="text-xs"> <NavLink to='/1'>Ingeniería de sistemas </NavLink> </p>
+                <p className="text-xs">
+                  {' '}
+                  <NavLink to="/1">Ingeniería de sistemas </NavLink>{' '}
+                </p>
               </li>
 
               <li className="flex items-center mb-3 mt-3 px-2 cursor-pointer">
@@ -82,26 +81,31 @@ const LayoutT = ({ children }) => {
           </div>
 
           <div>
-          {!getIsLogged() ? (
-            <button
-              className="flex items-center px-1 py-1
+            {!getIsLogged() ? (
+              <button
+                className="flex items-center px-1 py-1
                         mt-20 md:mb-0 mx-auto 
                       bg-[#28537E] text-white rounded-md
                         border border-white
                       hover:bg-[#46525e] w-auto h-auto mb-4"
-            >
-              <span className="ml-1 text-xs"> <NavLink to='/login'>Iniciar Sesión </NavLink></span>
-              <img
-                src={IconLoginMenu}
-                alt="Ícono de inicio de sesión"
-                className="px-1 mb-0,5 w-5 h-5"
-              />
-            </button>
-            ):(
-            <div>
-              <h2 className="text-xs font-bold mb-4">Bienvenido, {getUser.name}!</h2>
-              <LogOut/>
-            </div>
+              >
+                <span className="ml-1 text-xs">
+                  {' '}
+                  <NavLink to="/login">Iniciar Sesión </NavLink>
+                </span>
+                <img
+                  src={IconLoginMenu}
+                  alt="Ícono de inicio de sesión"
+                  className="px-1 mb-0,5 w-5 h-5"
+                />
+              </button>
+            ) : (
+              <div>
+                <h2 className="text-xs font-bold mb-4">
+                  Bienvenido, {getUser().name}!
+                </h2>
+                <LogOut />
+              </div>
             )}
           </div>
         </div>

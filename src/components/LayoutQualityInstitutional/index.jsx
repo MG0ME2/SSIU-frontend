@@ -1,11 +1,12 @@
 import { NavLink } from 'react-router-dom';
 
+//IMAGENES
 import IconMenu from '../../assets/Img/IconMenu.svg';
 import IconBook from '../../assets/Img/IconBook.svg';
 import IconHome from '../../assets/Img/IconHome.svg';
 import IconLoginMenu from '../../assets/Img/IconLoginMenu.svg';
 
-//import
+//COMPONENTES
 import LogOut from '../../components/Logout';
 import { useLocalStorage } from '../../components/localStorage';
 
@@ -101,7 +102,7 @@ const LayoutQualityInstitutional = ({ children }) => {
             ) : (
               <div>
                 <h2 className="text-xs font-bold mb-4">
-                  Bienvenido, {getUser.name}!
+                  Bienvenido, {getUser().name}!
                 </h2>
                 <LogOut />
               </div>

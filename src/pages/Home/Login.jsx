@@ -73,6 +73,7 @@ function Login() {
                 type="email"
                 id="email"
                 name="email"
+                required
                 placeholder="Ingresar correo electronico"
                 className="mt-1 p-2 border rounded w-full
                "
@@ -83,6 +84,7 @@ function Login() {
                 type={showPassword ? "text" : "password"}
                 id="password"
                 name="password"
+                required
                 placeholder="Ingresar contraseña"
                 onChange={(e) => setPassword(e.target.value)}
                 className="mt-1 p-2 border rounded w-full"

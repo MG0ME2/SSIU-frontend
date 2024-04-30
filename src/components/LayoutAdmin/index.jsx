@@ -1,19 +1,17 @@
-import { NavLink } from "react-router-dom";
-import { useContext } from "react";
+import { NavLink } from 'react-router-dom';
 
-import IconMenu from "../../assets/Img/IconMenu.svg";
-import IconBook from "../../assets/Img/IconBook.svg";
-import IconHome from "../../assets/Img/IconHome.svg";
-import IconLoginMenu from "../../assets/Img/IconLoginMenu.svg";
+//IMAGENES
+import IconMenu from '../../assets/Img/IconMenu.svg';
+import IconBook from '../../assets/Img/IconBook.svg';
+import IconHome from '../../assets/Img/IconHome.svg';
+import IconLoginMenu from '../../assets/Img/IconLoginMenu.svg';
 
-//import
-//import
-import LogOut from "../../components/Logout";
-import { useLocalStorage } from '../../components/localStorage'
+//COMPONENTES
+import LogOut from '../../components/Logout';
+import { useLocalStorage } from '../../components/localStorage';
 
 const LayoutAdmin = ({ children }) => {
-  
-  const [getUser, setUser] = useLocalStorage('user');  
+  const [getUser, setUser] = useLocalStorage('user');
   const [getIsLogged, setIsLogged] = useLocalStorage('isLogged');
 
   return (
@@ -57,8 +55,8 @@ const LayoutAdmin = ({ children }) => {
                   className="w-4 h-4 mr-2"
                 />
                 <p className="text-xs">
-                  {" "}
-                  <NavLink to="/1">Ingeniería de sistemas </NavLink>{" "}
+                  {' '}
+                  <NavLink to="/1">Ingeniería de sistemas </NavLink>{' '}
                 </p>
               </li>
 
@@ -92,7 +90,7 @@ const LayoutAdmin = ({ children }) => {
                       hover:bg-[#46525e] w-auto h-auto mb-4"
               >
                 <span className="ml-1 text-xs">
-                  {" "}
+                  {' '}
                   <NavLink to="/login">Iniciar Sesión </NavLink>
                 </span>
                 <img
@@ -104,8 +102,8 @@ const LayoutAdmin = ({ children }) => {
             ) : (
               <div>
                 <h2 className="text-2xl font-bold mb-4">
-                  Bienvenido,{getUser.name}!
-                  {JSON.parse(window.localStorage.getItem("data")).name}!
+                  Bienvenido,{getUser().name}!
+                  {JSON.parse(window.localStorage.getItem('data')).name}!
                 </h2>
                 <LogOut />
               </div>
