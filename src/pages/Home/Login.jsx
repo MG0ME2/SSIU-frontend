@@ -10,6 +10,7 @@ import IconEye from "../../assets/Img/IconEye.svg";
 import IconOffEye from "../../assets/Img/IconOffEye.svg";
 
 import { useLocalStorage } from '../../components/localStorage'
+import ButtonPrimary from "../../components/Buttons/primary";
 
 function Login() {
   let navigate = useNavigate();
@@ -27,7 +28,7 @@ function Login() {
   const [getIsLogged, setIsLogged] = useLocalStorage('isLogged');
 
   const navRegisterPage = (event)=>{
-    event.preventDefault();
+    //event.preventDefault();
     navigate('/signup')
   }
 
@@ -115,39 +116,15 @@ function Login() {
                 className="text-[14px]
              text-blue-600"
               >
-                {" "}
                 Recurperar contraseña{" "}
               </Link>
             </div>
-            <div className="flex items-center justify-between">
-              <button
-                onClick={navRegisterPage}
-                className="flex bg-[#28537E] text-white px-2 py-0 
-              rounded hover:bg-[#46525e] 
-              items-center w-auto h-auto
-              "
-              >
-                <span className=" text-xs">Registrarse</span>
-                <img
-                  src={IconRegister}
-                  alt="Ícono sesión"
-                  className="px-2 w-8 h-8"
-                />
-              </button>
+            <div className="flex items-center justify-between">              
 
-              <button
-                type="submit"
-                className="flex bg-[#28537E] text-white px-2 py-0
-              rounded hover:bg-[#46525e]
-              items-center w-auto h-auto"
-              >
-                <span className="ml-1 text-xs">Iniciar Sesión</span>
-                <img
-                  src={IconLogin}
-                  alt="Ícono sesión"
-                  className="px-2 w-8 h-8 "
-                />
-              </button>
+              <ButtonPrimary title={'Registrarse'} icono={IconRegister} typeB='button' to={'/signup'}/>
+
+              
+              <ButtonPrimary title={'Iniciar Sesión'} icono={IconLogin} typeB='submit' to={''}/>
             </div>
           </form>        
       </div>

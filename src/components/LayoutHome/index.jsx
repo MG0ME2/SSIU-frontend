@@ -64,7 +64,7 @@ const LayoutH = ({ children }) => {
               </li>
 
               <li>
-                <NavItem to="/1" currentPath={location.pathname}>
+                <NavItem to="" currentPath={location.pathname}>
                   <img
                       src={IconBook}
                       alt="Icono book 2"
@@ -75,7 +75,7 @@ const LayoutH = ({ children }) => {
               </li>
 
               <li>
-                <NavItem to="/1" currentPath={location.pathname}>
+                <NavItem to="" currentPath={location.pathname}>
                   <img
                       src={IconBook}
                       alt="Icono book 2"

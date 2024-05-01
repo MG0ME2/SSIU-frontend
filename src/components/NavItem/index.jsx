@@ -8,7 +8,7 @@ const NavItem = ({to, currentPath, children}) => {
   };
 
   const isActive = currentPath === to;
-  const activeStyle = "bg-gray-600 border-l-4 border-l-white px-1";
+  const activeStyle = "bg-gray-600 border-l-4 border-l-white font-semibold px-1";
 
   return (
     <button
