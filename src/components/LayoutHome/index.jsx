@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 //IMAGENES
 import IconMenu from '../../assets/Img/IconMenu.svg';
@@ -9,10 +9,14 @@ import IconLoginMenu from '../../assets/Img/IconLoginMenu.svg';
 //COMPONENTES
 import LogOut from '../../components/Logout';
 import { useLocalStorage } from '../../components/localStorage';
+import NavItem from '../NavItem';
+
 
 const LayoutH = ({ children }) => {
   const [getUser, setUser] = useLocalStorage('user');
   const [getIsLogged, setIsLogged] = useLocalStorage('isLogged');
+
+  const location = useLocation();
 
   return (
     <div className="flex h-screen p-1 ">
@@ -31,15 +35,15 @@ const LayoutH = ({ children }) => {
         <div className="flex justify-between flex-col h-full ">
           <div className="my-4">
             <ul className="flex flex-col gap-2">
-              <li className="flex items-center px-2 cursor-pointer font-semibold py-2 px-2 rounded-r-md shadow-md bg-gray-600 border-l-4 border-l-white px-1">
-                <img
-                  src={IconHome}
-                  alt="Icono book 1"
-                  className="w-4 h-4 mr-2"
-                />
-                <p className="text-xs">
-                  <NavLink to="/">Inicio</NavLink>
-                </p>
+              <li>
+                <NavItem to="/" currentPath={location.pathname}>
+                  <img
+                    src={IconHome}
+                    alt="Icono book 1"
+                    className="w-4 h-4 mr-2"
+                  />
+                  Inicio
+                </NavItem>
               </li>
 
               <li className="text-white opacity-70 sm:p-0">
@@ -48,34 +52,37 @@ const LayoutH = ({ children }) => {
                 </p>
               </li>
 
-              <li className="flex items-center px-2 cursor-pointer hover:bg-gray-500 hover:font-semibold py-2 px-2 rounded-r-md hover:shadow-md active:bg-gray-600 active:border-l-4 active:border-l-white active:px-1">
-                <img
-                  src={IconBook}
-                  alt="Icono book 2"
-                  className="w-4 h-4 mr-2"
-                />
-                <p className="text-xs">
-                  {' '}
-                  <NavLink to="/1">Ingeniería de Sistemas</NavLink>{' '}
-                </p>
+              <li>
+                <NavItem to="/1" currentPath={location.pathname}>
+                  <img
+                      src={IconBook}
+                      alt="Icono book 2"
+                      className="w-4 h-4 mr-2"
+                  />
+                  Ingeniería de sistemas
+                </NavItem>
               </li>
 
-              <li className="flex items-center px-2 cursor-pointer hover:bg-gray-500 hover:font-semibold py-2 px-2 rounded-r-md hover:shadow-md active:bg-gray-600 active:border-l-4 active:border-l-white active:px-1">
-                <img
-                  src={IconBook}
-                  alt="Icono book 3"
-                  className="w-4 h-4 mr-2"
-                />
-                <p className="text-xs"> Comercio Exterior </p>
+              <li>
+                <NavItem to="/1" currentPath={location.pathname}>
+                  <img
+                      src={IconBook}
+                      alt="Icono book 2"
+                      className="w-4 h-4 mr-2"
+                  />
+                  Comercio exterior
+                </NavItem>
               </li>
 
-              <li className="flex items-center px-2 cursor-pointer hover:bg-gray-500 hover:font-semibold py-2 px-2 rounded-r-md hover:shadow-md active:bg-gray-600 active:border-l-4 active:border-l-white active:px-1">
-                <img
-                  src={IconBook}
-                  alt="Icono book 4"
-                  className="w-4 h-4 mr-2"
-                />
-                <p className="text-xs"> Ingeniería Industrial </p>
+              <li>
+                <NavItem to="/1" currentPath={location.pathname}>
+                  <img
+                      src={IconBook}
+                      alt="Icono book 2"
+                      className="w-4 h-4 mr-2"
+                  />
+                  Ingeniería industrial
+                </NavItem>
               </li>
             </ul>
           </div>
