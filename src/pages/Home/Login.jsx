@@ -1,6 +1,8 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, json, useNavigate } from "react-router-dom";
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
+
 
 import LayoutH from "../../components/LayoutHome/index";
 import IconLogin from "../../assets/Img/IconLogin.svg";
@@ -10,8 +12,11 @@ import IconEye from "../../assets/Img/IconEye.svg";
 import IconOffEye from "../../assets/Img/IconOffEye.svg";
 
 import { useLocalStorage } from '../../components/localStorage'
+import { login } from '../../redux/states/authSlice';
 
 function Login() {
+  const dispatch = useDispatch();
+
   let navigate = useNavigate();
 
   //Variables para manejo de la contraseña
@@ -41,7 +46,7 @@ function Login() {
     
     const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, form);
     if (data.status === parseInt("401")) {
-      setErrorMessage(data.response);
+      setErrorMessage(data);
     } else {
       //localStorage.setItem('token', data.access_token)
       //localStorage.setItem('data', JSON.stringify(data.user))
@@ -52,6 +57,7 @@ function Login() {
 
       navigate(`/${data.user.role}`)
     }
+    dispatch(login(data.user));
   };
 
   return (
@@ -74,6 +80,7 @@ function Login() {
                 id="email"
                 name="email"
                 required
+                autoComplete="email"
                 placeholder="Ingresar correo electronico"
                 className="mt-1 p-2 border rounded w-full
                "
@@ -85,6 +92,7 @@ function Login() {
                 id="password"
                 name="password"
                 required
+                autoComplete="password"
                 placeholder="Ingresar contraseña"
                 onChange={(e) => setPassword(e.target.value)}
                 className="mt-1 p-2 border rounded w-full"
