@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation} from 'react-router-dom';
 
 //IMAGENES
 import IconMenu from '../../assets/Img/IconMenu.svg';
@@ -9,10 +9,13 @@ import IconLoginMenu from '../../assets/Img/IconLoginMenu.svg';
 //COMPONENTES
 import LogOut from '../../components/Logout';
 import { useLocalStorage } from '../../components/localStorage';
+import NavItem from '../NavItem';
 
 const LayoutT = ({ children }) => {
   const [getUser, setUser] = useLocalStorage('user');
   const [getIsLogged, setIsLogged] = useLocalStorage('isLogged');
+
+  const location = useLocation();
 
   return (
     <div className="flex h-screen p-1 ">
@@ -31,51 +34,48 @@ const LayoutT = ({ children }) => {
         <div className="flex justify-between flex-col h-full ">
           <div className="my-4">
             <ul className="flex flex-col gap-2">
-              <li className="flex items-center mb-3 mt-3 px-2 cursor-pointer">
-                <img
-                  src={IconHome}
-                  alt="Icono book 1"
-                  className="w-4 h-4 mr-2"
-                />
-                <p className="text-xs">
-                  <NavLink to="/">Home</NavLink>
-                </p>
+              <li>
+                <NavItem to="/" currentPath={location.pathname}>
+                  <img
+                    src={IconHome}
+                    alt="Icono book 1"
+                    className="w-4 h-4 mr-2"
+                  />
+                  Inicio
+                </NavItem>
               </li>
 
-              <li className="text-white opacity-70 sm:p-0">
-                <p className="text-xs flex items-center justify-center">
-                  Programas académicos:
-                </p>
+              <li>
+                <NavItem to="/1" currentPath={location.pathname}>
+                  <img
+                    src={IconBook}
+                    alt="Icono book 2"
+                    className="w-4 h-4 mr-2"
+                  />
+                  Perfil
+                </NavItem>
               </li>
 
-              <li className="flex items-center mb-3 mt-3 px-2 cursor-pointer">
-                <img
-                  src={IconBook}
-                  alt="Icono book 2"
-                  className="w-4 h-4 mr-2"
-                />
-                <p className="text-xs">
-                  {' '}
-                  <NavLink to="/1">Ingeniería de sistemas </NavLink>{' '}
-                </p>
+              <li>
+                <NavItem to="/1" currentPath={location.pathname}>
+                  <img
+                    src={IconBook}
+                    alt="Icono book 2"
+                    className="w-4 h-4 mr-2"
+                  />
+                  Responder Instrumento MDI
+                </NavItem>
               </li>
 
-              <li className="flex items-center mb-3 mt-3 px-2 cursor-pointer">
-                <img
-                  src={IconBook}
-                  alt="Icono book 3"
-                  className="w-4 h-4 mr-2"
-                />
-                <p className="text-xs"> Comercio exterior </p>
-              </li>
-
-              <li className="flex items-center mb-3 mt-3 px-2 cursor-pointer">
-                <img
-                  src={IconBook}
-                  alt="Icono book 4"
-                  className="w-4 h-4 mr-2"
-                />
-                <p className="text-xs"> Ingenieria Industrial </p>
+              <li>
+                <NavItem to="/1" currentPath={location.pathname}>
+                  <img
+                    src={IconBook}
+                    alt="Icono book 2"
+                    className="w-4 h-4 mr-2"
+                  />
+                  Registrar proyectos
+                </NavItem>
               </li>
             </ul>
           </div>
@@ -90,7 +90,7 @@ const LayoutT = ({ children }) => {
                       hover:bg-[#46525e] w-auto h-auto mb-4"
               >
                 <span className="ml-1 text-xs">
-                  {' '}
+                  {" "}
                   <NavLink to="/login">Iniciar Sesión </NavLink>
                 </span>
                 <img

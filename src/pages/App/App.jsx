@@ -103,7 +103,7 @@ const AppRoutes = () => {
         <ProtectedRoute
         role='employer' redirectTo='/'
         />
-      }>
+        }>
         <Route path= '/employer' element={<EmployersHome />}/>
       </Route>
     </Routes>
