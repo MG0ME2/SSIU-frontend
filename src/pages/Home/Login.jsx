@@ -21,10 +21,34 @@ function Login() {
   let navigate = useNavigate();
 
   //Variables para manejo de la contraseña
-  const [userPassword, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const validateEmail = () => {
+    if (!email.trim()) {
+      setEmailError("Debe ingresar un correo electrónico");
+      return false;
+    } else {
+      setEmailError("");
+      return true;
+    }
+  };
+
+  const validatePassword = () => {
+    if (!password.trim()) {
+      setPasswordError("Debe ingresar una contraseña");
+      return false;
+    } else {
+      setPasswordError("");
+      return true;
+    }
   };
 
   //manejo de Local Storage
@@ -39,6 +63,11 @@ function Login() {
 
   const handleLogin = async (event) => {
     event.preventDefault();
+
+    const isEmailValid = validateEmail();
+    const isPasswordValid = validatePassword();
+
+    if (isEmailValid && isPasswordValid) {
     const formData = new FormData(event.currentTarget);
     const form = {
       email: formData.get("email"),
@@ -46,19 +75,23 @@ function Login() {
     };
     
     const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, form);
+
     if (data.status === parseInt("401")) {
       setErrorMessage(data);
-    } else {
-      //localStorage.setItem('token', data.access_token)
-      //localStorage.setItem('data', JSON.stringify(data.user))
-
+    }else if(data.error){
+      // Aqui va la configuración de los errores
+      console.log(data.error);
+    } 
+    else {
       setToken(data.access_token);
       setUser(data.user);      
       setIsLogged('true');
-
       navigate(`/${data.user.role}`)
     }
+
     dispatch(login(data.user));
+
+ }
   };
 
   return (
@@ -83,9 +116,12 @@ function Login() {
                 required
                 autoComplete="email"
                 placeholder="Ingresar correo electronico"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="mt-1 p-2 border rounded w-full
                "
               />
+              {emailError  && <p className="text-red-500 text-xs mt-1">{emailError}</p>}          
             </div>
             <div className="mb-1 relative">
               <input
@@ -95,6 +131,7 @@ function Login() {
                 required
                 autoComplete="password"
                 placeholder="Ingresar contraseña"
+                value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="mt-1 p-2 border rounded w-full"
               />
@@ -118,6 +155,7 @@ function Login() {
                 )}
               </button>
             </div>
+            {passwordError && <p className="text-red-500 text-xs mt-1">{passwordError}</p>}
             <div className="text-right mb-2">
               <Link
                 to="/resetPassword"
