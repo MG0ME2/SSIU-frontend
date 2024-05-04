@@ -2,7 +2,8 @@ import { useState, useEffect, useContext } from "react";
 import { Link, json, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import LayoutH from "../../components/LayoutHome/index";
 import IconLogin from "../../assets/Img/IconLogin.svg";
@@ -10,14 +11,20 @@ import IconRegister from "../../assets/Img/IconRegister.svg";
 import IconHomeLogin from "../../assets/Img/IconHomeLogin.svg";
 import IconEye from "../../assets/Img/IconEye.svg";
 import IconOffEye from "../../assets/Img/IconOffEye.svg";
+import WarnignAlert from '../../components/Alerts/warning';
 
 import { useLocalStorage } from '../../components/localStorage'
 import { login } from '../../redux/states/authSlice';
 import ButtonPrimary from "../../components/Buttons/primary";
 
 function Login() {
+  const notify = () => {
+    toast.warning(getWarnignMessage());
+  }
+  const notify2 = () => {
+    toast.warning('Bienvenido', getUser.name);
+  }
   const dispatch = useDispatch();
-
   let navigate = useNavigate();
 
   //Variables para manejo de la contraseña
@@ -26,6 +33,7 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [emailError, setEmailError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [alert, setAlert] = useState(null);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -55,6 +63,7 @@ function Login() {
   const [getToken, setToken] = useLocalStorage('token');
   const [getUser, setUser] = useLocalStorage('user');
   const [getIsLogged, setIsLogged] = useLocalStorage('isLogged');
+  const [getWarnignMessage, setWarnignMessage] = useLocalStorage('warnignLogin');
 
   const navRegisterPage = (event)=>{
     //event.preventDefault();
@@ -79,7 +88,9 @@ function Login() {
     if (data.status === parseInt("401")) {
       setErrorMessage(data);
     }else if(data.error){
-      // Aqui va la configuración de los errores
+      // comentario de jose
+      setWarnignMessage(data.error)
+      notify()
       console.log(data.error);
     } 
     else {
@@ -87,6 +98,7 @@ function Login() {
       setUser(data.user);      
       setIsLogged('true');
       navigate(`/${data.user.role}`)
+
     }
 
     dispatch(login(data.user));
@@ -96,6 +108,7 @@ function Login() {
 
   return (
     <LayoutH>
+      <ToastContainer/>
       <div className="flex-grow flex items-center justify-center">
           <form className="w-72 h-96" onSubmit={handleLogin}>
             <div className="flex items-center justify-center">
@@ -120,8 +133,7 @@ function Login() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="mt-1 p-2 border rounded w-full
                "
-              />
-              {emailError  && <p className="text-red-500 text-xs mt-1">{emailError}</p>}          
+              />       
             </div>
             <div className="mb-1 relative">
               <input
@@ -155,7 +167,6 @@ function Login() {
                 )}
               </button>
             </div>
-            {passwordError && <p className="text-red-500 text-xs mt-1">{passwordError}</p>}
             <div className="text-right mb-2">
               <Link
                 to="/resetPassword"
