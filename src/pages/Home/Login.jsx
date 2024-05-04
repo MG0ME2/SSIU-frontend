@@ -11,7 +11,6 @@ import IconRegister from "../../assets/Img/IconRegister.svg";
 import IconHomeLogin from "../../assets/Img/IconHomeLogin.svg";
 import IconEye from "../../assets/Img/IconEye.svg";
 import IconOffEye from "../../assets/Img/IconOffEye.svg";
-import WarnignAlert from '../../components/Alerts/warning';
 
 import { useLocalStorage } from '../../components/localStorage'
 import { login } from '../../redux/states/authSlice';
