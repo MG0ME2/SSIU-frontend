@@ -20,9 +20,6 @@ function Login() {
   const notify = () => {
     toast.warning(getWarnignMessage());
   }
-  const notify2 = () => {
-    toast.warning('Bienvenido', getUser.name);
-  }
   const dispatch = useDispatch();
   let navigate = useNavigate();
 
@@ -96,8 +93,7 @@ function Login() {
       setToken(data.access_token);
       setUser(data.user);      
       setIsLogged('true');
-      navigate(`/${data.user.role}`)
-
+      navigate(`/${data.user.role[0].description}`)
     }
 
     dispatch(login(data.user));
