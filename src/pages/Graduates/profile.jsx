@@ -8,11 +8,11 @@ import IconSaves from '../../assets/Img/IconSaves.svg';
 import UserProfile from '../../assets/Img/UserProfile.svg';
 
 //COMPONENTS
-import DatosPersonales from '../../components/TabFormPerfil/formPersonal';
-import DatosLaborales from '../../components/TabFormPerfil/formLaborData';
+import DatosPersonales from '../../components/LayoutGraduates/TabFormPerfil/formPersonal';
+import DatosLaborales from '../../components/LayoutGraduates/TabFormPerfil/formLaborData';
 import LayoutGraduates from '../../components/LayoutGraduates/index';
 import ButtonPrimary from '../../components/Buttons/primary';
-import ChangePasswordPopup from '../../components/popUpsGraduatePerfil/popupsgraduateperfil';
+import ChangePasswordPopup from '../../components/LayoutGraduates/popUpsGraduatePerfil/popupsgraduateperfil';
 
 function GraduatesPerfil() {
   const [activeTab, setActiveTab] = useState('datos');

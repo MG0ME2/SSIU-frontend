@@ -18,7 +18,7 @@ function DatosPersonales() {
             {...register("typeDni")}
           >
             <optgroup label="Tipo de documento">
-              <option disabled selected hidden>
+              <option disabled value="">
                 Tipo de documento
               </option>
               <option value="T.I">Tarjeta de identidad</option>
