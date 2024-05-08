@@ -2,7 +2,8 @@ import { useState, useEffect, useContext } from "react";
 import { Link, json, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import LayoutH from "../../components/LayoutHome/index";
 import IconLogin from "../../assets/Img/IconLogin.svg";
@@ -16,21 +17,49 @@ import { login } from '../../redux/states/authSlice';
 import ButtonPrimary from "../../components/Buttons/primary";
 
 function Login() {
+  const notify = () => {
+    toast.warning(getWarnignMessage());
+  }
   const dispatch = useDispatch();
-
   let navigate = useNavigate();
 
   //Variables para manejo de la contraseña
-  const [userPassword, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [alert, setAlert] = useState(null);
+
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
+  };
+
+  const validateEmail = () => {
+    if (!email.trim()) {
+      setEmailError("Debe ingresar un correo electrónico");
+      return false;
+    } else {
+      setEmailError("");
+      return true;
+    }
+  };
+
+  const validatePassword = () => {
+    if (!password.trim()) {
+      setPasswordError("Debe ingresar una contraseña");
+      return false;
+    } else {
+      setPasswordError("");
+      return true;
+    }
   };
 
   //manejo de Local Storage
   const [getToken, setToken] = useLocalStorage('token');
   const [getUser, setUser] = useLocalStorage('user');
   const [getIsLogged, setIsLogged] = useLocalStorage('isLogged');
+  const [getWarnignMessage, setWarnignMessage] = useLocalStorage('warnignLogin');
 
   const navRegisterPage = (event)=>{
     //event.preventDefault();
@@ -39,6 +68,11 @@ function Login() {
 
   const handleLogin = async (event) => {
     event.preventDefault();
+
+    const isEmailValid = validateEmail();
+    const isPasswordValid = validatePassword();
+
+    if (isEmailValid && isPasswordValid) {
     const formData = new FormData(event.currentTarget);
     const form = {
       email: formData.get("email"),
@@ -46,23 +80,30 @@ function Login() {
     };
     
     const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, form);
+
     if (data.status === parseInt("401")) {
       setErrorMessage(data);
-    } else {
-      //localStorage.setItem('token', data.access_token)
-      //localStorage.setItem('data', JSON.stringify(data.user))
-
+    }else if(data.error){
+      // comentario de jose
+      setWarnignMessage(data.error)
+      notify()
+      console.log(data.error);
+    } 
+    else {
       setToken(data.access_token);
       setUser(data.user);      
       setIsLogged('true');
-
-      navigate(`/${data.user.role}`)
+      navigate(`/${data.user.role[0].description}`)
     }
+
     dispatch(login(data.user));
+
+ }
   };
 
   return (
     <LayoutH>
+      <ToastContainer/>
       <div className="flex-grow flex items-center justify-center">
           <form className="w-72 h-96" onSubmit={handleLogin}>
             <div className="flex items-center justify-center">
@@ -83,9 +124,11 @@ function Login() {
                 required
                 autoComplete="email"
                 placeholder="Ingresar correo electronico"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 className="mt-1 p-2 border rounded w-full
                "
-              />
+              />       
             </div>
             <div className="mb-4">
               <input
@@ -95,6 +138,7 @@ function Login() {
                 required
                 autoComplete="password"
                 placeholder="Ingresar contraseña"
+                value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="mt-1 p-2 border rounded w-full"
               />

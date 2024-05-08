@@ -14,7 +14,7 @@ const ProtectedRoute = ({ role, children, redirectTo = "/login" }) => {
     return <Navigate to={redirectTo} />;
   } else if (
     getToken() &&
-    getUser().role.includes(role)
+    getUser().role[0].description.includes(role)
   ) {
     return children ? children : <Outlet />;
   }

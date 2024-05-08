@@ -1,10 +1,9 @@
-import { NavLink, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 //IMAGENES
 import IconMenu from '../../assets/Img/IconMenu.svg';
 import IconBook from '../../assets/Img/IconBook.svg';
 import IconHome from '../../assets/Img/IconHome.svg';
-import IconLoginMenu from '../../assets/Img/IconLoginMenu.svg';
 import IconLogin from "../../assets/Img/IconLogin.svg";
 
 //COMPONENTES

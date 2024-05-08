@@ -3,7 +3,11 @@ import LayoutH from '../../components/LayoutHome'
 import ButtonPrimary from '../../components/Buttons/primary'
 import IconLogin from "../../assets/Img/IconLogin.svg";
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function Home() {
+  const notify = () => toast("Wow so easy!");
 
   return (
     <LayoutH>
@@ -12,7 +16,9 @@ function Home() {
           <p>info</p>
 
         <ButtonPrimary title={'Iniciar Sesión'} icono={IconLogin} typeB={'button'} to={'/1'}/>
-        </div>        
+        <button onClick={notify} className='bg-red-400 rounded'>Boton</button>
+        </div>  
+        <ToastContainer />      
       </div>
     </LayoutH>
   )
