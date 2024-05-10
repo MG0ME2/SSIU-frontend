@@ -6,8 +6,6 @@ import IconHomeLogin from "../../assets/Img/IconHomeLogin.svg";
 import axios from "axios";
 import { useState, useEffect } from "react";
 import ButtonPrimary from "../../components/Buttons/primary.jsx";
-import {login} from "../../redux/states/authSlice.js";
-
 
 const  SignUpForm = () => {
   const [options, setOptions]=useState([]);
@@ -19,12 +17,19 @@ const  SignUpForm = () => {
     const getDniTypes = async () => {
       try {
         let dniTypes = JSON.parse(localStorage.getItem('dniTypes'));
+        console.log('1')
         if (!dniTypes) {
+          console.log('2')
           const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/dni-types`);
+          console.log('3')
           dniTypes = response.data;
+          console.log('4')
           localStorage.setItem('dniTypes', JSON.stringify(dniTypes));
+          console.log('5')
         }
+        console.log('6')
         setOptions(dniTypes);
+        console.log('7')
       } catch (error) {
         console.error('Error al obtener los datos:', error);
         localStorage.setItem('dniTypes', JSON.stringify('{id: 0, description: "hola"}'));
@@ -33,27 +38,6 @@ const  SignUpForm = () => {
     getDniTypes();
 },[]);
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-
-      const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, form);
-
-      if (data.status === parseInt("401")) {
-        setErrorMessage(data);
-      }else if(data.error){
-        // comentario de jose
-        setWarnignMessage(data.error)
-        notify()
-        console.log(data.error);
-      }
-      else {
-        setToken(data.access_token);
-        setUser(data.user);
-        setIsLogged('true');
-        navigate(`/${data.user.role[0].description}`)
-      }
-      dispatch(login(data.user));
-  };
 
   // funcion register: registrar los difrentes campos
   // handlesubmit: gestionar el envio de datos, la accion de enviar los datos
@@ -77,7 +61,7 @@ const  SignUpForm = () => {
           </div>
           <h2 className="text-2xl text-center font-bold mb-2">Registro</h2>
           <div className="mb-2 flex flex-col gap-1 items-start">
-            <select className="mt-1 p-2 border rounded w-full" value={dniTypes ? dniTypes : undefined}  onChange={(e) => setDniTypes(e.target.value)}>
+            <select className="mt-1 p-2 border rounded w-full" value={dniTypes ? dniTypes : undefined}  onChange={(e) => setDniTypes(e.target.id)}>
               {JSON.parse(localStorage.getItem('dniTypes')).map(option => (
                   <option key={option.id} value={option.id}>{option.description}</option>
               ))}
