@@ -73,32 +73,30 @@ function Login() {
     const isPasswordValid = validatePassword();
 
     if (isEmailValid && isPasswordValid) {
-    const formData = new FormData(event.currentTarget);
-    const form = {
-      email: formData.get("email"),
-      password: formData.get("password"),
-    };
-    
-    const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, form);
+      const formData = new FormData(event.currentTarget);
+      const form = {
+        email: formData.get("email"),
+        password: formData.get("password"),
+      };
 
-    if (data.status === parseInt("401")) {
-      setErrorMessage(data);
-    }else if(data.error){
-      // comentario de jose
-      setWarnignMessage(data.error)
-      notify()
-      console.log(data.error);
-    } 
-    else {
-      setToken(data.access_token);
-      setUser(data.user);      
-      setIsLogged('true');
-      navigate(`/${data.user.role[0].description}`)
-    }
+      const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, form);
 
-    dispatch(login(data.user));
-
- }
+      if (data.status === parseInt("401")) {
+        setErrorMessage(data);
+      }else if(data.error){
+        // comentario de jose
+        setWarnignMessage(data.error)
+        notify()
+        console.log(data.error);
+      }
+      else {
+        setToken(data.access_token);
+        setUser(data.user);
+        setIsLogged('true');
+        navigate(`/${data.user.role[0].description}`)
+      }
+      dispatch(login(data.user));
+   }
   };
 
   return (

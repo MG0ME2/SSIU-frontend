@@ -1,18 +1,68 @@
-import React from "react";
 import { useForm } from "react-hook-form";
 
 import LayoutH from "../../components/LayoutHome";
 import IconRegister from "../../assets/Img/IconRegister.svg";
 import IconHomeLogin from "../../assets/Img/IconHomeLogin.svg";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import IconLogin from "../../assets/Img/IconLogin.svg";
+import ButtonPrimary from "../../components/Buttons/primary.jsx";
+import {login} from "../../redux/states/authSlice.js";
+import {setEmail} from "../../redux/states/loginFormSlice.js";
 
-const SignUpForm = () => {
+const  SignUpForm = () => {
+  const [options, setOptions]=useState([]);
+  const [email, setEmail] = useState("");
+  const [dni, setDni] = useState("");
+  const [dniTypes, setDniTypes] = useState("");
+
+  useEffect(() => {
+    const getDniTypes = async () => {
+      try {
+        let dniTypes = JSON.parse(localStorage.getItem('dniTypes'));
+        if (!dniTypes) {
+          const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/dni-types`);
+          dniTypes = response.data;
+          localStorage.setItem('dniTypes', JSON.stringify(dniTypes));
+        }
+        setOptions(dniTypes);
+      } catch (error) {
+        console.error('Error al obtener los datos:', error);
+        localStorage.setItem('dniTypes', JSON.stringify('{id: 0, description: "hola"}'));
+      }
+    };
+
+    getDniTypes();
+},[]);
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
+      const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, form);
+
+      if (data.status === parseInt("401")) {
+        setErrorMessage(data);
+      }else if(data.error){
+        // comentario de jose
+        setWarnignMessage(data.error)
+        notify()
+        console.log(data.error);
+      }
+      else {
+        setToken(data.access_token);
+        setUser(data.user);
+        setIsLogged('true');
+        navigate(`/${data.user.role[0].description}`)
+      }
+      dispatch(login(data.user));
+  };
+
   // funcion register: registrar los difrentes campos
   // handlesubmit: gestionar el envio de datos, la accion de enviar los datos
   //
   const {
     register,
     handleSubmit,
-    formState: { errors },
   } = useForm();
   // Data hace referencia a los datos de el formulario que va a recibir la funcion
   const onSubmit = (data) => {};
@@ -22,83 +72,38 @@ const SignUpForm = () => {
         <form className='w-72 h-96' onSubmit={handleSubmit(onSubmit)}>
           <div className="flex items-center justify-center">
             <img
-              src={IconHomeLogin}
-              alt="Icono para home"
-              className="h-20 w-20 mb-3"
+                src={IconHomeLogin}
+                alt="Icono para home"
+                className="h-20 w-20 mb-3"
             />
           </div>
           <h2 className="text-2xl text-center font-bold mb-2">Registro</h2>
-          <div className="mb-3 flex flex-col gap-1 items-center">
-            <label className="font-semibold">Nombre completo</label>
-            <input
-              type="text"
-              placeholder="Ingresar nombre completo"
-              className="mt-1 p-2 border rounded w-full"
-              {...register("nombre", {
-                required: true,
-                maxLength: 100,
-              })}
-            />
-            {errors.nombre?.type === "required" && <p className="font-extralight text-sm text-red-600">El campo es requerido</p>}
-            {errors.nombre?.type === "maxLength" && (
-              <p className="font-extralight text-sm text-red-600">El campo debe tener menos de 100 caracteres</p>
-            )}
-          </div>
-          <div className="mb-2 flex flex-col gap-1 items-center">
-            <label className="font-semibold">Tipo de documento</label>
-            <select className="mt-1 p-2 border rounded w-full" {...register("typeDni")}>
-              <option value="T.I">Tarjeta de identidad</option>
-              <option value="C.C">Cedula de ciudadania</option>
+          <div className="mb-2 flex flex-col gap-1 items-start">
+            <select className="mt-1 p-2 border rounded w-full" value={dniTypes ? dniTypes : undefined}  onChange={(e) => setDniTypes(e.target.value)}>
+              {JSON.parse(localStorage.getItem('dniTypes')).map(option => (
+                  <option key={option.id} value={option.id}>{option.description}</option>
+              ))}
             </select>
           </div>
           <div className="mb-2 flex flex-col gap-1 items-center">
-            <label className="font-semibold">Numero de documento</label>
             <input
-              type="text"
-              placeholder="Ingresar numero de documento"
-              className="mt-1 p-2 border rounded w-full"
-              {...register("dni", {
-                required: true,
-                maxLength: 11,
-              })}
+                type="text"
+                placeholder="Ingresar numero de documento"
+                className="mt-1 p-2 border rounded w-full"
+                required={true}
+                onChange={(e) => setDni(e.target.value)}
             />
-            {errors.dni?.type === "required" && <p className="font-extralight text-sm text-red-600">El campo es requerido</p>}
-            {errors.dni?.type === "maxLength" && (
-              <p className="font-extralight text-sm text-red-600">El campo debe tener menos de 11 caracteres</p>
-            )}
           </div>
+
           <div className="mb-2 flex flex-col gap-2 items-center">
-            <label className="font-semibold">Correo Institucional</label>
             <input
-              type="text"
-              placeholder="Ingresar correo institucional"
-              className="mt-1 p-2 border rounded w-full"
-              {...register("email", {
-                required: true,
-                maxLength: 100,
-                pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/i,
-              })}
+                type="email"
+                placeholder="Ingresar correo institucional"
+                className="mt-1 p-2 border rounded w-full"
+                required={true}
+                onChange={(e) => setEmail(e.target.value)}
             />
-            {errors.email?.type === "required" && <p className="font-extralight text-sm text-red-600">El campo es requerido</p>}
-            {errors.email?.type === "maxLength" && (
-              <p className="font-extralight text-sm text-red-600">El campo debe tener menos de 100 caracteres</p>
-            )}
-            {errors.email?.type === "pattern" && (
-              <p className="font-extralight text-sm text-red-600">El campo debe ser un correo</p>
-            )}
-            <button
-                type="submit"
-                className="flex bg-[#28537E] text-white px-2 py-0 
-                rounded hover:bg-[#46525e] 
-                items-center justify-center w-36 h-9 mb-3"
-            >
-                <span className=" text-xs">Registrarse</span>
-                <img
-                src={IconRegister}
-                alt="Ícono sesión"
-                className="px-2 w-8 h-8"
-                />
-            </button>
+           <ButtonPrimary title={'Registrar'} icono={IconRegister} typeB='submit' to={''}/>
           </div>
         </form>
       </div>
