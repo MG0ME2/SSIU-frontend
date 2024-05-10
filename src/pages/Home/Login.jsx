@@ -128,7 +128,7 @@ function Login() {
                "
               />       
             </div>
-            <div className="mb-1 relative">
+            <div className="relative mb-4">
               <input
                 type={showPassword ? "text" : "password"}
                 id="password"
