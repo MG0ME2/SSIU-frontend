@@ -1,8 +1,8 @@
 function DatosLaborales() {
 
     return (
-      <div className="grid grid-cols-2 gap-x-8">
-        <div className="flex flex-col justify-center">
+      <div className="grid grid-cols-2 gap-x-8 ">
+        <div className="flex flex-col justify-center gap-4">
           <input
             type="text"
             placeholder="Empresa actual"
@@ -13,14 +13,16 @@ function DatosLaborales() {
             placeholder="Dirección de la empresa"
             className="mt-1 p-2 border rounded"
           />
-          <label>fecha inicial de contrato</label>
-          <input
-            type="date"
-            placeholder="Fecha inicio del contrato"
-            className="mt-1 p-2 border rounded"
-          />
+            <div>
+              <label>fecha inicial de contrato</label>
+              <input
+                type="date"
+                placeholder="Fecha inicio del contrato"
+                className="mt-1 p-2 border rounded w-full"
+              />
+            </div>
         </div>
-        <div className="flex flex-col justify-center">
+        <div className="flex flex-col justify-center gap-4">
           <input
             type="text"
             placeholder="Contacto de la empresa"
@@ -31,12 +33,14 @@ function DatosLaborales() {
             placeholder="Cargo de la empresa"
             className="mt-1 p-2 border rounded"
           />
-          <label>fecha final de contrato</label>
-          <input
-            type="date"
-            placeholder="Seleccione una fecha"
-            class="mt-1 p-2 border rounded w-full"
-           />
+            <div>
+              <label>fecha final de contrato</label>
+              <input
+                type="date"
+                placeholder="Seleccione una fecha"
+                className="mt-1 p-2 border rounded w-full"
+               />
+            </div>
         </div>
       </div>
     );

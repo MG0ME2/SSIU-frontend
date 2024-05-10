@@ -14,7 +14,7 @@ import Page2 from '../Teachers/page2';
 /// Employers
 import EmployersHome from '../Employers';
 /// Graduates
-import {GraduatesPerfil} from '../Graduates/index';
+import {GraduatesPerfil, GraduatesHome} from '../Graduates/index';
 
 /// QualityInstitutional
 import QualityInstitutionalHome from '../QualityInstitutional';
@@ -90,14 +90,16 @@ const AppRoutes = () => {
         <Route path= '/teacher/page2' element={<Page2 />} />
       </Route>
 
-      {/*Graduates
+      {/*Graduates */}
       <Route element={
         <ProtectedRoute
         role='graduate' redirectTo='/'
         />
       }>
-      </Routes> </Route> */}  
-       <Route path= '/graduates/perfil' element={<GraduatesPerfil />}/>
+      <Route path= '/graduate' element={<GraduatesHome />} />
+      <Route path= '/graduate/perfil' element={<GraduatesPerfil />}/>
+      </Route>
+
     
 
       {/*Employers*/}

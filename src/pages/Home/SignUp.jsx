@@ -5,10 +5,9 @@ import IconRegister from "../../assets/Img/IconRegister.svg";
 import IconHomeLogin from "../../assets/Img/IconHomeLogin.svg";
 import axios from "axios";
 import { useState, useEffect } from "react";
-import IconLogin from "../../assets/Img/IconLogin.svg";
 import ButtonPrimary from "../../components/Buttons/primary.jsx";
 import {login} from "../../redux/states/authSlice.js";
-import {setEmail} from "../../redux/states/loginFormSlice.js";
+
 
 const  SignUpForm = () => {
   const [options, setOptions]=useState([]);
@@ -31,7 +30,6 @@ const  SignUpForm = () => {
         localStorage.setItem('dniTypes', JSON.stringify('{id: 0, description: "hola"}'));
       }
     };
-
     getDniTypes();
 },[]);
 

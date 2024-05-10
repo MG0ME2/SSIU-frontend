@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 
 // IMAGES
-import IconSaves from '../../../assets/Img/IconSaves.svg';
-import IconHomeLogin from '../../../assets/Img/IconHomeLogin.svg';
-import IconEye from '../../../assets/Img/IconEye.svg';
-import IconOffEye from '../../../assets/Img/IconOffEye.svg';
+import IconSaves from '../../assets/Img/IconSaves.svg';
+import IconHomeLogin from '../../assets/Img/IconHomeLogin.svg';
+import IconEye from '../../assets/Img/IconEye.svg';
+import IconOffEye from '../../assets/Img/IconOffEye.svg';
 
 //COMPONENTS
-import ButtonPrimary from '../../Buttons/primary';
+import ButtonPrimary from '../Buttons/primary.jsx';
 
 const ChangePasswordPopup = ({ onClose }) => {
   const [currentPassword, setCurrentPassword] = useState('');
