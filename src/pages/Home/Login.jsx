@@ -36,6 +36,7 @@ function Login() {
   const [getUser, setUser] = useLocalStorage('user');
   const [getIsLogged, setIsLogged] = useLocalStorage('isLogged');
   const [getWarnignMessage, setWarnignMessage] = useLocalStorage('warnignLogin');
+
   
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -53,7 +54,7 @@ function Login() {
     const {data} = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/auth/login`, form);
     
     if (data.status === parseInt("401")) {
-      setErrorMessage(data);
+      console.log(data) // FALTANTE
     } else if (data.error) {
       // comentario de jose
       setWarnignMessage(data.error)

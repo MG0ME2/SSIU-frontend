@@ -57,6 +57,10 @@ const SignUpForm = () => {
   const notifyW = () => {
     toast.warning(getWarnignMessage());
   }
+
+  const notifyE = () => {
+    toast.error(getWarnignMessage());
+  }
   
   const notifyS = () => {
     toast.done(getWarnignMessage());
@@ -77,7 +81,7 @@ const SignUpForm = () => {
     const {data} = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/users/signup`, form);
     console.log(data)
     if (data.status === parseInt("401")) {
-      setErrorMessage(data);
+      console.log(data) // FALTANTE
     } else if (data.error) {
       setWarnignMessage(data.error)
       notifyW()
@@ -111,7 +115,7 @@ const SignUpForm = () => {
                     id="dniType"
                     name="dniType">
               <option key={0} value={0}>{"Seleccione"}</option>
-              {options.map(option => (
+              {options?.map(option => (
                 <option key={option.id} value={option.id}>{option.description}</option>
               ))}
             </select>
