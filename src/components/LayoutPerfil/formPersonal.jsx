@@ -10,7 +10,7 @@ function DatosPersonales() {
 
     ///
     const [getDniTypesUL, setDniTypesUL] = useLocalStorage('dniTypes');
-    const [getStatusUL, setStatusUL] = useLocalStorage('status');
+    const [getGendersUl, setGendersUl] = useLocalStorage('status');
     const [getUser, setUser] = useLocalStorage('user');
 
     const jsonData = {
@@ -40,11 +40,11 @@ function DatosPersonales() {
     getDniTypes();
     const getGenders = async () => {
       try {
-        if (!getStatusUL() || optionGenders) {
+        if (!getGendersUl() || optionGenders) {
           const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/genders`);
           if (response.data.length > 1) {
-            setStatusUL(response.data);
-            setOptionGenders(getStatusUL());
+            setGendersUl(response.data);
+            setOptionGenders(getGendersUl());
             // setSelectedOption(options[getUser().dni_type.id].description);
           } else {
             setOptionGenders(jsonData.data);
@@ -73,8 +73,8 @@ function DatosPersonales() {
                       // onChange={getUser().name}
                   />
                   <select className="mt-1 p-2 border rounded w-full"
-                          value={selectedOption ? setSelectedOption(options[getUser().dni_type.id].description) : undefined}
-                          // onChange={() => setSelectedOption(options[getUser().dni_type.id].description)}
+                          value={selectedOption ? selectedOption : undefined}
+                          onChange={(e) => setSelectedOption(e.target.description)}
                           id="dniType"
                           name="dniType">
                       <option key={0} value={0}>{"Seleccione su tipo de documento"}</option>
@@ -84,7 +84,7 @@ function DatosPersonales() {
                   </select>
                   <select className="mt-1 p-2 border rounded w-full"
                           value={selectedOption ? selectedOption : undefined}
-                          // onChange={(e) => setSelectedOption(e.target.description)}
+                          onChange={(e) => setSelectedOption(e.target.description)}
                           id="status"
                           name="status">
                       <option key={0} value={0}>{"Seleccione su genero"}</option>
