@@ -10,7 +10,6 @@ import UserProfile from '../../assets/Img/UserProfile.svg';
 //COMPONENTS
 import DatosPersonales from '../../components/LayoutPerfil/formPersonal.jsx';
 import DatosLaborales from '../../components/LayoutPerfil/formLaborData.jsx';
-import ButtonPrimary from '../../components/Buttons/primary';
 import ChangePasswordPopup from '../../components/LayoutPerfil/popupsperfil.jsx';
 
 const LayoutPerfil= ()=> {
@@ -19,7 +18,7 @@ const LayoutPerfil= ()=> {
   const tab = (tabs) => {
     setActiveTab(tabs);
   };
-
+ 
   // Estado para controlar la visibilidad del popup
   const [showChangePassword, setShowChangePassword] = useState(false);
 
@@ -27,9 +26,8 @@ const LayoutPerfil= ()=> {
     setShowChangePassword(!showChangePassword);
   };
 
-
   return (
-      <div className="flex flex-grow items-center justify-center flex-col mb-12">
+      <div className="flex flex-grow items-center justify-center flex-col mb-4">
         <div className="flex justify-center m-4">
             <img className="w-40 h-40 rounded-full border-2"  src={'https://robohash.org/hola}?40x40'} alt="PhotoUser"/>
         </div>
@@ -75,15 +73,6 @@ const LayoutPerfil= ()=> {
 
               <div className="w-[700px] ">
                   {activeTab === 'datos' ? <DatosPersonales/> : <DatosLaborales/>}
-              </div>
-
-              <div className="flex items-center justify-between">
-                  <ButtonPrimary
-                      title={'Guardar'}
-                      icono={IconSaves}
-                      typeB="button"
-                      to={'/'}
-                  />
               </div>
           </div>
       </div>
