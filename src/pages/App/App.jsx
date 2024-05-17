@@ -7,23 +7,30 @@ import {Home, PageUno, SignUpForm, Login} from '../Home/index';
 // import PageUno from '../Home/Page1'
 // import Login from '../Home/Login'
 // import SignUpForm from '../Home/SignUp'
+
 /// Teachers
 import TeacherHome from '../Teachers';
+import TeacherPerfil from '../Teachers/profile.jsx';
 import Page1 from '../Teachers/page1';
 import Page2 from '../Teachers/page2';
 /// Employers
 import EmployersHome from '../Employers';
+import EmployersPerfil from '../Employers/profile.jsx';
 /// Graduates
 import {GraduatesPerfil, GraduatesHome} from '../Graduates/index';
 
 /// QualityInstitutional
 import QualityInstitutionalHome from '../QualityInstitutional';
+import QuialityInstitucionaPerfil from '../QualityInstitutional/profile.jsx';
 /// QualityLeader
 import QualityLeaderHome from '../QualityLeader';
+import QualityLeaderPerfil from '../QualityLeader/profile.jsx';
 /// SuperAdmin
 import SuperAdminHome from '../SuperAdmin';
+import SuperAdminPerfil from '../SuperAdmin/profile.jsx';
 /// Admin
 import AdminHome from '../Admin';
+import AdminPerfil from '../Admin/profile.jsx';
 
 // Styles
 import './App.css'
@@ -50,6 +57,7 @@ const AppRoutes = () => {
         />
       }>
         <Route path='/superadmin' element={<SuperAdminHome/>}/>
+        <Route path='/superadmin/perfil' element={<SuperAdminPerfil/>}/>
       </Route>
       
       {/*Admin*/}
@@ -59,6 +67,7 @@ const AppRoutes = () => {
         />
       }>
         <Route path='/admin' element={<AdminHome/>}/>
+        <Route path='/admin/perfil' element={<AdminPerfil/>}/>
       </Route>
       
       {/*QualityInstitutional*/}
@@ -68,6 +77,7 @@ const AppRoutes = () => {
         />
       }>
         <Route path='/qualityinstitutional' element={<QualityInstitutionalHome/>}/>
+        <Route path='/qualityinstitutional/perfil' element={<QuialityInstitucionaPerfil/>}/>
       </Route>
       
       {/*QualityLeader*/}
@@ -77,6 +87,7 @@ const AppRoutes = () => {
         />
       }>
         <Route path='/qualityleader' element={<QualityLeaderHome/>}/>
+        <Route path='/qualityleader/perfil' element={<QualityLeaderPerfil/>}/>
       </Route>
       
       {/*Teacher*/}
@@ -86,6 +97,7 @@ const AppRoutes = () => {
         />
       }>
         <Route path='/teacher' element={<TeacherHome/>}/>
+        <Route path='/teacher/perfil' element={<TeacherPerfil/>}/>
         <Route path='/teacher/page1' element={<Page1/>}/>
         <Route path='/teacher/page2' element={<Page2/>}/>
       </Route>
@@ -108,6 +120,7 @@ const AppRoutes = () => {
         />
       }>
         <Route path='/employer' element={<EmployersHome/>}/>
+        <Route path='/employer/perfil' element={<EmployersPerfil/>}/>
       </Route>
     </Routes>
   )

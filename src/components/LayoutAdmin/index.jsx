@@ -46,7 +46,7 @@ const LayoutAdmin = ({children}) => {
               </li>
               
               <li>
-                <NavItem to="/" currentPath={location.pathname}>
+                <NavItem to="/admin/perfil" currentPath={location.pathname}>
                   <img
                     src={IconHome}
                     alt="Icono book 1"

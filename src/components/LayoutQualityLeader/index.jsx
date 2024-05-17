@@ -35,7 +35,7 @@ const LayoutQualityLeader = ({children}) => {
           <div className="my-4">
             <ul className="flex flex-col gap-2">
               <li>
-                <NavItem to="/" currentPath={location.pathname}>
+                <NavItem to="/qualityleader/perfil" currentPath={location.pathname}>
                   <img
                     src={IconHome}
                     alt="Icono book 1"

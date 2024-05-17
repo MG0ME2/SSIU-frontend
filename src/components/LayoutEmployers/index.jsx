@@ -46,7 +46,7 @@ const LayoutEmployer = ({children}) => {
               </li>
               
               <li>
-                <NavItem to="/1" currentPath={location.pathname}>
+                <NavItem to="/employer/perfil" currentPath={location.pathname}>
                   <img
                     src={IconBook}
                     alt="Icono book 2"

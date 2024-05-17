@@ -46,7 +46,7 @@ const LayoutT = ({children}) => {
               </li>
               
               <li>
-                <NavItem to="/1" currentPath={location.pathname}>
+                <NavItem to="/teacher/perfil" currentPath={location.pathname}>
                   <img
                     src={IconBook}
                     alt="Icono book 2"
