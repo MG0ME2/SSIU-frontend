@@ -17,7 +17,6 @@ const SignUpForm = () => {
   const [getDniTypesUL, setDniTypesUL] = useLocalStorage('dniTypes');
   const [getWarnignMessage, setWarnignMessage] = useLocalStorage('warnignLogin');
   
-  
   const [email, setEmail] = useState("");
   const [dni, setDni] = useState("");
   const [dniType, setDniType] = useState("");
@@ -57,7 +56,7 @@ const SignUpForm = () => {
   const notifyW = () => {
     toast.warning(getWarnignMessage());
   }
-
+  
   const notifyE = () => {
     toast.error(getWarnignMessage());
   }

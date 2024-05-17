@@ -7,7 +7,6 @@ import IconSaves from "../../assets/Img/IconSaves.svg";
 import {ToastContainer, toast} from 'react-toastify';
 import {useNavigate} from "react-router-dom";
 
-
 function DatosPersonales() {
   //useState
   const {register} = useForm();
@@ -21,19 +20,48 @@ function DatosPersonales() {
   const [getDniTypesUL, setDniTypesUL] = useLocalStorage('dniTypes');
   const [getGendersUl, setGendersUl] = useLocalStorage('status');
   const [getUser, setUser] = useLocalStorage('user');
-  const [getWarnignMessage, setWarnignMessage] = useLocalStorage('warnignLogin');
+  const [getWarnignMessage, setWarnignMessage] = useLocalStorage('warnignUpdate');
+  const [getErrorMessage, setErrorMessage] = useLocalStorage('errorUpdate');
+  const [getSuccessMessage, setSuccessMessage] = useLocalStorage('successUpdate');
   
   //Alertas
   const notifyW = () => {
-    toast.warning(getWarnignMessage());
+    toast.warn(getWarnignMessage(), {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   }
   
   const notifyE = () => {
-    toast.error(getWarnignMessage());
+    toast.error(getErrorMessage(), {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   }
   
   const notifyS = () => {
-    toast.done(getWarnignMessage());
+    toast.success(getSuccessMessage(), {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   }
   
   const jsonData = {
@@ -56,6 +84,8 @@ function DatosPersonales() {
           setOptions(jsonData.data);
         }
       } catch (error) {
+        setErrorMessage('Error al obtener los datos:', error)
+        notifyE()
         console.error('Error al obtener los datos:', error);
         console.log('Error al obtener los datos:', error);
       }
@@ -77,6 +107,8 @@ function DatosPersonales() {
           setOptionGenders(jsonData.data);
         }
       } catch (error) {
+        setErrorMessage('Error al obtener los datos:', error)
+        notifyE()
         console.error('Error al obtener los datos:', error);
         console.log('Error al obtener los datos:', error);
       }
@@ -106,121 +138,126 @@ function DatosPersonales() {
     console.log(form)
     
     const {data} = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/users/${getUser().id}`, form);
-
+    
     if (data.status === parseInt("401")) {
+      setErrorMessage('Error al actualizar los datos')
+      notifyE()
       console.log(data)
     } else {
       console.log(data);
       setUser(data);
-      setWarnignMessage("Se actualizaron los datos exitosamente")
+      setSuccessMessage("Se actualizaron los datos exitosamente")
       notifyS()
     }
   };
   
   return (
     <div>
-      <form className="flex flex-col gap-4 items-center" onSubmit={handleUpdate}>
-        <div className="grid grid-cols-2 gap-x-8">
-          <div className="flex flex-col justify-center gap-4">
-            <input
-              type="text"
-              id="name"
-              name="name"
-              required
-              placeholder="Traer nombre de la BD"
-              className="mt-1 p-2 border rounded"
-              defaultValue={getUser().name}
-            />
-            <select className="mt-1 p-2 border rounded w-full"
-                    value={selectedOption ? selectedOption : undefined}
-                    onChange={(e) => setSelectedOption(e.target.description)}
-                    disabled
-                    id="dniType"
-                    name="dniType">
-              <option key={getUser().dni_type.id}
-                      value={getUser().dni_type.id}>{getUser().dni_type.description}</option>
-              {options?.map(option => {
-                if (option.id === getUser().dni_type.id) {
-                  return null; // Devolver null para excluir este dato del mapeo
-                }
-                return (
-                  <option key={option.id} value={option.id}>{option.description}</option>
-                )
-              })}
-            </select>
-            <select className="mt-1 p-2 border rounded w-full"
-                    value={selectedOption ? selectedOption : undefined}
-                    onChange={(e) => setSelectedOption(e.target.description)}
-                    id="gender"
-                    name="gender">
-              <option key={getUser().gender.id} value={getUser().gender.id}>{getUser().gender.description}</option>
-              {optionGenders?.map(option => {
-                if (option.id === getUser().gender.id) {
-                  return null; // Devolver null para excluir este dato del mapeo
-                }
-                return (
-                  <option key={option.id} value={option.id}>{option.description}</option>
-                )
-              })}
-            </select>
-            <input
-              type="mail"
-              id="email"
-              name="email"
-              required
-              disabled
-              placeholder="Correo Institucional"
-              className="mt-1 p-2 border rounded"
-              defaultValue={getUser().email}
-            />
+      <div>
+        <ToastContainer/>
+        <form className="flex flex-col gap-4 items-center" onSubmit={handleUpdate}>
+          <div className="grid grid-cols-2 gap-x-8">
+            <div className="flex flex-col justify-center gap-4">
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                placeholder="Traer nombre de la BD"
+                className="mt-1 p-2 border rounded"
+                defaultValue={getUser().name}
+              />
+              <select className="mt-1 p-2 border rounded w-full"
+                      value={selectedOption ? selectedOption : undefined}
+                      onChange={(e) => setSelectedOption(e.target.description)}
+                      disabled
+                      id="dniType"
+                      name="dniType">
+                <option key={getUser().dni_type.id}
+                        value={getUser().dni_type.id}>{getUser().dni_type.description}</option>
+                {options?.map(option => {
+                  if (option.id === getUser().dni_type.id) {
+                    return null; // Devolver null para excluir este dato del mapeo
+                  }
+                  return (
+                    <option key={option.id} value={option.id}>{option.description}</option>
+                  )
+                })}
+              </select>
+              <select className="mt-1 p-2 border rounded w-full"
+                      value={selectedOption ? selectedOption : undefined}
+                      onChange={(e) => setSelectedOption(e.target.description)}
+                      id="gender"
+                      name="gender">
+                <option key={getUser().gender.id} value={getUser().gender.id}>{getUser().gender.description}</option>
+                {optionGenders?.map(option => {
+                  if (option.id === getUser().gender.id) {
+                    return null; // Devolver null para excluir este dato del mapeo
+                  }
+                  return (
+                    <option key={option.id} value={option.id}>{option.description}</option>
+                  )
+                })}
+              </select>
+              <input
+                type="mail"
+                id="email"
+                name="email"
+                required
+                disabled
+                placeholder="Correo Institucional"
+                className="mt-1 p-2 border rounded"
+                defaultValue={getUser().email}
+              />
+            </div>
+            
+            <div className="flex flex-col justify-center gap-4">
+              <input
+                type="text"
+                id="last_name"
+                name="last_name"
+                required
+                placeholder="Traer apellido de la BD"
+                className="mt-1 p-2 border rounded "
+                defaultValue={getUser().last_name}
+              />
+              <input
+                type="number"
+                id="dni"
+                name="dni"
+                required
+                disabled
+                placeholder="Numero de identificación"
+                className="mt-1 p-2 border rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                defaultValue={getUser().dni}
+              />
+              <input
+                type="email"
+                id="alt_email"
+                name="alt_email"
+                placeholder="Correo alternativo"
+                className="mt-1 p-2 border rounded"
+                defaultValue={(getUser().alt_email ? getUser().alt_email : '')}
+              />
+              <input
+                type="number"
+                id="phone_number"
+                name="phone_number"
+                required
+                placeholder="Numero de telefono"
+                className="mt-1 p-2 border rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                defaultValue={getUser().phone_number}
+              />
+            </div>
           </div>
           
-          <div className="flex flex-col justify-center gap-4">
-            <input
-              type="text"
-              id="last_name"
-              name="last_name"
-              required
-              placeholder="Traer apellido de la BD"
-              className="mt-1 p-2 border rounded "
-              defaultValue={getUser().last_name}
-            />
-            <input
-              type="number"
-              id="dni"
-              name="dni"
-              required
-              disabled
-              placeholder="Numero de identificación"
-              className="mt-1 p-2 border rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-              defaultValue={getUser().dni}
-            />
-            <input
-              type="email"
-              id="alt_email"
-              name="alt_email"
-              placeholder="Correo alternativo"
-              className="mt-1 p-2 border rounded"
-              defaultValue={(getUser().alt_email ? getUser().alt_email : '')}
-            />
-            <input
-              type="number"
-              id="phone_number"
-              name="phone_number"
-              required
-              placeholder="Numero de telefono"
-              className="mt-1 p-2 border rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-              defaultValue={getUser().phone_number}
-            />
-          </div>
-        </div>
-        
-        <ButtonPrimary
-          title={'Guardar'}
-          icono={IconSaves}
-          typeB="submit"
-        />
-      </form>
+          <ButtonPrimary
+            title={'Guardar'}
+            icono={IconSaves}
+            typeB="submit"
+          />
+        </form>
+      </div>
     </div>
   );
 }

@@ -17,12 +17,6 @@ import {login} from '../../redux/states/authSlice';
 import ButtonPrimary from "../../components/Buttons/primary";
 
 function Login() {
-  const notify = () => {
-    toast.warning(getWarnignMessage());
-  }
-  const dispatch = useDispatch();
-  let navigate = useNavigate();
-  
   //Variables para manejo de la contraseña
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -36,7 +30,12 @@ function Login() {
   const [getUser, setUser] = useLocalStorage('user');
   const [getIsLogged, setIsLogged] = useLocalStorage('isLogged');
   const [getWarnignMessage, setWarnignMessage] = useLocalStorage('warnignLogin');
-
+  
+  const notify = () => {
+    toast.warning(getWarnignMessage());
+  }
+  const dispatch = useDispatch();
+  let navigate = useNavigate();
   
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);

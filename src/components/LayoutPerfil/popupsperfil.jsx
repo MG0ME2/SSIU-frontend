@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { FaTimes } from 'react-icons/fa';
+import React, {useState} from 'react';
+import {FaTimes} from 'react-icons/fa';
 
 // IMAGES
 import IconSaves from '../../assets/Img/IconSaves.svg';
@@ -10,7 +10,7 @@ import IconOffEye from '../../assets/Img/IconOffEye.svg';
 //COMPONENTS
 import ButtonPrimary from '../Buttons/primary.jsx';
 
-const ChangePasswordPopup = ({ onClose }) => {
+const ChangePasswordPopup = ({onClose}) => {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
@@ -19,14 +19,14 @@ const ChangePasswordPopup = ({ onClose }) => {
     newPassword: false,
     confirmNewPassword: false
   });
-
+  
   const handleTogglePasswordVisibility = (passwordName) => {
     setShowPasswords({
       ...showPasswords,
       [passwordName]: !showPasswords[passwordName]
     });
   };
-
+  
   const handleSave = (e) => {
     e.preventDefault();
     setCurrentPassword('');
@@ -34,7 +34,7 @@ const ChangePasswordPopup = ({ onClose }) => {
     setConfirmNewPassword('');
     onClose();
   };
-
+  
   return (
     <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-md ">
@@ -71,7 +71,7 @@ const ChangePasswordPopup = ({ onClose }) => {
               type="button"
               className="absolute inset-y-0 right-0 flex items-center px-3"
               onClick={() => handleTogglePasswordVisibility('currentPassword')}
-              style={{ top: '50%', transform: 'translateY(-50%)' }} // Alinea el botón verticalmente
+              style={{top: '50%', transform: 'translateY(-50%)'}} // Alinea el botón verticalmente
             >
               {showPasswords.currentPassword ? (
                 <img
@@ -88,7 +88,7 @@ const ChangePasswordPopup = ({ onClose }) => {
               )}
             </button>
           </div>
-
+          
           <div className="relative mb-4">
             <input
               type={showPasswords.newPassword ? 'text' : 'password'}
@@ -105,7 +105,7 @@ const ChangePasswordPopup = ({ onClose }) => {
               type="button"
               className="absolute inset-y-0 right-0 flex items-center px-3"
               onClick={() => handleTogglePasswordVisibility('newPassword')}
-   style={{
+              style={{
                 top: '50%',
                 transform: 'translateY(-50%)',
                 right: '8px',
@@ -126,7 +126,7 @@ const ChangePasswordPopup = ({ onClose }) => {
               )}
             </button>
           </div>
-
+          
           <div className="relative mb-4">
             <input
               type={showPasswords.confirmNewPassword ? 'text' : 'password'}
@@ -164,7 +164,7 @@ const ChangePasswordPopup = ({ onClose }) => {
               )}
             </button>
           </div>
-
+          
           <div className="flex items-center justify-center space-x-4 mt-4">
             <ButtonPrimary
               title={'Guardar'}

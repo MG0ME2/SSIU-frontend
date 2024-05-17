@@ -1,5 +1,4 @@
-import { NavLink, useLocation } from 'react-router-dom';
-
+import {NavLink, useLocation} from 'react-router-dom';
 
 //IMAGENES
 import IconLogin from "../../assets/Img/IconLogin.svg";
@@ -10,18 +9,16 @@ import IconHome from '../../assets/Img/IconHome.svg';
 
 //COMPONENTES
 import LogOut from '../../components/Logout';
-import { useLocalStorage } from '../../components/localStorage';
+import {useLocalStorage} from '../../components/localStorage';
 import NavItem from '../NavItem';
 import ButtonOutline from "../../components/Buttons/outline";
 
-
-
-const LayoutGraduates = ({ children }) => {
+const LayoutGraduates = ({children}) => {
   const [getUser, setUser] = useLocalStorage('user');
   const [getIsLogged, setIsLogged] = useLocalStorage('isLogged');
-
+  
   const location = useLocation();
-
+  
   return (
     <div className="flex h-screen p-1  ">
       <div
@@ -36,9 +33,9 @@ const LayoutGraduates = ({ children }) => {
               className="w-11 h-full"
             />
           </ul>
-          <p className="pl-2" > Graduate name</p>
+          <p className="pl-2"> Graduate name</p>
         </div>
-
+        
         <div className="flex justify-between flex-col h-full ">
           <div className="my-4">
             <ul className="flex flex-col gap-2">
@@ -52,7 +49,7 @@ const LayoutGraduates = ({ children }) => {
                   Inicio
                 </NavItem>
               </li>
-
+              
               <li>
                 <NavItem to="/graduate/perfil" currentPath={location.pathname}>
                   <img
@@ -63,7 +60,7 @@ const LayoutGraduates = ({ children }) => {
                   Perfil
                 </NavItem>
               </li>
-
+              
               <li>
                 <NavItem to="/1" currentPath={location.pathname}>
                   <img
@@ -74,7 +71,7 @@ const LayoutGraduates = ({ children }) => {
                   Responder Instrumento MDI
                 </NavItem>
               </li>
-
+              
               <li>
                 <NavItem to="/1" currentPath={location.pathname}>
                   <img
@@ -87,7 +84,7 @@ const LayoutGraduates = ({ children }) => {
               </li>
             </ul>
           </div>
-
+          
           <div className="flex items-center justify-center ">
             {!getIsLogged() ? (
               <ButtonOutline
@@ -101,13 +98,13 @@ const LayoutGraduates = ({ children }) => {
                 <h2 className="text-xs font-bold mb-4">
                   Bienvenido, {getUser().name}!
                 </h2>
-                <LogOut />
+                <LogOut/>
               </div>
             )}
           </div>
         </div>
       </div>
-
+      
       {children}
     </div>
   );

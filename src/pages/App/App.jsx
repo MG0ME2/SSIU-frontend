@@ -1,5 +1,5 @@
 // Nucleos
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 // Pages Home
 import {Home, PageUno, SignUpForm, Login} from '../Home/index';
@@ -38,77 +38,76 @@ const AppRoutes = () => {
   return (
     <Routes>
       {/*Home*/}
-      <Route path= '/' element={<Home />}/>
-      <Route path= '/1' element={<PageUno />}/>
-      <Route path= '/login' element={<Login />}/>
-      <Route path= '/signup' element={<SignUpForm />}/>
-
+      <Route path='/' element={<Home/>}/>
+      <Route path='/1' element={<PageUno/>}/>
+      <Route path='/login' element={<Login/>}/>
+      <Route path='/signup' element={<SignUpForm/>}/>
+      
       {/*SuperAdmin*/}
       <Route element={
         <ProtectedRoute
-        role='superadmin' redirectTo='/'
+          role='superadmin' redirectTo='/'
         />
       }>
-        <Route path= '/superadmin' element={<SuperAdminHome />}/>
+        <Route path='/superadmin' element={<SuperAdminHome/>}/>
       </Route>
-
+      
       {/*Admin*/}
       <Route element={
         <ProtectedRoute
-        role='admin' redirectTo='/'
+          role='admin' redirectTo='/'
         />
       }>
-        <Route path= '/admin' element={<AdminHome />}/>
+        <Route path='/admin' element={<AdminHome/>}/>
       </Route>
-
+      
       {/*QualityInstitutional*/}
       <Route element={
         <ProtectedRoute
-        role='qualityinstitutional' redirectTo='/'
+          role='qualityinstitutional' redirectTo='/'
         />
       }>
-        <Route path= '/qualityinstitutional' element={<QualityInstitutionalHome />}/>
+        <Route path='/qualityinstitutional' element={<QualityInstitutionalHome/>}/>
       </Route>
-
+      
       {/*QualityLeader*/}
       <Route element={
         <ProtectedRoute
-        role='qualityleader' redirectTo='/'
+          role='qualityleader' redirectTo='/'
         />
       }>
-        <Route path= '/qualityleader' element={<QualityLeaderHome />}/>
+        <Route path='/qualityleader' element={<QualityLeaderHome/>}/>
       </Route>
-
+      
       {/*Teacher*/}
       <Route element={
-        <ProtectedRoute        
-        role='teacher' redirectTo='/'
+        <ProtectedRoute
+          role='teacher' redirectTo='/'
         />
       }>
-        <Route path= '/teacher' element={<TeacherHome />} />
-        <Route path= '/teacher/page1' element={<Page1 />} />
-        <Route path= '/teacher/page2' element={<Page2 />} />
+        <Route path='/teacher' element={<TeacherHome/>}/>
+        <Route path='/teacher/page1' element={<Page1/>}/>
+        <Route path='/teacher/page2' element={<Page2/>}/>
       </Route>
-
+      
       {/*Graduates */}
       <Route element={
         <ProtectedRoute
-        role='graduate' redirectTo='/'
+          role='graduate' redirectTo='/'
         />
       }>
-      <Route path= '/graduate' element={<GraduatesHome />} />
-      <Route path= '/graduate/perfil' element={<GraduatesPerfil />}/>
+        <Route path='/graduate' element={<GraduatesHome/>}/>
+        <Route path='/graduate/perfil' element={<GraduatesPerfil/>}/>
       </Route>
-
-    
-
+      
+      
       {/*Employers*/}
       <Route element={
         <ProtectedRoute
-        role='employer' redirectTo='/'
+          role='employer' redirectTo='/'
         />
-        }>
-        <Route path= '/employer' element={<EmployersHome />}/>
+      }>
+        <Route path='/employer' element={<EmployersHome/>}/>
       </Route>
     </Routes>
   )
@@ -116,9 +115,9 @@ const AppRoutes = () => {
 
 const App = () => {
   return (
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
+    <BrowserRouter>
+      <AppRoutes/>
+    </BrowserRouter>
   )
 }
 

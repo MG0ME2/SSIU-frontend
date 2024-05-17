@@ -1,15 +1,15 @@
-import { createContext, useState, useEffect } from "react";
+import {createContext, useState, useEffect} from "react";
 
 export const AppContext = createContext();
 
-export const AppContextProvider = ({ children }) => {
+export const AppContextProvider = ({children}) => {
   // User token
   const [userToken, setUserToken] = useState(null)
   // User Data
   const [userData, setUserData] = useState({})
   // User Login
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  
   return (
     <AppContext.Provider value={{
       userToken,
@@ -19,7 +19,7 @@ export const AppContextProvider = ({ children }) => {
       isLoggedIn,
       setIsLoggedIn
     }}>
-        { children }
+      {children}
     </AppContext.Provider>
   )
 };

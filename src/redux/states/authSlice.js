@@ -1,7 +1,7 @@
 /***
  * Maneja el estado de autenticación del usuario
  */
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
   isAuthenticated: false,
@@ -9,7 +9,7 @@ const initialState = {
 };
 
 const authSlice = createSlice({
- //se utilizará para identificar este slice en el store de Redux
+  //se utilizará para identificar este slice en el store de Redux
   name: 'auth',
   initialState,
   reducers: {
@@ -18,12 +18,12 @@ const authSlice = createSlice({
       state.user = action.payload;
     },
     //manejar el cierre de seción
- //   logout(state) {
- //      state.isAuthenticated = false;
- //      state.user = null;
-  //   },
+    //   logout(state) {
+    //      state.isAuthenticated = false;
+    //      state.user = null;
+    //   },
   },
 });
 
-export const { login } = authSlice.actions;
+export const {login} = authSlice.actions;
 export default authSlice.reducer;

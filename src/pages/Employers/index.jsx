@@ -2,6 +2,7 @@ import React from 'react'
 
 import LogOut from "../../components/Logout";
 import LayoutEmployer from '../../components/LayoutEmployers'
+
 const EmployersHome = () => {
   return (
     <LayoutEmployer>

@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from 'react-router-dom';
+import {NavLink, useLocation} from 'react-router-dom';
 
 //IMAGENES
 import IconMenu from '../../assets/Img/IconMenu.svg';
@@ -8,15 +8,15 @@ import IconLoginMenu from '../../assets/Img/IconLoginMenu.svg';
 
 //COMPONENTES
 import LogOut from '../../components/Logout';
-import { useLocalStorage } from '../../components/localStorage';
+import {useLocalStorage} from '../../components/localStorage';
 import NavItem from '../NavItem';
 
-const LayoutEmployer = ({ children }) => {
+const LayoutEmployer = ({children}) => {
   const [getUser, setUser] = useLocalStorage('user');
   const [getIsLogged, setIsLogged] = useLocalStorage('isLogged');
-
+  
   const location = useLocation();
-
+  
   return (
     <div className="flex h-screen p-1 ">
       <div
@@ -30,7 +30,7 @@ const LayoutEmployer = ({ children }) => {
             className="w-44 object-cover"
           />
         </div>
-
+        
         <div className="flex justify-between flex-col h-full ">
           <div className="my-4">
             <ul className="flex flex-col gap-2">
@@ -44,7 +44,7 @@ const LayoutEmployer = ({ children }) => {
                   Inicio
                 </NavItem>
               </li>
-
+              
               <li>
                 <NavItem to="/1" currentPath={location.pathname}>
                   <img
@@ -55,7 +55,7 @@ const LayoutEmployer = ({ children }) => {
                   Perfil
                 </NavItem>
               </li>
-
+              
               <li>
                 <NavItem to="/1" currentPath={location.pathname}>
                   <img
@@ -66,7 +66,7 @@ const LayoutEmployer = ({ children }) => {
                   Responder Instrumento MDI
                 </NavItem>
               </li>
-
+              
               <li>
                 <NavItem to="/1" currentPath={location.pathname}>
                   <img
@@ -79,7 +79,7 @@ const LayoutEmployer = ({ children }) => {
               </li>
             </ul>
           </div>
-
+          
           <div>
             {!getIsLogged() ? (
               <button
@@ -104,13 +104,13 @@ const LayoutEmployer = ({ children }) => {
                 <h2 className="text-xs font-bold mb-4">
                   Bienvenido, {getUser().name}!
                 </h2>
-                <LogOut />
+                <LogOut/>
               </div>
             )}
           </div>
         </div>
       </div>
-
+      
       {children}
     </div>
   );

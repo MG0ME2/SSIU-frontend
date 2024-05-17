@@ -1,4 +1,4 @@
-import { NavLink, useLocation} from 'react-router-dom';
+import {NavLink, useLocation} from 'react-router-dom';
 
 //IMAGENES
 import IconMenu from '../../assets/Img/IconMenu.svg';
@@ -8,16 +8,15 @@ import IconLoginMenu from '../../assets/Img/IconLoginMenu.svg';
 
 //COMPONENTES
 import LogOut from '../../components/Logout';
-import { useLocalStorage } from '../../components/localStorage';
+import {useLocalStorage} from '../../components/localStorage';
 import NavItem from '../NavItem';
 
-
-const LayoutSuperAdmin = ({ children }) => {
+const LayoutSuperAdmin = ({children}) => {
   const [getUser, setUser] = useLocalStorage('user');
   const [getIsLogged, setIsLogged] = useLocalStorage('isLogged');
-
+  
   const location = useLocation();
-
+  
   return (
     <div className="flex h-screen p-1 ">
       <div
@@ -31,7 +30,7 @@ const LayoutSuperAdmin = ({ children }) => {
             className="w-44 object-cover"
           />
         </div>
-
+        
         <div className="flex justify-between flex-col h-full ">
           <div className="my-4">
             <ul className="flex flex-col gap-2">
@@ -45,7 +44,7 @@ const LayoutSuperAdmin = ({ children }) => {
                   Gestion de variables e indicadores
                 </NavItem>
               </li>
-
+              
               <li>
                 <NavItem to="/1" currentPath={location.pathname}>
                   <img
@@ -56,7 +55,7 @@ const LayoutSuperAdmin = ({ children }) => {
                   Gestion de programas academicos
                 </NavItem>
               </li>
-
+              
               <li>
                 <NavItem to="/1" currentPath={location.pathname}>
                   <img
@@ -69,7 +68,7 @@ const LayoutSuperAdmin = ({ children }) => {
               </li>
             </ul>
           </div>
-
+          
           <div>
             {!getIsLogged() ? (
               <button
@@ -94,13 +93,13 @@ const LayoutSuperAdmin = ({ children }) => {
                 <h2 className="text-xs font-bold mb-4">
                   Bienvenido, {getUser().name}!
                 </h2>
-                <LogOut />
+                <LogOut/>
               </div>
             )}
           </div>
         </div>
       </div>
-
+      
       {children}
     </div>
   );

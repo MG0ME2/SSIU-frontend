@@ -3,7 +3,6 @@ import React from 'react'
 import LogOut from "../../components/Logout";
 import LayoutGraduates from '../../components/LayoutGraduates'
 
-
 const GraduatesHome = () => {
   return (
     <LayoutGraduates>
