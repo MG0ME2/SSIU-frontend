@@ -3,34 +3,20 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom'
 
 // Pages Home
 import {Home, PageUno, SignUpForm, Login} from '../Home/index';
-// import Home from '../Home'
-// import PageUno from '../Home/Page1'
-// import Login from '../Home/Login'
-// import SignUpForm from '../Home/SignUp'
-
 /// Teachers
-import TeacherHome from '../Teachers';
-import TeacherPerfil from '../Teachers/profile.jsx';
-import Page1 from '../Teachers/page1';
-import Page2 from '../Teachers/page2';
+import {TeacherPerfil, TeacherHome, Page1, Page2} from '../Teachers/index';
 /// Employers
-import EmployersHome from '../Employers';
-import EmployersPerfil from '../Employers/profile.jsx';
+import {EmployersPerfil, EmployersHome} from '../Employers/index';
 /// Graduates
 import {GraduatesPerfil, GraduatesHome} from '../Graduates/index';
-
 /// QualityInstitutional
-import QualityInstitutionalHome from '../QualityInstitutional';
-import QuialityInstitucionaPerfil from '../QualityInstitutional/profile.jsx';
+import {QuialityInstitucionaPerfil, QualityInstitutionalHome} from '../QualityInstitutional/index';
 /// QualityLeader
-import QualityLeaderHome from '../QualityLeader';
-import QualityLeaderPerfil from '../QualityLeader/profile.jsx';
+import {QualityLeaderPerfil, QualityLeaderHome} from '../QualityLeader/index';
 /// SuperAdmin
-import SuperAdminHome from '../SuperAdmin';
-import SuperAdminPerfil from '../SuperAdmin/profile.jsx';
+import {SuperAdminPerfil, SuperAdminHome} from '../SuperAdmin/index';
 /// Admin
-import AdminHome from '../Admin';
-import AdminPerfil from '../Admin/profile.jsx';
+import {AdminPerfil, AdminHome} from '../Admin/index';
 
 // Styles
 import './App.css'
