@@ -24,36 +24,13 @@ export const authSlice = createSlice({
       state.user = action.payload.user;
       state.isLoggedIn = true;
     },
-   setUser: (state, action) => {
-      state.user = action.payload.user;
-    },
-    token: (state, action) => {
-      state.token = action.payload.token;
-    },
-    setDniType: (state, action) => { // Reducer para establecer el tipo de documento
-      state.dniType = action.payload;
-    },
     logout: (state) => {
       state.user = null;
       state.token = null;
       state.isLoggedIn = false;
-      state.dniType = null; // Limpiar el tipo de documento al cerrar sesión
     },
   },
 });
 
-export const { setUser, token, login, setDniType, logout } = authSlice.actions;
-
-// Acción asincrónica para cargar tipos de documento
-export const loadDniTypes = () => async (dispatch) => {
-  try {
-    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/dni-types`);
-    if (response.data.length > 1) {
-      dispatch(setDniType(response.data[0]));
-    }
-  } catch (error) {
-    console.error('Error al obtener los datos:', error);
-  }
-};
-
+export const {  login, logout } = authSlice.actions;
 export const authReducer = authSlice.reducer;

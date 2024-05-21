@@ -7,9 +7,7 @@
 
 import { Navigate, Outlet } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { setUser } from '../../redux/states/authSlice';
-import { token } from '../../redux/states/authSlice';
+import { setUsers, token } from '../../redux/states/userSlice.js';
 import { useLocalStorage } from '../../components/localStorage';
 //import { login } from '../../redux/states/authSlice';
 

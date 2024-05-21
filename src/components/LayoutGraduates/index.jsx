@@ -1,21 +1,25 @@
 import {NavLink, useLocation} from 'react-router-dom';
-
+import { useSelector, useDispatch } from 'react-redux';
 //IMAGENES
 import IconLogin from "../../assets/Img/IconLogin.svg";
 import UserProfile from '../../assets/Img/UserProfile.svg';
 import IconBook from '../../assets/Img/IconBook.svg';
 import IconHome from '../../assets/Img/IconHome.svg';
-//import IconLoginMenu from '../../assets/Img/IconLoginMenu.svg';
 
 //COMPONENTES
 import LogOut from '../../components/Logout';
 import {useLocalStorage} from '../../components/localStorage';
 import NavItem from '../NavItem';
 import ButtonOutline from "../../components/Buttons/outline";
+import { logout } from '../../redux/states/authSlice';
 
 const LayoutGraduates = ({children}) => {
-  const [getUser, setUser] = useLocalStorage('user');
-  const [getIsLogged, setIsLogged] = useLocalStorage('isLogged');
+  const dispatch = useDispatch();
+  const { user, isLogged } = useSelector((state) => state.auth);
+
+  const handleLogout = () => {
+    dispatch(logout()); // Dispatch de la acción de logout
+  };
   
   const location = useLocation();
   
@@ -86,7 +90,7 @@ const LayoutGraduates = ({children}) => {
           </div>
           
           <div className="flex items-center justify-center ">
-            {!getIsLogged() ? (
+            {!isLogged ? (
               <ButtonOutline
                 title={'Cerrar sesión'}
                 icono={IconLogin}
@@ -96,9 +100,9 @@ const LayoutGraduates = ({children}) => {
             ) : (
               <div>
                 <h2 className="text-xs font-bold mb-4">
-                  Bienvenido, {getUser().name}!
+                  Bienvenido, {user.name}!
                 </h2>
-                <LogOut/>
+                <LogOut  onClick={handleLogout}/>
               </div>
             )}
           </div>

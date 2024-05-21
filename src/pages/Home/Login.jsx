@@ -72,7 +72,6 @@ function Login() {
     //  dispatch(actualizarValor(data.access_token));
 
       navigate(`/${data.user.role[0].description}`);
-      console.log({user: data.user, token: data.access_token})
     }
   };
   

@@ -4,18 +4,21 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 //import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 
 import { useLocalStorage } from '../localStorage/index.jsx';
 import ButtonPrimary from '../Buttons/primary.jsx';
 import IconSaves from '../../assets/Img/IconSaves.svg';
-import { setUser, setDniType } from '../../redux/states/authSlice.js';
-import { Navigate } from 'react-router-dom';
+import { setDniType, setUsers } from '../../redux/states/userSlice.js';
+
+
 
 function DatosPersonales() {
   //useState
   const { register } = useForm();
   const dispatch = useDispatch();
   const { user, dniType } = useSelector((state) => state.auth);
+  const [userData, setUserData] = useState({}); // Estado local para almacenar los datos del usuario
   const [options, setOptions] = useState([]);
   const [optionGenders, setOptionGenders] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -69,6 +72,20 @@ function DatosPersonales() {
       theme: 'light',
     });
   };
+
+  useEffect(() => {
+// Función para obtener los datos del usuario
+const fetchUserData = async () => {
+  try {
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/users/${user.id}`);
+    setUserData(response.data);
+  } catch (error) {
+    console.error('Error al obtener los datos del usuario:', error);
+    notifyE();
+  }
+};
+    fetchUserData();
+  }, [user.id]);
 
   useEffect(() => {
     const getDniTypes = async () => {
@@ -147,172 +164,17 @@ function DatosPersonales() {
       `${import.meta.env.VITE_BACKEND_URL}/users/${user.id}`,
       form
     );
+
     if (data.status === 401) {
       notifyE();
     } else {
-      setUser(data);
+      dispatch(setUsers(data));
+      setUserData(data);
       notifyS();
       
     //  )
     }
   };
-
-  // //Alertas
-  // const notifyVi = () => {
-  //   toast.warn(getValidateInput(), {
-  //     position: "top-right",
-  //     autoClose: 5000,
-  //     hideProgressBar: false,
-  //     closeOnClick: true,
-  //     pauseOnHover: true,
-  //     draggable: true,
-  //     progress: undefined,
-  //     theme: "light",
-  //   });
-  // }
-
-  // const notifyW = () => {
-  //   toast.warn(getWarnignMessage(), {
-  //     position: "top-right",
-  //     autoClose: 5000,
-  //     hideProgressBar: false,
-  //     closeOnClick: true,
-  //     pauseOnHover: true,
-  //     draggable: true,
-  //     progress: undefined,
-  //     theme: "light",
-  //   });
-  // }
-
-  // const notifyE = () => {
-  //   toast.error(getErrorMessage(), {
-  //     position: "top-right",
-  //     autoClose: 5000,
-  //     hideProgressBar: false,
-  //     closeOnClick: true,
-  //     pauseOnHover: true,
-  //     draggable: true,
-  //     progress: undefined,
-  //     theme: "light",
-  //   });
-  // }
-
-  // const notifyS = () => {
-  //   toast.success(getSuccessMessage(), {
-  //     position: "top-right",
-  //     autoClose: 5000,
-  //     hideProgressBar: false,
-  //     closeOnClick: true,
-  //     pauseOnHover: true,
-  //     draggable: true,
-  //     progress: undefined,
-  //     theme: "light",
-  //   });
-  // }
-
-  // const jsonData = {
-  //   data: []
-  // };
-
-  // //carga de los dniTypes en el Select
-  // useEffect(() => {
-  //   const getDniTypes = async () => {
-  //     try {
-  //       if (!getDniTypesUL() || options) {
-  //         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/dni-types`);
-  //         if (response.data.length > 1) {
-  //           setDniTypesUL(response.data);
-  //           setOptions(getDniTypesUL());
-  //         } else {
-  //           setOptions(jsonData.data);
-  //         }
-  //       } else {
-  //         setOptions(jsonData.data);
-  //       }
-  //     } catch (error) {
-  //       setErrorMessage('Error al obtener los datos:', error)
-  //       notifyE()
-  //       console.error('Error al obtener los datos:', error);
-  //       console.log('Error al obtener los datos:', error);
-  //     }
-  //   };
-  //   getDniTypes();
-
-  //   const getGenders = async () => {
-  //     try {
-  //       if (!getGendersUl() || optionGenders) {
-  //         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/genders`);
-  //         if (response.data.length > 1) {
-  //           setGendersUl(response.data);
-  //           setOptionGenders(getGendersUl());
-  //           // setSelectedOption(options[getUser().dni_type.id].description);
-  //         } else {
-  //           setOptionGenders(jsonData.data);
-  //         }
-  //       } else {
-  //         setOptionGenders(jsonData.data);
-  //       }
-  //     } catch (error) {
-  //       setErrorMessage('Error al obtener los datos:', error)
-  //       notifyE()
-  //       console.error('Error al obtener los datos:', error);
-  //       console.log('Error al obtener los datos:', error);
-  //     }
-  //   };
-  //   getGenders();
-  // }, []);
-
-  // // Solo admite letras y espacio para name and last_names
-  // const validateInput = (input, fieldName) => {
-  //   if (!/^[A-Za-z\s]+$/.test(input)) {
-  //      setValidateInput(`No se admiten números o símbolos en ${fieldName}`);
-  //      notifyVi();
-  //      return false;
-  //   }
-  //   return true;
-  // };
-
-  // const handleUpdate = async (event) => {
-  //   event.preventDefault();
-
-  //   const formData = new FormData(event.currentTarget);
-
-  //   const inputDniType = document.getElementById('dniType');
-  //   const inputDni = document.getElementById('dni');
-  //   const inputEmail = document.getElementById('email');
-  //   const inputName = formData.get("name");
-  //   const inputLastName = formData.get("last_name");
-
-  //     // Validar que name y last_name contengan solo letras y espacios
-  //     if (!validateInput(inputName, 'el nombre') || !validateInput(inputLastName, 'el apellido')) {
-  //       return;
-  //     }
-
-  //   const form = {
-  //     name: inputName,
-  //     last_name: inputLastName,
-  //     dni: inputDni.disabled ? getUser().dni : parseInt(formData.get("dni")),
-  //     dniTypeId: inputDniType.disabled ? getUser().dni_type.id : parseInt(formData.get("dniType")),
-  //     email: inputEmail.disabled ? getUser().email : formData.get("email"),
-  //     alt_email: formData.get("alt_email").length > 1 ? formData.get("alt_email") : null,
-  //     phone_number: parseInt(formData.get("phone_number")),
-  //     genderId: parseInt(formData.get("gender")),
-  //   };
-  //   console.log(form)
-
-  //   const {data} = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/users/${getUser().id}`, form);
-
-  //   if (data.status === parseInt("401")) {
-  //     setErrorMessage('Error al actualizar los datos')
-  //     notifyE()
-  //     console.log(data)
-  //   } else {
-  //     console.log(data);
-  //     setUser(data);
-  //     setSuccessMessage("Se actualizaron los datos exitosamente")
-  //     notifyS()
-  //   }
-  // };
 
   return (
     <div>

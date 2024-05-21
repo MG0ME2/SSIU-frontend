@@ -15,6 +15,7 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { authReducer } from './states/authSlice';
+import { userSlice } from './states/userSlice';
 
 //import { reducer } from './states/reducer';
 //const middleware = [...getDefaultMiddleware(), thunk];
@@ -23,7 +24,7 @@ const authPersistConfig = {
   storage,
 };
 
-const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
+const persistedAuthReducer = persistReducer(authPersistConfig, authReducer, userSlice);
 
 export const store = configureStore({
   reducer: {

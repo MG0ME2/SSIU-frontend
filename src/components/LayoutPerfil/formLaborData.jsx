@@ -5,7 +5,7 @@ import { ToastContainer, toast } from 'react-toastify';
 //import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setUser, setDniType } from '../../redux/states/authSlice.js';
+import { setDniType, setUsers } from '../../redux/states/userSlice.js';
 
 function DatosLaborales() {
   //useState
