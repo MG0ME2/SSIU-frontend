@@ -2,13 +2,14 @@ import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { useLocalStorage } from '../localStorage/index.jsx';
 import ButtonPrimary from '../Buttons/primary.jsx';
 import IconSaves from '../../assets/Img/IconSaves.svg';
 import { setUser, setDniType } from '../../redux/states/authSlice.js';
+import { Navigate } from 'react-router-dom';
 
 function DatosPersonales() {
   //useState
@@ -22,29 +23,16 @@ function DatosPersonales() {
   ///Formulario
 
   //local storage
-  const [getDniTypesUL, setDniTypesUL] = useLocalStorage('dniTypes');
-  const [getGendersUl, setGendersUl] = useLocalStorage('status');
+  // const [getDniTypesUL, setDniTypesUL] = useLocalStorage('dniTypes');
+  // const [getGendersUl, setGendersUl] = useLocalStorage('status');
   //  const [getUser, setUser] = useLocalStorage('user');
-  const [getWarnignMessage, setWarnignMessage] = useLocalStorage('warnignUpdate');
-  const [getSuccessMessage, setSuccessMessage] = useLocalStorage('successUpdate');
-  const [getValidateInput, setValidateInput] = useLocalStorage('warnignUpdate');
+  // const [getWarnignMessage, setWarnignMessage] = useLocalStorage('warnignUpdate');
+  // const [getSuccessMessage, setSuccessMessage] = useLocalStorage('successUpdate');
+  //const [getValidateInput, setValidateInput] = useLocalStorage('warnignUpdate');
 
   //Alertas
   const notifyVi = () => {
-    toast.warn(getValidateInput(), {
-      position: 'top-right',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'light',
-    });
-  };
-
-  const notifyW = () => {
-    toast.warn(getWarnignMessage(), {
+    toast.warn('No se admiten números o símbolos en', {
       position: 'top-right',
       autoClose: 5000,
       hideProgressBar: false,
@@ -57,7 +45,7 @@ function DatosPersonales() {
   };
 
   const notifyE = () => {
-    toast.error(getErrorMessage(), {
+    toast.error('Error al actualizar los datos', {
       position: 'top-right',
       autoClose: 5000,
       hideProgressBar: false,
@@ -70,7 +58,7 @@ function DatosPersonales() {
   };
 
   const notifyS = () => {
-    toast.success(getSuccessMessage(), {
+    toast.success('Se actualizaron los datos exitosamente', {
       position: 'top-right',
       autoClose: 5000,
       hideProgressBar: false,
@@ -160,12 +148,12 @@ function DatosPersonales() {
       form
     );
     if (data.status === 401) {
-      setErrorMessage('Error al actualizar los datos');
       notifyE();
     } else {
-      dispatch(setUser(data));
-      setSuccessMessage('Se actualizaron los datos exitosamente');
+      setUser(data);
       notifyS();
+      
+    //  )
     }
   };
 
