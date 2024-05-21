@@ -1,7 +1,7 @@
 /**
  * manejar el estado de los form
  */
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   email: '',
@@ -24,6 +24,6 @@ const formSlice = createSlice({
   },
 });
 
-export const {setEmail, setPassword, resetForm} = formSlice.actions;
+export const { setEmail, setPassword, resetForm } = formSlice.actions;
 
 export default formSlice.reducer;

@@ -1,15 +1,16 @@
 import {useForm} from "react-hook-form";
+import axios from "axios";
+import {useState, useEffect} from "react";
+import {ToastContainer, toast} from 'react-toastify';
+import {Link, json, useNavigate} from "react-router-dom";
 
 import LayoutH from "../../components/LayoutHome";
 import IconRegister from "../../assets/Img/IconRegister.svg";
 import IconHomeLogin from "../../assets/Img/IconHomeLogin.svg";
-import axios from "axios";
-import {useState, useEffect} from "react";
 import ButtonPrimary from "../../components/Buttons/primary.jsx";
 import {useLocalStorage} from "../../components/localStorage/index.jsx";
 import {login} from "../../redux/states/authSlice.js";
-import {ToastContainer, toast} from 'react-toastify';
-import {Link, json, useNavigate} from "react-router-dom";
+
 
 const SignUpForm = () => {
   const [options, setOptions] = useState([]);

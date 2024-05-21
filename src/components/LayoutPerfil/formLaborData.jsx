@@ -30,7 +30,7 @@ function DatosLaborales() {
         />
         <input
           type="text"
-          placeholder="Cargo de la empresa"
+          placeholder="Cargo en la empresa"
           className="mt-1 p-2 border rounded"
         />
         <div>

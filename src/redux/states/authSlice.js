@@ -1,29 +1,59 @@
-/***
- * Maneja el estado de autenticación del usuario
+/**
+ * Este slice maneja el estado de autenticación de tu aplicación,
+ *  incluyendo el usuario, el token y el estado de inicio de sesión.
+ * 
+ * Exportado el reductor authReducer del slice authSlice, 
+ * que luego se utiliza en la configuración del store de Redux.
  */
-import {createSlice} from '@reduxjs/toolkit';
 
-const initialState = {
-  isAuthenticated: false,
-  user: null,
-};
+import { createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 
-const authSlice = createSlice({
-  //se utilizará para identificar este slice en el store de Redux
+export const authSlice = createSlice({
   name: 'auth',
-  initialState,
+  initialState: {
+    user: {},
+    token: null,
+    isLoggedIn: false,
+    dniType: {},
+  },
   reducers: {
-    login(state, action) {
-      state.isAuthenticated = true;
-      state.user = action.payload;
+    login: (state, action) => {
+      //recibe la acción y se almacena el estado
+      state.token = action.payload.token;
+      state.user = action.payload.user;
+      state.isLoggedIn = true;
     },
-    //manejar el cierre de seción
-    //   logout(state) {
-    //      state.isAuthenticated = false;
-    //      state.user = null;
-    //   },
+   setUser: (state, action) => {
+      state.user = action.payload.user;
+    },
+    token: (state, action) => {
+      state.token = action.payload.token;
+    },
+    setDniType: (state, action) => { // Reducer para establecer el tipo de documento
+      state.dniType = action.payload;
+    },
+    logout: (state) => {
+      state.user = null;
+      state.token = null;
+      state.isLoggedIn = false;
+      state.dniType = null; // Limpiar el tipo de documento al cerrar sesión
+    },
   },
 });
 
-export const {login} = authSlice.actions;
-export default authSlice.reducer;
+export const { setUser, token, login, setDniType, logout } = authSlice.actions;
+
+// Acción asincrónica para cargar tipos de documento
+export const loadDniTypes = () => async (dispatch) => {
+  try {
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/dni-types`);
+    if (response.data.length > 1) {
+      dispatch(setDniType(response.data[0]));
+    }
+  } catch (error) {
+    console.error('Error al obtener los datos:', error);
+  }
+};
+
+export const authReducer = authSlice.reducer;

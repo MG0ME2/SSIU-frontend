@@ -40,7 +40,7 @@ const LayoutGraduates = ({children}) => {
           <div className="my-4">
             <ul className="flex flex-col gap-2">
               <li>
-                <NavItem to="/" currentPath={location.pathname}>
+                <NavItem to="/graduate" currentPath={location.pathname}>
                   <img
                     src={IconHome}
                     alt="Icono book 1"
@@ -62,7 +62,7 @@ const LayoutGraduates = ({children}) => {
               </li>
               
               <li>
-                <NavItem to="/1" currentPath={location.pathname}>
+                <NavItem to="/graduate" currentPath={location.pathname}>
                   <img
                     src={IconBook}
                     alt="Icono book 2"
@@ -73,7 +73,7 @@ const LayoutGraduates = ({children}) => {
               </li>
               
               <li>
-                <NavItem to="/1" currentPath={location.pathname}>
+                <NavItem to="/graduate" currentPath={location.pathname}>
                   <img
                     src={IconBook}
                     alt="Icono book 2"
