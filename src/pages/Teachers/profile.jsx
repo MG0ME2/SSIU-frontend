@@ -1,11 +1,11 @@
 import LayoutT from '../../components/LayoutTeacher/index.jsx';
-import LayoutPerfil from '../../components/LayoutPerfil/index.jsx';
+import LayoutPerfilTeacher from '../../components/LayoutPerfil/profileTeacher.jsx';
 
 function TeacherPerfil() {
   
   return (
     <LayoutT>
-      <LayoutPerfil></LayoutPerfil>
+      <LayoutPerfilTeacher></LayoutPerfilTeacher>
     </LayoutT>
   );
 }

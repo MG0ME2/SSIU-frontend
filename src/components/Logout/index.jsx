@@ -3,16 +3,12 @@ import { useDispatch } from 'react-redux';
 
 import { logout } from '../../redux/states/authSlice';
 
-//import { useLocalStorage } from '../../components/localStorage'
-
 const LogOut = () => {
-  //const [getIsLogged, setIsLogged] = useLocalStorage('isLogged');
   const dispatch = useDispatch();
   let navigate = useNavigate();
 
   const logoutEvent = () => {
     dispatch(logout());
-    //setIsLogged('false');
     navigate('/');
   };
   

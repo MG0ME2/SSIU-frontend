@@ -94,7 +94,6 @@ const fetchUserData = async () => {
           `${import.meta.env.VITE_BACKEND_URL}/dni-types`
         );
         if (response.data.length > 1) {
-          dispatch(setDniType(response.data[0]));
           setOptions(response.data);
         } else {
           setOptions([]);

@@ -16,7 +16,7 @@ import DatosEducation from './formEducation.jsx';
 import ChangePasswordPopup from './popupsperfil.jsx';
 
 
-const LayoutPerfil = () => {
+const LayoutPerfilTeacher = () => {
   const [activeTab, setActiveTab] = useState('datos');
   
   const tab = (tabs) => {
@@ -61,18 +61,7 @@ const LayoutPerfil = () => {
           >
             Datos Personales
           </button>
-          
-          <button
-            className={`px-4 py-2 rounded-t-lg ${
-              activeTab === 'laborales'
-                ? 'px-4 py-2 border-b-2 border-[#28537E] text-blue-500 hover:text-[#28537E] focus:outline-none'
-                : 'bg-[#777777] bg-opacity-10'
-            }`}
-            onClick={() => tab('laborales')}
-            aria-selected={activeTab === 'laborales'}
-          >
-            Datos Laborales
-          </button>
+
 
           <button
             className={`px-4 py-2 rounded-t-lg ${
@@ -102,7 +91,6 @@ const LayoutPerfil = () => {
         
         <div className="w-[700px] ">
         {activeTab === 'datos' && <DatosPersonales />}
-          {activeTab === 'laborales' && <DatosLaborales />}
           {activeTab === 'residencia' && <DatosResidencia />}
           {activeTab === 'estudios' && <DatosEducation />} 
         </div>
@@ -111,4 +99,4 @@ const LayoutPerfil = () => {
   );
 }
 
-export default LayoutPerfil;
+export default LayoutPerfilTeacher;

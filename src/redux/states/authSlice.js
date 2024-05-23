@@ -6,8 +6,29 @@
  * que luego se utiliza en la configuración del store de Redux.
  */
 
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk  } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
+
+// Define una acción asincrónica para iniciar sesión
+export const loginAsync = createAsyncThunk(
+  'auth/login',
+  async (credentials, { rejectWithValue }) => {
+    try {
+      const response = await axios.post('/login', credentials);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// Define la configuración de persistencia para el slice de autenticación
+const authPersistConfig = {
+  key: 'auth',
+  storage,
+};
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -30,7 +51,23 @@ export const authSlice = createSlice({
       state.isLoggedIn = false;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loginAsync.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.isLoggedIn = true;
+      })
+      .addCase(loginAsync.rejected, (state) => {
+        state.user = null;
+        state.token = null;
+        state.isLoggedIn = false;
+      });
+  },
 });
 
 export const {  login, logout } = authSlice.actions;
-export const authReducer = authSlice.reducer;
+export const persistedAuthReducer = persistReducer(
+  authPersistConfig,
+  authSlice.reducer
+);

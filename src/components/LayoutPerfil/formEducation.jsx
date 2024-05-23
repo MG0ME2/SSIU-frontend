@@ -10,7 +10,7 @@ import ButtonPrimary from '../Buttons/primary.jsx';
 import IconSaves from '../../assets/Img/IconSaves.svg';
 
 
-function DatosLaborales() {
+function DatosEducation() {
   //useState
   const dispatch = useDispatch();
   const [options, setOptions] = useState([]);
@@ -141,32 +141,20 @@ function DatosLaborales() {
             <div className="flex flex-col justify-center gap-4">
               <input
                 type="text"
-                placeholder="Empresa actual"
+                placeholder="Tipo de estudio"
                 className="mt-1 p-2 border rounded"
               />
               <input
                 type="text"
-                placeholder="Correo de contacto de la empresa"
+                placeholder="Nombre de titulación"
                 className="mt-1 p-2 border rounded"
               />
-              <div>
-              <input
-                type="text"
-                placeholder="Sector laboral de la empresa"
-                className="mt-1 p-2 border rounded"
-              />
-              </div>
             </div>
             <div className="flex flex-col justify-center gap-4">
               <input
                 type="text"
-                placeholder="Contacto de la empresa"
+                placeholder="Nombre de la institución educativa"
                 className="mt-1 p-2 border rounded "
-              />
-              <input
-                type="text"
-                placeholder="Cargo en la empresa"
-                className="mt-1 p-2 border rounded"
               />
               <div>
                 <select
@@ -200,8 +188,8 @@ function DatosLaborales() {
                 </select>
               </div>
             </div>
-          </div>
 
+          </div>
           <ButtonPrimary title={'Guardar'} icono={IconSaves} typeB="submit" />
         </form>
       </div>
@@ -209,4 +197,4 @@ function DatosLaborales() {
   );
 }
 
-export default DatosLaborales;
+export default DatosEducation;

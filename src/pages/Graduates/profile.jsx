@@ -1,6 +1,8 @@
 import LayoutGraduates from '../../components/LayoutGraduates/index';
 import LayoutPerfil from '../../components/LayoutPerfil/index.jsx';
 
+
+
 function GraduatesPerfil() {
   
   return (

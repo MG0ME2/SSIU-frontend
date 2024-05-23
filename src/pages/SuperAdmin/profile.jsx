@@ -1,3 +1,8 @@
+/**
+ * NO TIENE PERFIL?
+ * 
+ */
+
 import LayoutSuperAdmin from '../../components/LayoutSuperAdmin/index.jsx';
 import LayoutPerfil from '../../components/LayoutPerfil/index.jsx';
 

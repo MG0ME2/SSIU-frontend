@@ -10,7 +10,7 @@ import ButtonPrimary from '../Buttons/primary.jsx';
 import IconSaves from '../../assets/Img/IconSaves.svg';
 
 
-function DatosLaborales() {
+function DatosResidencia() {
   //useState
   const dispatch = useDispatch();
   const [options, setOptions] = useState([]);
@@ -141,63 +141,29 @@ function DatosLaborales() {
             <div className="flex flex-col justify-center gap-4">
               <input
                 type="text"
-                placeholder="Empresa actual"
+                placeholder="Pais de residencia"
                 className="mt-1 p-2 border rounded"
               />
               <input
                 type="text"
-                placeholder="Correo de contacto de la empresa"
+                placeholder="Dirección de residencia"
                 className="mt-1 p-2 border rounded"
               />
               <div>
-              <input
-                type="text"
-                placeholder="Sector laboral de la empresa"
-                className="mt-1 p-2 border rounded"
-              />
               </div>
             </div>
             <div className="flex flex-col justify-center gap-4">
               <input
                 type="text"
-                placeholder="Contacto de la empresa"
+                placeholder="Ciudad de residencia"
                 className="mt-1 p-2 border rounded "
               />
               <input
                 type="text"
-                placeholder="Cargo en la empresa"
+                placeholder="Barrio"
                 className="mt-1 p-2 border rounded"
               />
               <div>
-                <select
-                  className="mt-1 p-2 border rounded w-full"
-                  value={
-                    selectedOption
-                      ? selectedOption
-                      : user.geographic_location.id
-                  }
-                  onChange={(e) => setSelectedOption(e.target.value)}
-                  id="geographic_location"
-                  name="geographic_location"
-                >
-                  <option
-                    key={user.geographic_location.id}
-                    value={user.geographic_location.id}
-                  >
-                    {' '}
-                    {user.geographic_location.description}
-                  </option>
-                  {OptionGeographic_Location?.map((option) => {
-                    if (option.id === user.geographic_location.id) {
-                      return null; // Devolver null para excluir este dato del mapeo
-                    }
-                    return (
-                      <option key={option.id} value={option.id}>
-                        {option.description}
-                      </option>
-                    );
-                  })}
-                </select>
               </div>
             </div>
           </div>
@@ -209,4 +175,4 @@ function DatosLaborales() {
   );
 }
 
-export default DatosLaborales;
+export default DatosResidencia;
