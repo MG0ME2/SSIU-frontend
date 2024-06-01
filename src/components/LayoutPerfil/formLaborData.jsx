@@ -9,18 +9,35 @@ import { setDniType, setUsers } from '../../redux/states/userSlice.js';
 import ButtonPrimary from '../Buttons/primary.jsx';
 import IconSaves from '../../assets/Img/IconSaves.svg';
 
-
 function DatosLaborales() {
   //useState
   const dispatch = useDispatch();
   const [options, setOptions] = useState([]);
-  const [OptionGeographic_Location, setOptionGeographic_location] = useState(
-    []
-  );
-  const [selectedOption, setSelectedOption] = useState(null);
+  // nacionalidad y sector  add
+  const [optionGenders, setOptionGenders] = useState([]);
   const { user } = useSelector((state) => state.auth);
 
-  //
+  // Estados locales para los campos del formulario
+  const [empresaActual, setEmpresaActual] = useState('');
+  const [direccionEmpresa, setDireccionEmpresa] = useState('');
+  const [sectorLaboral, setSectorLaboral] = useState('');
+  const [contactoEmpresa, setContactoEmpresa] = useState('');
+  const [cargoEmpresa, setCargoEmpresa] = useState('');
+  const [selectedGender, setSelectedGender] = useState(user.gender.id);
+
+  // alerts
+  const notifyVi = () => {
+    toast.warn('No se admiten números o símbolos en', {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
+  };
 
   const notifyS = () => {
     toast.success('Se actualizaron los datos exitosamente', {
@@ -48,8 +65,10 @@ function DatosLaborales() {
     });
   };
 
+  
+
   useEffect(() => {
-    const getDniTypes = async () => {
+    /* const getDniTypes = async () => {
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/dni-types`
@@ -65,45 +84,48 @@ function DatosLaborales() {
         notifyE();
       }
     };
-    getDniTypes();
+    getDniTypes();*/
 
-    const getGeographic_location = async () => {
+    const getGenders = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/geographic_location`
+          `${import.meta.env.VITE_BACKEND_URL}/genders`
         );
         if (response.data.length > 1) {
-          setOptionGeographic_location(response.data);
+          setOptionGenders(response.data);
         } else {
-          setOptionGeographic_location([]);
+          setOptionGenders([]);
         }
       } catch (error) {
         console.error('Error al obtener los datos:', error);
         notifyE();
       }
     };
-    getGeographic_location();
+    getGenders();
   }, [dispatch]);
+
+  const validateInput = (input) => {
+    if (!/^[A-Za-z\s]+$/.test(input)) {
+      notifyVi();
+      return false;
+    }
+    return true;
+  };
 
   const handleUpdate = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-
-    const inputDniType = document.getElementById('dniType');
-    const inputDni = document.getElementById('dni');
-    const inputEmail = document.getElementById('email');
     const inputName = formData.get('name');
     const inputLastName = formData.get('last_name');
 
     const form = {
-      name: inputName,
-      last_name: inputLastName,
-      dni: inputDni.disabled ? user.dni : parseInt(formData.get('dni')),
-      dniTypeId: inputDniType.disabled? user.dni_type.id : parseInt(formData.get('dniType')),
-      email: inputEmail.disabled ? user.email : formData.get('email'),
-      alt_email: formData.get('alt_email').length > 1 ? formData.get('alt_email') : null,
-      phone_number: parseInt(formData.get('phone_number')),
-      genderId: parseInt(formData.get('gender')),
+      empresaActual,
+      direccionEmpresa,
+      sectorLaboral,
+      contactoEmpresa,
+      cargoEmpresa,
+      genderId: selectedGender,
+    //  geographicLocationId: selectedOption || user.geographic_location.id,
     };
 
     if (
@@ -124,8 +146,8 @@ function DatosLaborales() {
       dispatch(setUsers(data));
       setUserData(data);
       notifyS();
-      
-    //  )
+
+      //  )
     }
   };
 
@@ -139,64 +161,145 @@ function DatosLaborales() {
         >
           <div className="grid grid-cols-2 gap-x-8 ">
             <div className="flex flex-col justify-center gap-4">
-              <input
-                type="text"
-                placeholder="Empresa actual"
-                className="mt-1 p-2 border rounded"
-              />
-              <input
-                type="text"
-                placeholder="Correo de contacto de la empresa"
-                className="mt-1 p-2 border rounded"
-              />
-              <div>
-              <input
-                type="text"
-                placeholder="Sector laboral de la empresa"
-                className="mt-1 p-2 border rounded"
-              />
+              <div className="relative">
+                {empresaActual && (
+                  <label
+                    htmlFor="empresaActual"
+                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                  >
+                   Nombre de empresa actual
+                  </label>
+                )}
+                <input
+                  type="text"
+                  id="empresaActual"
+                  name="empresaActual"
+                  placeholder="Nombre de empresa actual"
+                  className="mt-1 p-2 border rounded"
+                  value={empresaActual}
+                  onChange={(e) => setEmpresaActual(e.target.value)}
+                />
               </div>
-            </div>
-            <div className="flex flex-col justify-center gap-4">
-              <input
-                type="text"
-                placeholder="Contacto de la empresa"
-                className="mt-1 p-2 border rounded "
-              />
-              <input
-                type="text"
-                placeholder="Cargo en la empresa"
-                className="mt-1 p-2 border rounded"
-              />
-              <div>
+
+              <div className="relative">
+                {direccionEmpresa && (
+                  <label
+                    htmlFor="direccionEmpresa"
+                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                  >
+                    Dirección de la empresa
+                  </label>
+                )}
+                <input
+                  type="text"
+                  id="direccionEmpresa"
+                  name="direccionEmpresa"
+                  placeholder="Dirección de la empresa"
+                  className="mt-1 p-2 border rounded"
+                  value={direccionEmpresa}
+                  onChange={(e) => setDireccionEmpresa(e.target.value)}
+                />
+              </div>
+
+              <div className="relative">
+                {selectedGender && (
+                  <label
+                    htmlFor="gender"
+                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                  >
+                    Sector de la empresa
+                  </label>
+                )}
                 <select
                   className="mt-1 p-2 border rounded w-full"
-                  value={
-                    selectedOption
-                      ? selectedOption
-                      : user.geographic_location.id
-                  }
-                  onChange={(e) => setSelectedOption(e.target.value)}
-                  id="geographic_location"
-                  name="geographic_location"
+                  value={selectedGender}
+                  onChange={(e) => setSelectedGender(e.target.value)}
+                  id="gender"
+                  name="gender"
                 >
-                  <option
-                    key={user.geographic_location.id}
-                    value={user.geographic_location.id}
-                  >
-                    {' '}
-                    {user.geographic_location.description}
+                  <option key={user.gender.id} value={user.gender.id}>
+                    {user.gender.description}
                   </option>
-                  {OptionGeographic_Location?.map((option) => {
-                    if (option.id === user.geographic_location.id) {
-                      return null; // Devolver null para excluir este dato del mapeo
-                    }
-                    return (
-                      <option key={option.id} value={option.id}>
-                        {option.description}
-                      </option>
-                    );
-                  })}
+                  {optionGenders?.map(
+                    (option) =>
+                      option.id !== user.gender.id && (
+                        <option key={option.id} value={option.id}>
+                          {option.description}
+                        </option>
+                      )
+                  )}
+                </select>
+              </div>
+            </div>
+
+            <div className="flex flex-col justify-center gap-4">
+              <div className="relative">
+                {contactoEmpresa && (
+                  <label
+                    htmlFor="contactoEmpresa"
+                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                  >
+                    Contacto de la empresa
+                  </label>
+                )}
+                <input
+                  type="text"
+                  id="contactoEmpresa"
+                  name="contactoEmpresa"
+                  placeholder="Contacto de la empresa"
+                  className="mt-1 p-2 border rounded"
+                  value={contactoEmpresa}
+                  onChange={(e) => setContactoEmpresa(e.target.value)}
+                />
+              </div>
+
+              <div className="relative">
+                {cargoEmpresa && (
+                  <label
+                    htmlFor="cargoEmpresa"
+                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                  >
+                    Cargo en la empresa
+                  </label>
+                )}
+                <input
+                  type="text"
+                  id="cargoEmpresa"
+                  name="cargoEmpresa"
+                  placeholder="Cargo en la empresa"
+                  className="mt-1 p-2 border rounded"
+                  value={cargoEmpresa}
+                  onChange={(e) => setCargoEmpresa(e.target.value)}
+                />
+              </div>
+
+              <div className="relative">
+                {selectedGender && (
+                  <label
+                    htmlFor="gender"
+                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                  >
+                    Nacionalidad
+                  </label>
+                )}
+                <select
+                  className="mt-1 p-2 border rounded w-full"
+                  value={selectedGender}
+                  onChange={(e) => setSelectedGender(e.target.value)}
+                  id="gender"
+                  name="gender"
+                >
+                  <option key={user.gender.id} value={user.gender.id}>
+                    {user.gender.description}
+                  </option>
+                  {optionGenders?.map(
+                    (option) =>
+                      option.id !== user.gender.id && (
+                        <option key={option.id} value={option.id}>
+                          {option.description}
+                        </option>
+                      )
+                  )}
                 </select>
               </div>
             </div>

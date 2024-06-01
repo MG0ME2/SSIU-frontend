@@ -4,13 +4,13 @@
  */
 
 import LayoutSuperAdmin from '../../components/LayoutSuperAdmin/index.jsx';
-import LayoutPerfil from '../../components/LayoutPerfil/index.jsx';
+import LayoutPerfilTeacher from '../../components/LayoutPerfil/profileTeacher.jsx';
 
 function SuperAdminPerfil() {
   
   return (
     <LayoutSuperAdmin>
-      <LayoutPerfil></LayoutPerfil>
+      <LayoutPerfilTeacher></LayoutPerfilTeacher>
     </LayoutSuperAdmin>
   );
 }

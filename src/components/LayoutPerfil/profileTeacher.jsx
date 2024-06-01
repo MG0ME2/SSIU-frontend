@@ -11,8 +11,8 @@ import UserProfile from '../../assets/Img/UserProfile.svg';
 //COMPONENTS
 import DatosPersonales from './formPersonal.jsx';
 import DatosLaborales from './formLaborData.jsx';
-import DatosResidencia from './formResidence.jsx';
 import DatosEducation from './formEducation.jsx';
+import DatosResidencia from './formResidence.jsx';
 import ChangePasswordPopup from './popupsperfil.jsx';
 
 
@@ -62,7 +62,7 @@ const LayoutPerfilTeacher = () => {
             Datos Personales
           </button>
 
-
+{/* 
           <button
             className={`px-4 py-2 rounded-t-lg ${
               activeTab === 'residencia'
@@ -74,7 +74,7 @@ const LayoutPerfilTeacher = () => {
           >
             Lugar de Residencia
           </button>
-     
+      */}
           <button
             className={`px-4 py-2 rounded-t-lg ${
               activeTab === 'estudios'
@@ -84,14 +84,13 @@ const LayoutPerfilTeacher = () => {
             onClick={() => tab('estudios')}
             aria-selected={activeTab === 'estudios'}
           >
-            Estudios actuales
+            Datos acedemicos
           </button>
 
         </div>
         
         <div className="w-[700px] ">
         {activeTab === 'datos' && <DatosPersonales />}
-          {activeTab === 'residencia' && <DatosResidencia />}
           {activeTab === 'estudios' && <DatosEducation />} 
         </div>
       </div>

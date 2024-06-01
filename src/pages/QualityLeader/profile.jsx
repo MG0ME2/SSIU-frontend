@@ -1,11 +1,11 @@
 import LayoutQualityLeader from '../../components/LayoutQualityLeader/index.jsx';
-import LayoutPerfil from '../../components/LayoutPerfil/index.jsx';
+import LayoutPerfilQuality from '../../components/LayoutPerfil/profileQualityLeader.jsx';
 
 function QualityLeaderPerfil() {
   
   return (
     <LayoutQualityLeader>
-      <LayoutPerfil></LayoutPerfil>
+      <LayoutPerfilQuality></LayoutPerfilQuality>
     </LayoutQualityLeader>
   );
 }

@@ -1,21 +1,20 @@
 import {NavLink, useLocation} from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
 //IMAGENES
-import IconMenu from '../../assets/Img/IconMenu.svg';
+import IconLogin from "../../assets/Img/IconLogin.svg";
+import UserProfile from '../../assets/Img/UserProfile.svg';
 import IconBook from '../../assets/Img/IconBook.svg';
 import IconHome from '../../assets/Img/IconHome.svg';
-import IconLoginMenu from '../../assets/Img/IconLoginMenu.svg';
 
 //COMPONENTES
-import LogOut from '../../components/Logout';
-import {useLocalStorage} from '../../components/localStorage';
+import ExitSesion from '../../components/Logout/exitsesion';
 import NavItem from '../NavItem';
 
 const LayoutQualityLeader = ({children}) => {
-  const [getUser, setUser] = useLocalStorage('user');
-  const [getIsLogged, setIsLogged] = useLocalStorage('isLogged');
-  
+  const { user, isLogged } = useSelector((state) => state.auth);
   const location = useLocation();
+
   
   return (
     <div className="flex h-screen p-1 ">
@@ -23,13 +22,17 @@ const LayoutQualityLeader = ({children}) => {
         className="bg-[#28537E] rounded-lg p-2
        text-white w-52 flex gap-2 flex-col"
       >
-        <div className="flex items-center justify-center">
-          <img
-            src={IconMenu}
-            alt="Icono para home"
-            className="w-44 object-cover"
-          />
+          <div className="flex items-center text-xs ml-2">
+          <ul>
+            <img
+              src={UserProfile}
+              alt="Icono para home"
+              className="w-11 h-full"
+            />
+          </ul>
+          <p className="pl-2"> Leader name</p>
         </div>
+
         
         <div className="flex justify-between flex-col h-full ">
           <div className="my-4">
@@ -52,7 +55,7 @@ const LayoutQualityLeader = ({children}) => {
               </li>
               
               <li>
-                <NavItem to="/" currentPath={location.pathname}>
+                <NavItem to="/qualityleader" currentPath={location.pathname}>
                   <img
                     src={IconHome}
                     alt="Icono book 1"
@@ -64,31 +67,14 @@ const LayoutQualityLeader = ({children}) => {
             </ul>
           </div>
           
-          <div>
-            {!getIsLogged() ? (
-              <button
-                className="flex items-center px-1 py-1
-                        mt-20 md:mb-0 mx-auto 
-                      bg-[#28537E] text-white rounded-md
-                        border border-white
-                      hover:bg-[#46525e] w-auto h-auto mb-4"
-              >
-                <span className="ml-1 text-xs">
-                  {" "}
-                  <NavLink to="/login">Iniciar Sesión </NavLink>
-                </span>
-                <img
-                  src={IconLoginMenu}
-                  alt="Ícono de inicio de sesión"
-                  className="px-1 mb-0,5 w-5 h-5"
-                />
-              </button>
+          <div className="flex items-center justify-center ">
+            {!isLogged ? (
+              <ExitSesion title={'Cerrar sesión'} icono={IconLogin} />
             ) : (
               <div>
                 <h2 className="text-xs font-bold mb-4">
-                  Bienvenido, {getUser().name}!
+                  Bienvenido, {user.name}!
                 </h2>
-                <LogOut/>
               </div>
             )}
           </div>

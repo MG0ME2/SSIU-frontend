@@ -1,11 +1,11 @@
 import LayoutQualityInstitutional from '../../components/LayoutQualityInstitutional/index.jsx';
-import LayoutPerfil from '../../components/LayoutPerfil/index.jsx';
+import LayoutPerfilQuality from '../../components/LayoutPerfil/profileQualityLeader.jsx';
 
 function QuialityInstitucionaPerfil() {
   
   return (
     <LayoutQualityInstitutional>
-      <LayoutPerfil></LayoutPerfil>
+      <LayoutPerfilQuality></LayoutPerfilQuality>
     </LayoutQualityInstitutional>
   );
 }

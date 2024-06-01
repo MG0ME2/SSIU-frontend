@@ -8,7 +8,6 @@ import IconBook from '../../assets/Img/IconBook.svg';
 import IconHome from '../../assets/Img/IconHome.svg';
 
 //COMPONENTES
-import LogOut from '../../components/Logout';
 import NavItem from '../NavItem';
 import ExitSesion from "../../components/Logout/exitsesion";
 

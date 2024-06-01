@@ -6,6 +6,7 @@ export const userSlice = createSlice({
   name: 'user',
   initialState: {
     users: {},
+    employ: {},
     dniType: {},
     token: null,
     // Otros campos del usuario
@@ -13,6 +14,9 @@ export const userSlice = createSlice({
   reducers: {
     setUsers: (state, action) => {
       state.users = action.payload;
+    },
+    setEmploy: (state, action) => {
+      state.employ = action.payload;
     },
     setDniType: (state, action) => {
       state.dniType = action.payload;
@@ -24,7 +28,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { token ,setUsers, setDniType } = userSlice.actions;
+export const { token ,setUsers, setDniType, setEmploy } = userSlice.actions;
 
 // Acción asincrónica para cargar tipos de documento
 export const loadDniTypes = () => async (dispatch) => {

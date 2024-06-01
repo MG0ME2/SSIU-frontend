@@ -11,8 +11,6 @@ import ButtonPrimary from '../Buttons/primary.jsx';
 import IconSaves from '../../assets/Img/IconSaves.svg';
 import { setDniType, setUsers } from '../../redux/states/userSlice.js';
 
-
-
 function DatosPersonales() {
   //useState
   const { register } = useForm();
@@ -21,17 +19,16 @@ function DatosPersonales() {
   const [userData, setUserData] = useState({}); // Estado local para almacenar los datos del usuario
   const [options, setOptions] = useState([]);
   const [optionGenders, setOptionGenders] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(null);
 
-  ///Formulario
-
-  //local storage
-  // const [getDniTypesUL, setDniTypesUL] = useLocalStorage('dniTypes');
-  // const [getGendersUl, setGendersUl] = useLocalStorage('status');
-  //  const [getUser, setUser] = useLocalStorage('user');
-  // const [getWarnignMessage, setWarnignMessage] = useLocalStorage('warnignUpdate');
-  // const [getSuccessMessage, setSuccessMessage] = useLocalStorage('successUpdate');
-  //const [getValidateInput, setValidateInput] = useLocalStorage('warnignUpdate');
+  // Estados locales para los campos del formulario
+  const [name, setName] = useState(user.name || '');
+  const [lastName, setLastName] = useState(user.last_name || '');
+  const [dni, setDni] = useState(user.dni || '');
+  const [email, setEmail] = useState(user.email || '');
+  const [altEmail, setAltEmail] = useState(user.alt_email || '');
+  const [phoneNumber, setPhoneNumber] = useState(user.phone_number || '');
+  const [selectedDniType, setSelectedDniType] = useState(user.dni_type.id);
+  const [selectedGender, setSelectedGender] = useState(user.gender.id);
 
   //Alertas
   const notifyVi = () => {
@@ -74,16 +71,18 @@ function DatosPersonales() {
   };
 
   useEffect(() => {
-// Función para obtener los datos del usuario
-const fetchUserData = async () => {
-  try {
-    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/users/${user.id}`);
-    setUserData(response.data);
-  } catch (error) {
-    console.error('Error al obtener los datos del usuario:', error);
-    notifyE();
-  }
-};
+    // Función para obtener los datos del usuario
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_URL}/users/${user.id}`
+        );
+        setUserData(response.data);
+      } catch (error) {
+        console.error('Error al obtener los datos del usuario:', error);
+        notifyE();
+      }
+    };
     fetchUserData();
   }, [user.id]);
 
@@ -134,22 +133,18 @@ const fetchUserData = async () => {
   const handleUpdate = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-
-    const inputDniType = document.getElementById('dniType');
-    const inputDni = document.getElementById('dni');
-    const inputEmail = document.getElementById('email');
     const inputName = formData.get('name');
     const inputLastName = formData.get('last_name');
 
     const form = {
-      name: inputName,
-      last_name: inputLastName,
-      dni: inputDni.disabled ? user.dni : parseInt(formData.get('dni')),
-      dniTypeId: inputDniType.disabled? user.dni_type.id : parseInt(formData.get('dniType')),
-      email: inputEmail.disabled ? user.email : formData.get('email'),
-      alt_email: formData.get('alt_email').length > 1 ? formData.get('alt_email') : null,
-      phone_number: parseInt(formData.get('phone_number')),
-      genderId: parseInt(formData.get('gender')),
+      name,
+      last_name: lastName,
+      dni: dni,
+      dniTypeId: selectedDniType,
+      email,
+      alt_email: altEmail.length > 1 ? altEmail : null,
+      phone_number: phoneNumber,
+      genderId: selectedGender,
     };
 
     if (
@@ -170,8 +165,8 @@ const fetchUserData = async () => {
       dispatch(setUsers(data));
       setUserData(data);
       notifyS();
-      
-    //  )
+
+      //  )
     }
   };
 
@@ -185,108 +180,195 @@ const fetchUserData = async () => {
         >
           <div className="grid grid-cols-2 gap-x-8">
             <div className="flex flex-col justify-center gap-4">
-              <input
-                type="text"
-                id="name"
-                name="name"
-                required
-                placeholder="Traer nombre de la BD"
-                className="mt-1 p-2 border rounded"
-                defaultValue={user.name}
-              />
-              <select
-                className="mt-1 p-2 border rounded w-full"
-                value={selectedOption ? selectedOption : user.dni_type.id}
-                onChange={(e) => setSelectedOption(e.target.value)}
-                disabled
-                id="dniType"
-                name="dniType"
-              >
-                <option key={user.dni_type.id} value={user.dni_type.id}>
-                  {' '}
-                  {user.dni_type.description}
-                </option>
-                {options?.map((option) => {
-                  if (option.id === user.dni_type.id) {
-                    return null; // Devolver null para excluir este dato del mapeo
-                  }
-                  return (
-                    <option key={option.id} value={option.id}>
-                      {option.description}
-                    </option>
-                  );
-                })}
-              </select>
-              <select
-                className="mt-1 p-2 border rounded w-full"
-                value={selectedOption ? selectedOption : user.gender.id}
-                onChange={(e) => setSelectedOption(e.target.value)}
-                id="gender"
-                name="gender"
-              >
-                <option key={user.gender.id} value={user.gender.id}>
-                  {user.gender.description}
-                </option>
-                {optionGenders?.map((option) => {
-                  if (option.id === user.gender.id) {
-                    return null; // Devolver null para excluir este dato del mapeo
-                  }
-                  return (
-                    <option key={option.id} value={option.id}>
-                      {option.description}
-                    </option>
-                  );
-                })}
-              </select>
-              <input
-                type="mail"
-                id="email"
-                name="email"
-                required
-                disabled
-                placeholder="Correo Institucional"
-                className="mt-1 p-2 border rounded"
-                defaultValue={user.email}
-              />
+              <div className="relative">
+                {name && (
+                  <label
+                    htmlFor="name"
+                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                  >
+                    Nombre
+                  </label>
+                )}
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  placeholder="Traer nombre de la BD"
+                  className="mt-1 p-2 border rounded w-full"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              </div>
+
+              <div className="relative">
+                {selectedDniType && (
+                  <label
+                    htmlFor="dniType"
+                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                  >
+                    Tipo de DNI
+                  </label>
+                )}
+                <select
+                  className="mt-1 p-2 border rounded w-full"
+                  value={selectedDniType}
+                  disabled
+                  onChange={(e) => setSelectedDniType(e.target.value)}
+                  id="dniType"
+                  name="dniType"
+                >
+                  <option key={user.dni_type.id} value={user.dni_type.id}>
+                    {user.dni_type.description}
+                  </option>
+                  {options?.map(
+                    (option) =>
+                      option.id !== user.dni_type.id && (
+                        <option key={option.id} value={option.id}>
+                          {option.description}
+                        </option>
+                      )
+                  )}
+                </select>
+              </div>
+
+              <div className="relative">
+                {selectedGender && (
+                  <label
+                    htmlFor="gender"
+                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                  >
+                    Género
+                  </label>
+                )}
+                <select
+                  className="mt-1 p-2 border rounded w-full"
+                  value={selectedGender}
+                  onChange={(e) => setSelectedGender(e.target.value)}
+                  id="gender"
+                  name="gender"
+                >
+                  <option key={user.gender.id} value={user.gender.id}>
+                    {user.gender.description}
+                  </option>
+                  {optionGenders?.map(
+                    (option) =>
+                      option.id !== user.gender.id && (
+                        <option key={option.id} value={option.id}>
+                          {option.description}
+                        </option>
+                      )
+                  )}
+                </select>
+              </div>
+
+              <div className="relative">
+                {email && (
+                  <label
+                    htmlFor="email"
+                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                  >
+                    Correo Institucional
+                  </label>
+                )}
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  disabled
+                  placeholder="Correo Institucional"
+                  className="mt-1 p-2 border rounded w-full"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
             </div>
 
             <div className="flex flex-col justify-center gap-4">
-              <input
-                type="text"
-                id="last_name"
-                name="last_name"
-                required
-                placeholder="Traer apellido de la BD"
-                className="mt-1 p-2 border rounded "
-                defaultValue={user.last_name}
-              />
-              <input
-                type="number"
-                id="dni"
-                name="dni"
-                required
-                disabled
-                placeholder="Numero de identificación"
-                className="mt-1 p-2 border rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                defaultValue={user.dni}
-              />
-              <input
-                type="email"
-                id="alt_email"
-                name="alt_email"
-                placeholder="Correo alternativo"
-                className="mt-1 p-2 border rounded"
-                defaultValue={user.alt_email ? user.alt_email : ''}
-              />
-              <input
-                type="number"
-                id="phone_number"
-                name="phone_number"
-                required
-                placeholder="Numero de telefono"
-                className="mt-1 p-2 border rounded [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                defaultValue={user.phone_number}
-              />
+              <div className="relative">
+                {lastName && (
+                  <label
+                    htmlFor="last_name"
+                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                  >
+                    Apellido
+                  </label>
+                )}
+                <input
+                  type="text"
+                  id="last_name"
+                  name="last_name"
+                  required
+                  placeholder="Traer apellido de la BD"
+                  className="mt-1 p-2 border rounded w-full"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </div>
+
+              <div className="relative">
+                {dni && (
+                  <label
+                    htmlFor="dni"
+                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                  >
+                    Número de identificación
+                  </label>
+                )}
+                <input
+                  type="number"
+                  id="dni"
+                  name="dni"
+                  required
+                  disabled
+                  placeholder="Número de identificación"
+                  className="mt-1 p-2 border rounded w-full"
+                  value={dni}
+                  onChange={(e) => setDni(e.target.value)}
+                />
+              </div>
+
+              <div className="relative">
+                {altEmail && (
+                  <label
+                    htmlFor="alt_email"
+                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                  >
+                    Correo alternativo
+                  </label>
+                )}
+                <input
+                  type="email"
+                  id="alt_email"
+                  name="alt_email"
+                  placeholder="Correo alternativo"
+                  className="mt-1 p-2 border rounded w-full"
+                  value={altEmail}
+                  onChange={(e) => setAltEmail(e.target.value)}
+                />
+              </div>
+
+              <div className="relative">
+                {phoneNumber && (
+                  <label
+                    htmlFor="phone_number"
+                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                  >
+                    Número de teléfono
+                  </label>
+                )}
+                <input
+                  type="number"
+                  id="phone_number"
+                  name="phone_number"
+                  required
+                  placeholder="Número de teléfono"
+                  className="mt-1 p-2 border rounded w-full [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                />
+              </div>
             </div>
           </div>
 

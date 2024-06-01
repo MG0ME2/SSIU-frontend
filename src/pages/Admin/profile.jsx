@@ -1,11 +1,11 @@
 import LayoutAdmin from '../../components/LayoutAdmin/index.jsx';
-import LayoutPerfil from '../../components/LayoutPerfil/index.jsx';
+import LayoutPerfilTeacher from '../../components/LayoutPerfil/profileTeacher.jsx';
 
 function AdminPerfil() {
   
   return (
     <LayoutAdmin>
-      <LayoutPerfil></LayoutPerfil>
+      <LayoutPerfilTeacher></LayoutPerfilTeacher>
     </LayoutAdmin>
   );
 }

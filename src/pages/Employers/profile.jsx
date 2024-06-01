@@ -1,5 +1,5 @@
 import LayoutEmployer from '../../components/LayoutEmployers/index.jsx';
-import LayoutPerfil from '../../components/LayoutPerfil/index.jsx';
+import LayoutPerfil from '../../components/LayoutPerfil/profileEmployer.jsx';
 
 function EmployersPerfil() {
   

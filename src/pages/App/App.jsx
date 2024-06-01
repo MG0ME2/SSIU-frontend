@@ -14,7 +14,7 @@ import {QuialityInstitucionaPerfil, QualityInstitutionalHome} from '../QualityIn
 /// QualityLeader
 import {QualityLeaderPerfil, QualityLeaderHome} from '../QualityLeader/index';
 /// SuperAdmin
-import {SuperAdminPerfil, SuperAdminHome} from '../SuperAdmin/index';
+import {SuperAdminPerfil, SuperAdminHome, SuperAdminManagementVarAndIndica} from '../SuperAdmin/index';
 /// Admin
 import {AdminPerfil, AdminHome} from '../Admin/index';
 
@@ -44,6 +44,7 @@ const AppRoutes = () => {
       }>
         <Route path='/superadmin' element={<SuperAdminHome/>}/>
         <Route path='/superadmin/perfil' element={<SuperAdminPerfil/>}/>
+        <Route path='/superadmin/GestionDeVariablesYIndicadores' element={<SuperAdminManagementVarAndIndica/>}/>
       </Route>
       
       {/*Admin*/}

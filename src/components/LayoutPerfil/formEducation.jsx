@@ -13,14 +13,30 @@ import IconSaves from '../../assets/Img/IconSaves.svg';
 function DatosEducation() {
   //useState
   const dispatch = useDispatch();
-  const [options, setOptions] = useState([]);
-  const [OptionGeographic_Location, setOptionGeographic_location] = useState(
-    []
-  );
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [optionGenders, setOptionGenders] = useState([]);
   const { user } = useSelector((state) => state.auth);
 
-  //
+  // Estados locales para los campos del formulario
+  const [tipoEstudio, setTipoEstudio] = useState('');
+  const [nombreTitulacion, setNombreTitulacion] = useState('');
+  const [nombreInstitucion, setNombreInstitucion] = useState('');
+  const [fechaTitulacion, setFechaTitulacion] = useState('');
+  // reemplazar por los selector correctos
+  const [selectedGender, setSelectedGender] = useState(user.gender.id);
+
+  //alertas
+  const notifyVi = () => {
+    toast.warn('No se admiten números o símbolos en', {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
+  };
 
   const notifyS = () => {
     toast.success('Se actualizaron los datos exitosamente', {
@@ -48,62 +64,67 @@ function DatosEducation() {
     });
   };
 
+  
   useEffect(() => {
-    const getDniTypes = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/dni-types`
-        );
-        if (response.data.length > 1) {
-          dispatch(setDniType(response.data[0]));
-          setOptions(response.data);
-        } else {
-          setOptions([]);
-        }
-      } catch (error) {
-        console.error('Error al obtener los datos:', error);
-        notifyE();
-      }
-    };
-    getDniTypes();
 
-    const getGeographic_location = async () => {
+    // const getDniTypes = async () => {
+    //   try {
+    //     const response = await axios.get(
+    //       `${import.meta.env.VITE_BACKEND_URL}/dni-types`
+    //     );
+    //     if (response.data.length > 1) {
+    //       dispatch(setDniType(response.data[0]));
+    //       setOptions(response.data);
+    //     } else {
+    //       setOptions([]);
+    //     }
+    //   } catch (error) {
+    //     console.error('Error al obtener los datos:', error);
+    //     notifyE();
+    //   }
+    // };
+    // getDniTypes();
+
+    const getGenders = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/geographic_location`
+          `${import.meta.env.VITE_BACKEND_URL}/genders`
         );
         if (response.data.length > 1) {
-          setOptionGeographic_location(response.data);
+          setOptionGenders(response.data);
         } else {
-          setOptionGeographic_location([]);
+          setOptionGenders([]);
         }
       } catch (error) {
         console.error('Error al obtener los datos:', error);
         notifyE();
       }
     };
-    getGeographic_location();
+    getGenders();
   }, [dispatch]);
+
+  const validateInput = (input) => {
+    if (!/^[A-Za-z\s]+$/.test(input)) {
+      notifyVi();
+      return false;
+    }
+    return true;
+  };
+
 
   const handleUpdate = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-
-    const inputDniType = document.getElementById('dniType');
-    const inputDni = document.getElementById('dni');
-    const inputEmail = document.getElementById('email');
     const inputName = formData.get('name');
     const inputLastName = formData.get('last_name');
 
     const form = {
-      name: inputName,
-      last_name: inputLastName,
-      dni: inputDni.disabled ? user.dni : parseInt(formData.get('dni')),
-      dniTypeId: inputDniType.disabled? user.dni_type.id : parseInt(formData.get('dniType')),
-      email: inputEmail.disabled ? user.email : formData.get('email'),
-      alt_email: formData.get('alt_email').length > 1 ? formData.get('alt_email') : null,
-      phone_number: parseInt(formData.get('phone_number')),
-      genderId: parseInt(formData.get('gender')),
+      tipoEstudio,
+      nombreTitulacion,
+      nombreInstitucion,
+      fechaTitulacion,
+      // reemplace
+      genderId: selectedGender,
     };
 
     if (
@@ -124,7 +145,7 @@ function DatosEducation() {
       dispatch(setUsers(data));
       setUserData(data);
       notifyS();
-      
+
     //  )
     }
   };
@@ -133,62 +154,131 @@ function DatosEducation() {
     <div>
       <div>
         <ToastContainer />
-        <form
-          className="flex flex-col gap-4 items-center"
-          onSubmit={handleUpdate}
-        >
+        <form className="flex flex-col gap-4 items-center" onSubmit={handleUpdate}>
           <div className="grid grid-cols-2 gap-x-8 ">
             <div className="flex flex-col justify-center gap-4">
-              <input
-                type="text"
-                placeholder="Tipo de estudio"
-                className="mt-1 p-2 border rounded"
-              />
-              <input
-                type="text"
-                placeholder="Nombre de titulación"
-                className="mt-1 p-2 border rounded"
-              />
-            </div>
-            <div className="flex flex-col justify-center gap-4">
-              <input
-                type="text"
-                placeholder="Nombre de la institución educativa"
-                className="mt-1 p-2 border rounded "
-              />
-              <div>
-                <select
-                  className="mt-1 p-2 border rounded w-full"
-                  value={
-                    selectedOption
-                      ? selectedOption
-                      : user.geographic_location.id
-                  }
-                  onChange={(e) => setSelectedOption(e.target.value)}
-                  id="geographic_location"
-                  name="geographic_location"
-                >
-                  <option
-                    key={user.geographic_location.id}
-                    value={user.geographic_location.id}
+              <div className="relative">
+                {selectedGender && (
+                  <label
+                    htmlFor="gender"
+                    className="absolute -top-4 left-2 text-xs text-gray-600"
                   >
-                    {' '}
-                    {user.geographic_location.description}
+                    Tipo de estudio
+                  </label>
+                )}
+                <select
+                  id="gender"
+                  name="gender"
+                  className="mt-1 p-2 border rounded w-full"
+                  value={selectedGender}
+                  onChange={(e) => setSelectedGender(e.target.value)}
+                >
+                  <option key={user.gender.id} value={user.gender.id}>
+                    {user.gender.description}
                   </option>
-                  {OptionGeographic_Location?.map((option) => {
-                    if (option.id === user.geographic_location.id) {
-                      return null; // Devolver null para excluir este dato del mapeo
-                    }
-                    return (
-                      <option key={option.id} value={option.id}>
-                        {option.description}
-                      </option>
-                    );
-                  })}
+                  {optionGenders?.map(
+                    (option) =>
+                      option.id !== user.gender.id && (
+                        <option key={option.id} value={option.id}>
+                          {option.description}
+                        </option>
+                      )
+                  )}
                 </select>
+              </div>
+
+              <div className="relative">
+                {nombreTitulacion && (
+                  <label
+                    htmlFor="nombreTitulacion"
+                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                  >
+                    Nombre de titulación
+                  </label>
+                )}
+                <input
+                  type="text"
+                  id="nombreTitulacion"
+                  name="nombreTitulacion"
+                  placeholder="Nombre de titulación"
+                  className="mt-1 p-2 border rounded"
+                  value={nombreTitulacion}
+                  onChange={(e) => setNombreTitulacion(e.target.value)}
+                />
               </div>
             </div>
 
+            <div className="flex flex-col justify-center gap-4">
+              <div className="relative">
+                {nombreInstitucion && (
+                  <label
+                    htmlFor="nombreInstitucion"
+                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                  >
+                    Nombre de la institución educativa
+                  </label>
+                )}
+                <input
+                  type="text"
+                  id="nombreInstitucion"
+                  name="nombreInstitucion"
+                  placeholder="Nombre de la institución educativa"
+                  className="mt-1 p-2 border rounded"
+                  value={nombreInstitucion}
+                  onChange={(e) => setNombreInstitucion(e.target.value)}
+                />
+              </div>
+
+              <div className="relative">
+                {selectedGender && (
+                  <label
+                    htmlFor="gender"
+                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                  >
+                    Nacionalidad
+                  </label>
+                )}
+                <select
+                  id="gender"
+                  name="gender"
+                  className="mt-1 p-2 border rounded w-full"
+                  value={selectedGender}
+                  onChange={(e) => setSelectedGender(e.target.value)}
+                >
+                  <option key={user.gender.id} value={user.gender.id}>
+                    {user.gender.description}
+                  </option>
+                  {optionGenders?.map(
+                    (option) =>
+                      option.id !== user.gender.id && (
+                        <option key={option.id} value={option.id}>
+                          {option.description}
+                        </option>
+                      )
+                  )}
+                </select>
+              </div>
+
+              <div className="relative">
+                {fechaTitulacion && (
+                  <label
+                    htmlFor="fechaTitulacion"
+                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                  >
+                    Fecha de titulación
+                  </label>
+                )}
+                <input
+                  type="date"
+                  id="fechaTitulacion"
+                  name="fechaTitulacion"
+                  placeholder="Fecha de titulación"
+                  className="mt-1 p-2 border rounded w-full"
+                  value={fechaTitulacion}
+                  onChange={(e) => setFechaTitulacion(e.target.value)}
+                />
+              </div>
+            </div>
           </div>
           <ButtonPrimary title={'Guardar'} icono={IconSaves} typeB="submit" />
         </form>
