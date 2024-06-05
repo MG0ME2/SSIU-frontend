@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector} from 'react-redux';
+import axios from 'axios';
 
 import { fetchIndicators, fetchVariables } from '../../redux/states/variableIndicatorSlice';
+//import { addVariable, addIndicator } from '../../redux/states/variableIndicatorSlice';
 
 // icon
 import IconPencil from '../../assets/Img/IconPencil.svg';
@@ -9,25 +11,44 @@ import IconPencil from '../../assets/Img/IconPencil.svg';
 // component
 import ButtonPrimary from '../Buttons/primary';
 
-const VariableIndicatorTable = ({ titleVariables, titleIndicators, searchPlaceholder, addButtonLabel, onAddClick}) => {
+const VariableIndicatorTable = ({}) => {
+
   const dispatch = useDispatch();
+  const [statuses, setStatuses] = useState([]);
   const variables = useSelector((state) => state.variableIndicator.variables);
   const indicators = useSelector((state) => state.variableIndicator.indicators);
 
   useEffect(() => {
-    dispatch(fetchVariables());
-    dispatch(fetchIndicators());
+    const fetchData = async () => {
+      try {
+        const response = await axios.get( `${import.meta.env.VITE_BACKEND_URL}/status`);
+        setStatuses(response.data);
+        dispatch(fetchVariables());
+        dispatch(fetchIndicators());
+      } catch (error) {
+        console.error('Error fetching statuses:', error);
+      }
+    };
+    fetchData();
   }, [dispatch]);
+
+  // const handleAddVariable = () => {
+  //   dispatch(addVariable({ name: 'Nueva Variable', active: true })); // Envía una acción para agregar una nueva variable
+  // };nd
+
+  // const handleAddIndicator = () => {
+  //   dispatch(addIndicator({ name: 'Nuevo Indicador', active: true })); // Envía una acción para agregar un nuevo indicador
+  // };
 
   return (
     <div className="flex">
       <div className="w-1/2 mr-4">
         <div className="mb-8 max-h-80 overflow-y-auto">
-          <h2 className="text-xl font-bold mb-4">{titleVariables}</h2>
+          <h2 className="text-xl font-bold mb-4">Variables</h2>
           <div className="mb-4">
             <input
               type="text"
-              placeholder={searchPlaceholder}
+              placeholder="Buscar Variables"
               className="border p-2 rounded w-full"
             />
           </div>
@@ -44,10 +65,10 @@ const VariableIndicatorTable = ({ titleVariables, titleIndicators, searchPlaceho
                 <tr key={index}>
                   <td className="border px-2 py-1">{variable.name}</td>
                   <td className="border px-2 py-1">
-                    <span className={variable.active ? 'text-green-500' : 'text-red-500'}>
-                      {variable.active ? 'Activo' : 'Inactivo'}
-                    </span>
-                  </td>
+                  <span className="text-green-500">
+                    {statuses.find((status) => status.id === variable.status)?.description || 'Desconocido'}
+                  </span>
+                     </td>
                   <td className="border px-1 py-1 text-left">
                     <ButtonPrimary icono={IconPencil} />
                   </td>
@@ -55,18 +76,18 @@ const VariableIndicatorTable = ({ titleVariables, titleIndicators, searchPlaceho
               ))}
             </tbody>
           </table>
-          <button onClick={onAddClick} className="bg-blue-500 text-white p-2 rounded">
-            {addButtonLabel}
+          <button  className="bg-blue-500 text-white p-2 rounded">
+            Agregar Variable
           </button>
         </div>
       </div>
       <div className="w-1/2">
         <div className="mb-8 max-h-80 overflow-y-auto">
-          <h2 className="text-xl font-bold mb-4">{titleIndicators}</h2>
+          <h2 className="text-xl font-bold mb-4">Indicadores</h2>
           <div className="mb-4">
             <input
               type="text"
-              placeholder={searchPlaceholder}
+              placeholder="Buscar Indicadores"
               className="border p-2 rounded w-full"
             />
           </div>
@@ -83,9 +104,9 @@ const VariableIndicatorTable = ({ titleVariables, titleIndicators, searchPlaceho
                 <tr key={index}>
                   <td className="border px-2 py-1">{indicator.name}</td>
                   <td className="border px-2 py-1">
-                    <span className={indicator.active ? 'text-green-500' : 'text-red-500'}>
-                      {indicator.active ? 'Activo' : 'Inactivo'}
-                    </span>
+                  <span className="text-green-500">
+                    {statuses.find((status) => status.id === indicator.status)?.description || 'Desconocido'}
+                  </span>
                   </td>
                   <td className="border px-1 py-1 text-left">
                     <ButtonPrimary icono={IconPencil} />
@@ -94,8 +115,8 @@ const VariableIndicatorTable = ({ titleVariables, titleIndicators, searchPlaceho
               ))}
             </tbody>
           </table>
-          <button onClick={onAddClick} className="bg-blue-500 text-white p-2 rounded">
-            {addButtonLabel}
+          <button className="bg-blue-500 text-white p-2 rounded">
+            Agregar Indicador
           </button>
         </div>
       </div>
