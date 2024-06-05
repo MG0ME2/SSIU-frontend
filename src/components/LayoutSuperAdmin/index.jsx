@@ -84,8 +84,9 @@ const LayoutSuperAdmin = ({children}) => {
           </div>
         </div>
       </div>
-      
-      {children}
+      <div className="flex-grow p-4">
+        {children}
+      </div>
     </div>
   );
 };

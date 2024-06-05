@@ -14,8 +14,11 @@ import {
   REGISTER,
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+
+// Slices
 import { persistedAuthReducer } from './states/authSlice';
-import { userSlice } from './states/userSlice';
+//import { userSlice } from './states/userSlice';
+import variableIndicatorReducer from './states/variableIndicatorSlice';
 
 
 const authPersistConfig = {
@@ -27,6 +30,7 @@ const authPersistConfig = {
 export const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
+    variableIndicator: variableIndicatorReducer,
     
   },
   middleware: (getDefaultMiddleware) =>
