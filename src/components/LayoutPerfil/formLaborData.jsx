@@ -1,3 +1,6 @@
+/**
+ * Falta el backend de esto
+ */
 import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -5,25 +8,33 @@ import { ToastContainer, toast } from 'react-toastify';
 //import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setDniType, setUsers } from '../../redux/states/userSlice.js';
+// components
 import ButtonPrimary from '../Buttons/primary.jsx';
+//images
 import IconSaves from '../../assets/Img/IconSaves.svg';
+//redux
+import {
+  setUsers,
+} from '../../redux/states/userSlice.js';
+import { fetchCompanySectors } from '../../redux/states/companySectorSlice';
+import {
+  fetchAcademicDataByUser,
+} from '../../redux/states/academicDataSlice';
 
 function DatosLaborales() {
-  //useState
   const dispatch = useDispatch();
-  const [options, setOptions] = useState([]);
-  // nacionalidad y sector  add
-  const [optionGenders, setOptionGenders] = useState([]);
+  // Selector
+  const [optionSector, setOptionSector] = useState([]);
   const { user } = useSelector((state) => state.auth);
+  const { sectors } = useSelector((state) => state.companySector);
 
-  // Estados locales para los campos del formulario
+  // Estados locales para los campos del formulario - Use State
   const [empresaActual, setEmpresaActual] = useState('');
   const [direccionEmpresa, setDireccionEmpresa] = useState('');
-  const [sectorLaboral, setSectorLaboral] = useState('');
   const [contactoEmpresa, setContactoEmpresa] = useState('');
   const [cargoEmpresa, setCargoEmpresa] = useState('');
-  const [selectedGender, setSelectedGender] = useState(user.gender.id);
+  const [sectorLaboral, setSectorLaboral] = useState(user.companySector);
+  const [nationality, setNationality] = useState('');
 
   // alerts
   const notifyVi = () => {
@@ -65,44 +76,44 @@ function DatosLaborales() {
     });
   };
 
-  
-
   useEffect(() => {
-    /* const getDniTypes = async () => {
+    dispatch(fetchAcademicDataByUser(user.id));
+    dispatch(fetchCompanySectors());
+    
+    const getSector = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/dni-types`
+          `${import.meta.env.VITE_BACKEND_URL}/company-sector`
         );
         if (response.data.length > 1) {
-          dispatch(setDniType(response.data[0]));
-          setOptions(response.data);
+          setOptionSector(response.data);
         } else {
-          setOptions([]);
+          setOptionSector([]);
         }
       } catch (error) {
         console.error('Error al obtener los datos:', error);
         notifyE();
       }
     };
-    getDniTypes();*/
 
-    const getGenders = async () => {
+    const fetchAcademicData = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/genders`
+          `${import.meta.env.VITE_BACKEND_URL}/academic-data/by/${user.id}`
         );
-        if (response.data.length > 1) {
-          setOptionGenders(response.data);
-        } else {
-          setOptionGenders([]);
+        const academicData = response.data;
+        if (academicData && academicData.nationality) {
+          setNationality(academicData.nationality);
         }
       } catch (error) {
-        console.error('Error al obtener los datos:', error);
+        console.error('Error al obtener los datos académicos:', error);
         notifyE();
       }
     };
-    getGenders();
-  }, [dispatch]);
+
+    getSector();
+    fetchAcademicData();
+  }, [dispatch, user.id]);
 
   const validateInput = (input) => {
     if (!/^[A-Za-z\s]+$/.test(input)) {
@@ -114,9 +125,9 @@ function DatosLaborales() {
 
   const handleUpdate = async (event) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    const inputName = formData.get('name');
-    const inputLastName = formData.get('last_name');
+    //const formData = new FormData(event.currentTarget);
+    // const inputName = formData.get('name');
+    // const inputLastName = formData.get('last_name');
 
     const form = {
       empresaActual,
@@ -124,16 +135,15 @@ function DatosLaborales() {
       sectorLaboral,
       contactoEmpresa,
       cargoEmpresa,
-      genderId: selectedGender,
-    //  geographicLocationId: selectedOption || user.geographic_location.id,
+      nationalityId: nationality,
     };
 
-    if (
-      !validateInput(inputName, 'el nombre') ||
-      !validateInput(inputLastName, 'el apellido')
-    ) {
-      return;
-    }
+    // if (
+    //   !validateInput(inputName, 'el nombre') ||
+    //   !validateInput(inputLastName, 'el apellido')
+    // ) {
+    //   return;
+    // }
 
     const { data } = await axios.put(
       `${import.meta.env.VITE_BACKEND_URL}/users/${user.id}`,
@@ -146,8 +156,6 @@ function DatosLaborales() {
       dispatch(setUsers(data));
       setUserData(data);
       notifyS();
-
-      //  )
     }
   };
 
@@ -167,7 +175,7 @@ function DatosLaborales() {
                     htmlFor="empresaActual"
                     className="absolute -top-4 left-2 text-xs text-gray-600"
                   >
-                   Nombre de empresa actual
+                    Nombre de empresa actual
                   </label>
                 )}
                 <input
@@ -202,32 +210,24 @@ function DatosLaborales() {
               </div>
 
               <div className="relative">
-                {selectedGender && (
-                  <label
-                    htmlFor="gender"
-                    className="absolute -top-4 left-2 text-xs text-gray-600"
-                  >
-                    Sector de la empresa
-                  </label>
-                )}
+                <label
+                  htmlFor="sectorLaboral"
+                  className="absolute -top-4 left-2 text-xs text-gray-600"
+                >
+                  Sector de la empresa
+                </label>
                 <select
                   className="mt-1 p-2 border rounded w-full"
-                  value={selectedGender}
-                  onChange={(e) => setSelectedGender(e.target.value)}
-                  id="gender"
-                  name="gender"
+                  value={sectorLaboral}
+                  onChange={(e) => setSectorLaboral(e.target.value)}
+                  id="sectorLaboral"
+                  name="sectorLaboral"
                 >
-                  <option key={user.gender.id} value={user.gender.id}>
-                    {user.gender.description}
-                  </option>
-                  {optionGenders?.map(
-                    (option) =>
-                      option.id !== user.gender.id && (
-                        <option key={option.id} value={option.id}>
-                          {option.description}
-                        </option>
-                      )
-                  )}
+                  {sectors.map((sector) => (
+                    <option key={sector.id} value={sector.id}>
+                      {sector.description}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>
@@ -274,33 +274,15 @@ function DatosLaborales() {
               </div>
 
               <div className="relative">
-                {selectedGender && (
-                  <label
-                    htmlFor="gender"
-                    className="absolute -top-4 left-2 text-xs text-gray-600"
-                  >
-                    Nacionalidad
-                  </label>
-                )}
-                <select
+                <input
+                  type="text"
+                  id="nationality"
+                  name="nationality"
+                  placeholder="Internacional o nacional"
                   className="mt-1 p-2 border rounded w-full"
-                  value={selectedGender}
-                  onChange={(e) => setSelectedGender(e.target.value)}
-                  id="gender"
-                  name="gender"
-                >
-                  <option key={user.gender.id} value={user.gender.id}>
-                    {user.gender.description}
-                  </option>
-                  {optionGenders?.map(
-                    (option) =>
-                      option.id !== user.gender.id && (
-                        <option key={option.id} value={option.id}>
-                          {option.description}
-                        </option>
-                      )
-                  )}
-                </select>
+                  value={nationality}
+                  onChange={(e) => setNationality(e.target.value)}
+                />
               </div>
             </div>
           </div>

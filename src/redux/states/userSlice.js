@@ -28,7 +28,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const { token ,setUsers, setDniType, setEmploy } = userSlice.actions;
+export const { token ,setUsers, setNationality, setDniType, setEmploy } = userSlice.actions;
 
 // Acción asincrónica para cargar tipos de documento
 export const loadDniTypes = () => async (dispatch) => {
@@ -41,4 +41,5 @@ export const loadDniTypes = () => async (dispatch) => {
     console.error('Error al obtener los datos:', error);
   }
 };
+
 export const userReducer = userSlice.reducer;

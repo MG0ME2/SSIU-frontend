@@ -17,8 +17,11 @@ import storage from 'redux-persist/lib/storage';
 
 // Slices
 import { persistedAuthReducer } from './states/authSlice';
-//import { userSlice } from './states/userSlice';
+import { userSlice } from './states/userSlice';
 import variableIndicatorReducer from './states/variableIndicatorSlice';
+import companySectorReducer from './states/companySectorSlice';
+import academicDataReducer from './states/academicDataSlice';
+import studyTypesReducer from './states/studyTypesSlice';
 
 
 const authPersistConfig = {
@@ -31,6 +34,10 @@ export const store = configureStore({
   reducer: {
     auth: persistedAuthReducer,
     variableIndicator: variableIndicatorReducer,
+    companySector: companySectorReducer,
+    academicData: academicDataReducer,
+    studyTypes: studyTypesReducer,
+    user: userSlice,
     
   },
   middleware: (getDefaultMiddleware) =>
