@@ -20,21 +20,19 @@ function Login() {
   const notify = () => {
     toast.warning(getWarnignMessage());
   };
+
   const dispatch = useDispatch();
   let navigate = useNavigate();
+  // const { user } = useSelector((state) => state.auth);
+  // const [optionRoles, setOptionRoles] = useState([]);
 
   //Variables para manejo de la contraseña
   const [email, setEmail] = useState('');
+ // const [userData, setUserData] = useState({});
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [alert, setAlert] = useState(null);
+  //const [selectedRole, setSelectedRole] = useState('');
 
-  //manejo de Local Storage
-  // const [getToken, setToken] = useLocalStorage('token');
-  // const [getUser, setUser] = useLocalStorage('user');
-  // const [getIsLogged, setIsLogged] = useLocalStorage('isLogged');
   const [getWarnignMessage, setWarnignMessage] =
     useLocalStorage('warnignLogin');
 
@@ -42,12 +40,45 @@ function Login() {
     setShowPassword(!showPassword);
   };
 
+  // const notifyE = () => {
+  //   toast.error('Error al actualizar los datos', {
+  //     position: 'top-right',
+  //     autoClose: 5000,
+  //     hideProgressBar: false,
+  //     closeOnClick: true,
+  //     pauseOnHover: true,
+  //     draggable: true,
+  //     progress: undefined,
+  //     theme: 'light',
+  //   });
+  // };
+
+  // useEffect(() => {
+  //   const getRoles = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `${import.meta.env.VITE_BACKEND_URL}/roles`
+  //       );
+  //       if (response.data.length > 0) {
+  //         setOptionRoles(response.data);
+  //       } else {
+  //         setOptionRoles([]);
+  //       }
+  //     } catch (error) {
+  //       console.error('Error al obtener los datos:', error);
+  //       notifyE();
+  //     }
+  //   };
+  //   getRoles();
+  // }, []);
+
   const handleLogin = async (event) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
     const form = {
       email: formData.get('email'),
+//      roleId: selectedRole,
       password: formData.get('password'),
     };
 
@@ -56,7 +87,6 @@ function Login() {
       form
     );
 
-
     if (data.status === parseInt('401')) {
       setErrorMessage(data);
     } else if (data.error) {
@@ -64,17 +94,10 @@ function Login() {
       setWarnignMessage(data.error);
       notify();
     } else {
-      dispatch(login({user: data.user, token: data.access_token}));
-  
-        //  setUser(data.user);
-      //  setToken(data.access_token);
-      //  setIsLogged('true');
-    //  dispatch(actualizarValor(data.access_token));
-
+      dispatch(login({ user: data.user, token: data.access_token }));
       navigate(`/${data.user.role[0].description}`);
     }
   };
-  
 
   return (
     <LayoutH>
@@ -103,6 +126,35 @@ function Login() {
                "
             />
           </div>
+          {/* role 
+
+          <div className="relative">
+            {selectedRole && (
+              <label
+                htmlFor="role"
+                className="absolute -top-4 left-2 text-xs text-gray-600"
+              >
+                Rol
+              </label>
+            )}
+            <select
+              className="mt-1 p-2 border rounded w-full"
+              value={selectedRole}
+              onChange={(e) => setSelectedRole(e.target.value)}
+              id="role"
+              name="role"
+            >
+              <option value="" disabled>
+                Seleccionar rol
+              </option>
+              {optionRoles.map((option) => (
+                <option key={option.id} value={option.id}>
+                  {option.description}
+                </option>
+              ))}
+            </select>
+          </div>*/}
+
           <div className="relative mb-4">
             <input
               type={showPassword ? 'text' : 'password'}

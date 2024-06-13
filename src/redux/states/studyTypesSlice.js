@@ -12,7 +12,7 @@ export const fetchStudyTypes = createAsyncThunk(
 const studyTypesSlice = createSlice({
   name: 'studyTypes',
   initialState: {
-    data: [],
+    studys: [],
     status: 'idle',
     error: null,
   },
@@ -24,7 +24,7 @@ const studyTypesSlice = createSlice({
       })
       .addCase(fetchStudyTypes.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.sectors = action.payload;
+        state.study = action.payload;
       })
       .addCase(fetchStudyTypes.rejected, (state, action) => {
         state.status = 'failed';

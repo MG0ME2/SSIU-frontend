@@ -96,8 +96,13 @@ function DatosEducation() {
           `${import.meta.env.VITE_BACKEND_URL}/academic-data/by/${user.id}`
         );
         const academicData = response.data;
-        if (academicData && academicData.nationality) {
+        if (academicData) {
           setNationality(academicData.nationality);
+          setTitulación(academicData.academic_title);
+          setInstitución(academicData.institution_name);
+          setfechaTitulación(academicData.degree_date);
+         // setEstudyType(academicData.studyType.id);
+          console.log(academicData.studyType.id)
         }
       } catch (error) {
         console.error('Error al obtener los datos académicos:', error);
@@ -122,10 +127,10 @@ function DatosEducation() {
 
     const form = {
       estudyType,
-      nombreTitulación,
-      nombreInstitución,
-      fechaTitulación,
-      nationalityId: nationality,
+      academic_title: nombreTitulación,
+      institution_name: nombreInstitución,
+      degree_date: fechaTitulación,
+      nationality,
     };
 
     // if (
@@ -136,17 +141,16 @@ function DatosEducation() {
     //   return;
     // }
 
-    const { data } = await axios.put(
-      `${import.meta.env.VITE_BACKEND_URL}/users/${user.id}`,
-      form
-    );
-
-    if (data.status === 401) {
-      notifyE();
-    } else {
-      dispatch(setUsers(data));
-      setUserData(data);
+    try {
+      const response = await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/academic-data/${user.id}`,
+        form
+      );
+      dispatch(setUsers(response.data));
       notifyS();
+    } catch (error) {
+      console.error('Error al actualizar los datos:', error);
+      notifyE();
     }
   };
 
@@ -164,22 +168,21 @@ function DatosEducation() {
         <div className="grid grid-cols-2 gap-x-8">
           <div className="flex flex-col gap-y-4 items-center">
             <div className="relative w-full">
-              {estudyType && (
-                <label
-                  htmlFor="tipoEstudio"
-                  className="absolute -top-4 left-2 text-xs text-gray-600"
-                >
-                  Tipo de Estudio
-                </label>
-              )}
+              <label
+                htmlFor="estudyType"
+                className="absolute -top-4 left-2 text-xs text-gray-600"
+              >
+                Tipo de Estudio
+              </label>
               <select
-                id="tipoEstudio"
-                name="tipoEstudio"
+                id="estudyType"
+                name="estudyType"
                 className="mt-1 p-2 border rounded w-full"
                 value={estudyType}
                 onChange={(e) => setEstudyType(e.target.value)}
               >
-                   {studys.map((study) => (
+                {studys &&
+                  studys.map((study) => (
                     <option key={study.id} value={study.id}>
                       {study.description}
                     </option>
@@ -204,7 +207,7 @@ function DatosEducation() {
                 className="mt-1 p-2 border rounded w-full"
                 value={nombreTitulación}
                 onChange={(e) => setTitulación(e.target.value)}
-                />
+              />
             </div>
 
             <div className="relative w-full">
@@ -244,8 +247,9 @@ function DatosEducation() {
                 name="fechaTitulacion"
                 placeholder="Fecha de titulación"
                 className="mt-1 p-2 border rounded w-full"
-                value={fechaTitulación}
+                value={fechaTitulación ? new Date(fechaTitulación).toISOString().slice(0, 10) : ''}
                 onChange={(e) => setfechaTitulación(e.target.value)}
+              
               />
             </div>
 
@@ -266,7 +270,7 @@ function DatosEducation() {
                 className="mt-1 p-2 border rounded w-full"
                 value={nationality}
                 onChange={(e) => setNationality(e.target.value)}
-                />
+              />
             </div>
           </div>
         </div>
