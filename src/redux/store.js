@@ -23,13 +23,13 @@ import companySectorReducer from './states/companySectorSlice';
 import academicDataReducer from './states/academicDataSlice';
 import employmentDataReducer from './states/employmentDataSlice.js';
 import studyTypesReducer from './states/studyTypesSlice';
+import persistedPhotoReducer from './states/photoSlice';
 
 
 const authPersistConfig = {
   key: 'auth',
   storage,
 };
-
 
 export const store = configureStore({
   reducer: {
@@ -40,6 +40,7 @@ export const store = configureStore({
     employmenData: employmentDataReducer,
     studyTypes: studyTypesReducer,
     user: userSlice,
+    photo: persistedPhotoReducer, 
     
   },
   middleware: (getDefaultMiddleware) =>
@@ -48,14 +49,6 @@ export const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
     }),
-  //  redu: reducer,
-  //  form: formReducer,
-  //  middleware,
 });
 
 export const persistor = persistStore(store);
-
-// import { createStore } from 'redux';
-// import reducer from './states/reducer';
-// const store = createStore(reducer);
-// export default store;

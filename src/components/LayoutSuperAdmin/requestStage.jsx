@@ -4,29 +4,31 @@ import axios from 'axios';
 
 // redux
 import {
-fetchQuestion
+fetchProgramAcedemic,
+reactivateStage
 } from '../../redux/states/variableIndicatorSlice';
 
 // icon
-import IconPencil from '../../assets/Img/IconPencil.svg';
-import IconAdd from '../../assets/Img/IconAdd.svg';
+import IconFile from '../../assets/Img/IconFile.svg';
+import IconCheck from '../../assets/Img/IconCheck.svg';
+import IconUnCheck from '../../assets/Img/IconUnCheck.svg';
+
 
 // component
 import ButtonIcon from '../Buttons/Icon';
-import ButtonPrimary from '../Buttons/primary';
 import ButtonOnclick from '../Buttons/onclick';
 import AddQuestionPopUp from './add-QuestionPopUp';
 
-const QuestionTable = () => {
+const RequestStage = () => {
   const dispatch = useDispatch();
   const [statuses, setStatuses] = useState([]);
-  const pregunta = useSelector((state) => state.variableIndicator.questions);
+  const requestStgs = useSelector((state) => state.variableIndicator.programAcademics);
 
-  const [showAddPreguntaPopup, setShowAddPreguntaPopup] = useState(false);
+  const [showAddrequestStgsPopup, setShowAddrequestStgsPopup] = useState(false);
 
 
-  const handleAddPreguntaClick = () => {
-    setShowAddPreguntaPopup(!showAddPreguntaPopup);
+  const handleAddrequestStgsClick = () => {
+    setShowAddrequestStgsPopup(!showAddrequestStgsPopup);
   };
 
 
@@ -45,26 +47,43 @@ const QuestionTable = () => {
     fetchData();
   }, [dispatch]);
 
+  const handleToggleCheck = (index) => {
+    const stageId = requestStgs[index].id; // Suponiendo que requestStgs tiene una propiedad `id` que representa el identificador único del stage
+    dispatch(toggleStageActive(stageId)); // Llama a la acción de Redux para cambiar el estado `active` del stage
+  };
+
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4" style={{ color: '#28537E' }}>
-        Gestión de preguntas
+        Gestión de solicitudes de etapas
       </h2>
       <div className="max-h-80 overflow-y-auto mb-8">
         <table className="table-auto w-full mb-4 border border-gray-400">
           <thead className="bg-gray-200 text-gray-700">
             <tr>
-              <th className="border border-gray-400 px-4 py-2">Pregunta</th>
-              <th className="border border-gray-400 px-4 py-2">Tipo de Pregunta</th>
+              <th className="border border-gray-400 px-4 py-2">Programa academico</th>
+              <th className="border border-gray-400 px-4 py-2">Motivo</th>
+              <th className="border border-gray-400 px-4 py-2">Etapa</th>
+              <th className="border border-gray-400 px-4 py-2">Fecha de solicitud</th>
+              <th className="border border-gray-400 px-4 py-2">Fecha de atención</th>
               <th className="border border-gray-400 px-4 py-2">Estado</th>
               <th className="border border-gray-400 px-4 py-2">Gestión</th>
             </tr>
           </thead>
           <tbody>
-            {pregunta.map((variable, index) => (
+            {requestStgs.map((variable, index) => (
               <tr key={index}>
                 <td className="border px-4 py-2">
                   <div className="flex justify-center items-center">{variable.name}</div>
+                </td>
+                <td className="border px-4 py-2">
+                  <div className="flex justify-center items-center">{variable.type}</div>
+                </td>
+                <td className="border px-4 py-2">
+                  <div className="flex justify-center items-center">{variable.type}</div>
+                </td>
+                <td className="border px-4 py-2">
+                  <div className="flex justify-center items-center">{variable.type}</div>
                 </td>
                 <td className="border px-4 py-2">
                   <div className="flex justify-center items-center">{variable.type}</div>
@@ -78,17 +97,17 @@ const QuestionTable = () => {
                 </td>
                 <td className="border px-4 py-2 text-center">
                   <div className="flex justify-center items-center">
-                    <ButtonIcon icono={IconPencil} />
+                    <ButtonIcon  icono={variable.active ? IconCheck : IconUnCheck} onClick={() => handleToggleCheck(index)} />
                   </div>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        <ButtonOnclick title={'Agregar pregunta'} icono={IconAdd} onClick={handleAddPreguntaClick} />
-        {showAddPreguntaPopup && (
+        <ButtonOnclick title={'Reactivar etapa'} icono={IconFile} onClick={handleAddrequestStgsClick} />
+        {showAddrequestStgsPopup && (
               <AddQuestionPopUp
-                onClose={handleAddPreguntaClick}
+                onClose={handleAddrequestStgsClick}
               />
             )}
       </div>
@@ -96,4 +115,4 @@ const QuestionTable = () => {
   );
 };
 
-export default QuestionTable;
+export default RequestStage;

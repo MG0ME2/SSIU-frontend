@@ -4,7 +4,7 @@ import axios from 'axios';
 
 // redux
 import {
-fetchQuestion
+fetchProgramAcedemic
 } from '../../redux/states/variableIndicatorSlice';
 
 // icon
@@ -15,18 +15,18 @@ import IconAdd from '../../assets/Img/IconAdd.svg';
 import ButtonIcon from '../Buttons/Icon';
 import ButtonPrimary from '../Buttons/primary';
 import ButtonOnclick from '../Buttons/onclick';
-import AddQuestionPopUp from './add-QuestionPopUp';
+import AddAcademicProgramsPopUp from './add-AcademicProgramPopUp';
 
-const QuestionTable = () => {
+const AcademicPrograms = () => {
   const dispatch = useDispatch();
   const [statuses, setStatuses] = useState([]);
-  const pregunta = useSelector((state) => state.variableIndicator.questions);
+  const academic = useSelector((state) => state.variableIndicator.questions);
 
-  const [showAddPreguntaPopup, setShowAddPreguntaPopup] = useState(false);
+  const [showAddAcademicPopup, setshowAddAcademicPopup] = useState(false);
 
 
-  const handleAddPreguntaClick = () => {
-    setShowAddPreguntaPopup(!showAddPreguntaPopup);
+  const handleAddacademicClick = () => {
+    setshowAddAcademicPopup(!showAddAcademicPopup);
   };
 
 
@@ -37,7 +37,7 @@ const QuestionTable = () => {
           `${import.meta.env.VITE_BACKEND_URL}/status`
         );
         setStatuses(response.data);
-        dispatch(fetchQuestion());
+        dispatch(fetchProgramAcedemic());
       } catch (error) {
         console.error('Error fetching statuses:', error);
       }
@@ -48,20 +48,20 @@ const QuestionTable = () => {
   return (
     <div>
       <h2 className="text-2xl font-bold mb-4" style={{ color: '#28537E' }}>
-        Gestión de preguntas
+      Gestión de programas academicos
       </h2>
       <div className="max-h-80 overflow-y-auto mb-8">
         <table className="table-auto w-full mb-4 border border-gray-400">
           <thead className="bg-gray-200 text-gray-700">
             <tr>
-              <th className="border border-gray-400 px-4 py-2">Pregunta</th>
-              <th className="border border-gray-400 px-4 py-2">Tipo de Pregunta</th>
+              <th className="border border-gray-400 px-4 py-2">Nombre del programa acedemico</th>
+              <th className="border border-gray-400 px-4 py-2">Código del programa</th>
               <th className="border border-gray-400 px-4 py-2">Estado</th>
               <th className="border border-gray-400 px-4 py-2">Gestión</th>
             </tr>
           </thead>
           <tbody>
-            {pregunta.map((variable, index) => (
+            {academic.map((variable, index) => (
               <tr key={index}>
                 <td className="border px-4 py-2">
                   <div className="flex justify-center items-center">{variable.name}</div>
@@ -85,10 +85,10 @@ const QuestionTable = () => {
             ))}
           </tbody>
         </table>
-        <ButtonOnclick title={'Agregar pregunta'} icono={IconAdd} onClick={handleAddPreguntaClick} />
-        {showAddPreguntaPopup && (
-              <AddQuestionPopUp
-                onClose={handleAddPreguntaClick}
+        <ButtonOnclick title={'Agregar programa academico'} icono={IconAdd} onClick={handleAddacademicClick} />
+        {showAddAcademicPopup && (
+              <AddAcademicProgramsPopUp
+                onClose={handleAddacademicClick}
               />
             )}
       </div>
@@ -96,4 +96,4 @@ const QuestionTable = () => {
   );
 };
 
-export default QuestionTable;
+export default AcademicPrograms;

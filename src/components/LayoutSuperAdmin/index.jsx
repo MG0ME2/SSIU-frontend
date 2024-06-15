@@ -48,7 +48,7 @@ const LayoutSuperAdmin = ({children}) => {
               </li>
               
               <li>
-                <NavItem to="/superadmin" currentPath={location.pathname}>
+                <NavItem to="/superadmin/GestionProgramaAcedemico" currentPath={location.pathname}>
                   <img
                     src={IconBook}
                     alt="Icono book 2"
@@ -59,13 +59,13 @@ const LayoutSuperAdmin = ({children}) => {
               </li>
               
               <li>
-                <NavItem to="/superadmin" currentPath={location.pathname}>
+                <NavItem to="/superadmin/SolicitudEtapas" currentPath={location.pathname}>
                   <img
                     src={IconBook}
                     alt="Icono book 2"
                     className="w-4 h-4 mr-2"
                   />
-                  Solicitudes
+                  Solicitud de etapas
                 </NavItem>
               </li>
             </ul>
