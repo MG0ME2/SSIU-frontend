@@ -1,11 +1,7 @@
-/**
- * Falta el backend de esto
- */
-import { useForm } from 'react-hook-form';
+
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
-//import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 // components
@@ -18,23 +14,30 @@ import {
 } from '../../redux/states/userSlice.js';
 import { fetchCompanySectors } from '../../redux/states/companySectorSlice';
 import {
-  fetchAcademicDataByUser,
-} from '../../redux/states/academicDataSlice';
+  fetchEmploymentDataByUser,
+} from '../../redux/states/employmentDataSlice';
 
 function DatosLaborales() {
   const dispatch = useDispatch();
+  
   // Selector
-  const [optionSector, setOptionSector] = useState([]);
   const { user } = useSelector((state) => state.auth);
+  const [optionSector, setOptionSector] = useState([]);
   const { sectors } = useSelector((state) => state.companySector);
-
+  
+  const [nationality, setNationality] = useState('');
+  const defaultOptions = [
+    { id: 'nacional', description: 'Nacional' },
+    { id: 'internacional', description: 'Internacional' }
+  ];
+  
   // Estados locales para los campos del formulario - Use State
   const [empresaActual, setEmpresaActual] = useState('');
   const [direccionEmpresa, setDireccionEmpresa] = useState('');
   const [contactoEmpresa, setContactoEmpresa] = useState('');
   const [cargoEmpresa, setCargoEmpresa] = useState('');
-  const [sectorLaboral, setSectorLaboral] = useState(user.companySector);
-  const [nationality, setNationality] = useState('');
+  const [sectorLaboral, setSectorLaboral] = useState('');
+  //const [nationality, setNationality] = useState('');
 
   // alerts
   const notifyVi = () => {
@@ -77,7 +80,8 @@ function DatosLaborales() {
   };
 
   useEffect(() => {
-    dispatch(fetchAcademicDataByUser(user.id));
+    console.log('entro a useEffect y el user.id: ', user.id);
+    dispatch(fetchEmploymentDataByUser(user.id));
     dispatch(fetchCompanySectors());
     
     const getSector = async () => {
@@ -96,57 +100,55 @@ function DatosLaborales() {
       }
     };
 
-    const fetchAcademicData = async () => {
+    const fetchEmploymentData = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/academic-data/by/${user.id}`
+          `${import.meta.env.VITE_BACKEND_URL}/employment-data/by/${user.id}`
         );
-        const academicData = response.data;
-        if (academicData && academicData.nationality) {
-          setNationality(academicData.nationality);
+        console.log('entro a fetchEmploymentData: ', response.data);
+        if (response.data) {
+          setEmpresaActual(response.data.name);
+          setDireccionEmpresa(response.data.address);
+          setContactoEmpresa(response.data.phone_number);
+          setCargoEmpresa(response.data.job_role);
+          setNationality(response.data.nationality);
+          setSectorLaboral(response.data.companySector.id)
         }
       } catch (error) {
-        console.error('Error al obtener los datos académicos:', error);
+        console.error('Error al obtener los datos Laborales:', error);
         notifyE();
       }
     };
 
     getSector();
-    fetchAcademicData();
+    fetchEmploymentData();
   }, [dispatch, user.id]);
 
-  const validateInput = (input) => {
-    if (!/^[A-Za-z\s]+$/.test(input)) {
-      notifyVi();
-      return false;
-    }
-    return true;
-  };
+  // const validateInput = (input) => {
+  //   if (!/^[A-Za-z\s]+$/.test(input)) {
+  //     notifyVi();
+  //     return false;
+  //   }
+  //   return true;
+  // };
 
   const handleUpdate = async (event) => {
     event.preventDefault();
-    //const formData = new FormData(event.currentTarget);
-    // const inputName = formData.get('name');
-    // const inputLastName = formData.get('last_name');
+    //const inputName = formData.get('name');
 
     const form = {
-      empresaActual,
-      direccionEmpresa,
-      sectorLaboral,
-      contactoEmpresa,
-      cargoEmpresa,
-      nationalityId: nationality,
+      name: empresaActual,
+      address: direccionEmpresa,
+      companySectorId: sectorLaboral,
+      phone_number: contactoEmpresa,
+      job_role: cargoEmpresa,
+      nationality,
     };
-
-    // if (
-    //   !validateInput(inputName, 'el nombre') ||
-    //   !validateInput(inputLastName, 'el apellido')
-    // ) {
-    //   return;
-    // }
+    
+    console.log(form)
 
     const { data } = await axios.put(
-      `${import.meta.env.VITE_BACKEND_URL}/users/${user.id}`,
+      `${import.meta.env.VITE_BACKEND_URL}/employment-data/${user.id}`,
       form
     );
 
@@ -154,7 +156,6 @@ function DatosLaborales() {
       notifyE();
     } else {
       dispatch(setUsers(data));
-      setUserData(data);
       notifyS();
     }
   };
@@ -167,9 +168,9 @@ function DatosLaborales() {
           className="flex flex-col gap-4 items-center"
           onSubmit={handleUpdate}
         >
-          <div className="grid grid-cols-2 gap-x-8 ">
+          <div className="grid grid-cols-2 gap-x-8 w-[700px]">
             <div className="flex flex-col justify-center gap-4">
-              <div className="relative">
+              <div className="">
                 {empresaActual && (
                   <label
                     htmlFor="empresaActual"
@@ -189,7 +190,7 @@ function DatosLaborales() {
                 />
               </div>
 
-              <div className="relative">
+              <div className="relative w-full">
                 {direccionEmpresa && (
                   <label
                     htmlFor="direccionEmpresa"
@@ -209,12 +210,12 @@ function DatosLaborales() {
                 />
               </div>
 
-              <div className="relative">
+              <div className="relative w-full">
                 <label
                   htmlFor="sectorLaboral"
                   className="absolute -top-4 left-2 text-xs text-gray-600"
                 >
-                  Sector de la empresa
+                  Sector Empresarial
                 </label>
                 <select
                   className="mt-1 p-2 border rounded w-full"
@@ -231,9 +232,11 @@ function DatosLaborales() {
                 </select>
               </div>
             </div>
-
-            <div className="flex flex-col justify-center gap-4">
-              <div className="relative">
+            
+            <div
+              className="flex flex-col justify-center gap-4">
+              <div
+                className="relative w-full">
                 {contactoEmpresa && (
                   <label
                     htmlFor="contactoEmpresa"
@@ -252,8 +255,9 @@ function DatosLaborales() {
                   onChange={(e) => setContactoEmpresa(e.target.value)}
                 />
               </div>
-
-              <div className="relative">
+              
+              <div
+                className="relative w-full">
                 {cargoEmpresa && (
                   <label
                     htmlFor="cargoEmpresa"
@@ -272,22 +276,36 @@ function DatosLaborales() {
                   onChange={(e) => setCargoEmpresa(e.target.value)}
                 />
               </div>
-
-              <div className="relative">
-                <input
-                  type="text"
-                  id="nationality"
-                  name="nationality"
-                  placeholder="Internacional o nacional"
+              
+              <div
+                className="relative w-full">
+                <label
+                  htmlFor="sectorLaboral"
+                  className="absolute -top-4 left-2 text-xs text-gray-600"
+                >
+                  Nacionalidad de la empresa
+                </label>
+                <select
                   className="mt-1 p-2 border rounded w-full"
                   value={nationality}
                   onChange={(e) => setNationality(e.target.value)}
-                />
+                  id="nationality"
+                  name="nationality"
+                >
+                  {defaultOptions.map((option) => (
+                    <option key={option.id} value={option.id}>
+                      {option.description}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
           </div>
-
-          <ButtonPrimary title={'Guardar'} icono={IconSaves} typeB="submit" />
+          
+          <ButtonPrimary
+            title={'Guardar'}
+            icono={IconSaves}
+            typeB="submit" />
         </form>
       </div>
     </div>

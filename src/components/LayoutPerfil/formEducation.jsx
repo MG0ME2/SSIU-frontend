@@ -1,34 +1,38 @@
-import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux';
 
+// components
 import ButtonPrimary from '../Buttons/primary.jsx';
-
+//images
 import IconSaves from '../../assets/Img/IconSaves.svg';
-
+//redux
 import { setUsers } from '../../redux/states/userSlice.js';
 import {
-  updateAcademicData,
   fetchAcademicDataByUser,
 } from '../../redux/states/academicDataSlice';
 import { fetchStudyTypes } from '../../redux/states/studyTypesSlice';
 
 function DatosEducation() {
   const dispatch = useDispatch();
-
-  const [optionEstudyType, setOptionEstudyType] = useState([]);
+  
+  // Selector
   const { user } = useSelector((state) => state.auth);
-  //const { academicData } = useSelector((state) => state.academicData);
+  const [optionEstudyType, setOptionEstudyType] = useState([]);
   const { studys } = useSelector((state) => state.studyTypes);
-
+  
+  const [nationality, setNationality] = useState('');
+  const defaultOptions = [
+    { id: 'nacional', description: 'Nacional' },
+    { id: 'internacional', description: 'Internacional' }
+  ];
+  
   // Estados locales para los campos del formulario - Use State
-  const [estudyType, setEstudyType] = useState(user.studyTypes);
   const [nombreTitulación, setTitulación] = useState('');
   const [nombreInstitución, setInstitución] = useState('');
   const [fechaTitulación, setfechaTitulación] = useState('');
-  const [nationality, setNationality] = useState('');
+  const [estudyType, setStudyType] = useState('');
 
   //alertas
   const notifyVi = () => {
@@ -95,9 +99,15 @@ function DatosEducation() {
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/academic-data/by/${user.id}`
         );
-        const academicData = response.data;
-        if (academicData && academicData.nationality) {
-          setNationality(academicData.nationality);
+        console.log('entro a fetchAcademicData: ', response.data);
+        if (response.data) {
+          setTitulación(response.data.academic_title);
+          setInstitución(response.data.institution_name);
+          const date = new Date(response.data.degree_date);
+          const formattedDate = date.toISOString().split('T')[0];
+          setfechaTitulación(formattedDate);
+          setStudyType(response.data.studyType.id);
+          setNationality(response.data.nationality);
         }
       } catch (error) {
         console.error('Error al obtener los datos académicos:', error);
@@ -109,35 +119,29 @@ function DatosEducation() {
     fetchAcademicData();
   }, [dispatch, user.id]);
 
-  const validateInput = (input) => {
-    if (!/^[A-Za-z\s]+$/.test(input)) {
-      notifyVi();
-      return false;
-    }
-    return true;
-  };
+  // const validateInput = (input) => {
+  //   if (!/^[A-Za-z\s]+$/.test(input)) {
+  //     notifyVi();
+  //     return false;
+  //   }
+  //   return true;
+  // };
 
   const handleUpdate = async (event) => {
     event.preventDefault();
 
     const form = {
-      estudyType,
-      nombreTitulación,
-      nombreInstitución,
-      fechaTitulación,
-      nationalityId: nationality,
+      academic_title: nombreTitulación,
+      institution_name: nombreInstitución,
+      degree_date: fechaTitulación,
+      nationality,
+      studyTypesID: estudyType,
     };
-
-    // if (
-    //   !validateInput(form.nombreTitulacion) ||
-    //   !validateInput(form.nombreInstitucion) ||
-    //   !validateInput(form.nacionalidad)
-    // ) {
-    //   return;
-    // }
-
+    
+    console.log(form)
+    
     const { data } = await axios.put(
-      `${import.meta.env.VITE_BACKEND_URL}/users/${user.id}`,
+      `${import.meta.env.VITE_BACKEND_URL}/academic-data/${user.id}`,
       form
     );
 
@@ -145,7 +149,7 @@ function DatosEducation() {
       notifyE();
     } else {
       dispatch(setUsers(data));
-      setUserData(data);
+      //setUserData(data);
       notifyS();
     }
   };
@@ -156,14 +160,15 @@ function DatosEducation() {
 
   return (
     <div>
+      <div>
       <ToastContainer />
       <form
-        className="flex flex-col gap-4 items-center"
+        className="flex flex-col gap-4 items-center "
         onSubmit={handleUpdate}
       >
-        <div className="grid grid-cols-2 gap-x-8">
-          <div className="flex flex-col gap-y-4 items-center">
-            <div className="relative w-full">
+        <div className="grid grid-cols-2 gap-x-8 ">
+          <div className="flex flex-col gap-y-4 items-center ">
+            <div className="relative ">
               {estudyType && (
                 <label
                   htmlFor="tipoEstudio"
@@ -175,9 +180,9 @@ function DatosEducation() {
               <select
                 id="tipoEstudio"
                 name="tipoEstudio"
-                className="mt-1 p-2 border rounded w-full"
+                className="mt-1 p-2 border rounded "
                 value={estudyType}
-                onChange={(e) => setEstudyType(e.target.value)}
+                onChange={(e) => setStudyType(e.target.value)}
               >
                    {studys.map((study) => (
                     <option key={study.id} value={study.id}>
@@ -187,7 +192,7 @@ function DatosEducation() {
               </select>
             </div>
 
-            <div className="relative w-full">
+            <div className="relative ">
               {nombreTitulación && (
                 <label
                   htmlFor="nombreTitulacion"
@@ -201,13 +206,13 @@ function DatosEducation() {
                 id="nombreTitulacion"
                 name="nombreTitulacion"
                 placeholder="Nombre de la titulación"
-                className="mt-1 p-2 border rounded w-full"
+                className="mt-1 p-2 border rounded "
                 value={nombreTitulación}
                 onChange={(e) => setTitulación(e.target.value)}
                 />
             </div>
 
-            <div className="relative w-full">
+            <div className="w-auto">
               {nombreInstitución && (
                 <label
                   htmlFor="nombreInstitucion"
@@ -221,21 +226,25 @@ function DatosEducation() {
                 id="nombreInstitucion"
                 name="nombreInstitucion"
                 placeholder="Nombre de la institución educativa"
-                className="mt-1 p-2 border rounded w-full"
+                className="mt-1 p-2 border rounded "
                 value={nombreInstitución}
                 onChange={(e) => setInstitución(e.target.value)}
               />
             </div>
           </div>
-
-          <div className="flex flex-col gap-y-4 items-center">
-            <div className="relative w-full">
+          
+          <div
+            className="flex flex-col gap-y-4 items-center">
+            <div
+              className="relative ">
               {fechaTitulación && (
                 <label
                   htmlFor="fechaTitulacion"
                   className="absolute -top-4 left-2 text-xs text-gray-600"
                 >
-                  Fecha de titulación
+                  Fecha
+                  de
+                  titulación
                 </label>
               )}
               <input
@@ -243,35 +252,44 @@ function DatosEducation() {
                 id="fechaTitulacion"
                 name="fechaTitulacion"
                 placeholder="Fecha de titulación"
-                className="mt-1 p-2 border rounded w-full"
+                className="mt-1 p-2 border rounded "
                 value={fechaTitulación}
                 onChange={(e) => setfechaTitulación(e.target.value)}
               />
             </div>
-
-            <div className="relative w-full">
-              {nationality && (
-                <label
-                  htmlFor="nacionalidad"
-                  className="absolute -top-4 left-2 text-xs text-gray-600"
-                >
-                  Nacionalidad
-                </label>
-              )}
-              <input
-                type="text"
-                id="nacionalidad"
-                name="nacionalidad"
-                placeholder="Nacionalidad"
-                className="mt-1 p-2 border rounded w-full"
+            
+            <div
+              className="relative ">
+              <label
+                htmlFor="sectorLaboral"
+                className="absolute -top-4 left-2 text-xs text-gray-600"
+              >
+                Nacionalidad de la empresa
+              </label>
+              <select
+                className="mt-1 p-2 border rounded "
                 value={nationality}
                 onChange={(e) => setNationality(e.target.value)}
-                />
+                id="nationality"
+                name="nationality"
+              >
+                {defaultOptions.map((option) => (
+                  <option
+                    key={option.id}
+                    value={option.id}>
+                    {option.description}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>
-        <ButtonPrimary title="Guardar" icono={IconSaves} typeB="submit" />
+        <ButtonPrimary
+          title="Guardar"
+          icono={IconSaves}
+          typeB="submit" />
       </form>
+        </div>
     </div>
   );
 }

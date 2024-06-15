@@ -13,7 +13,6 @@ import { setDniType, setUsers } from '../../redux/states/userSlice.js';
 
 function DatosPersonales() {
   //useState
-  const { register } = useForm();
   const dispatch = useDispatch();
   const { user, dniType } = useSelector((state) => state.auth);
   const [userData, setUserData] = useState({}); // Estado local para almacenar los datos del usuario
@@ -21,14 +20,14 @@ function DatosPersonales() {
   const [optionGenders, setOptionGenders] = useState([]);
 
   // Estados locales para los campos del formulario
-  const [name, setName] = useState(user.name || '');
-  const [lastName, setLastName] = useState(user.last_name || '');
-  const [dni, setDni] = useState(user.dni || '');
-  const [email, setEmail] = useState(user.email || '');
-  const [altEmail, setAltEmail] = useState(user.alt_email || '');
-  const [phoneNumber, setPhoneNumber] = useState(user.phone_number || '');
-  const [selectedDniType, setSelectedDniType] = useState(user.dni_type.id);
-  const [selectedGender, setSelectedGender] = useState(user.gender.id);
+  const [name, setName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [dni, setDni] = useState('');
+  const [email, setEmail] = useState('');
+  const [altEmail, setAltEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [selectedDniType, setSelectedDniType] = useState('');
+  const [selectedGender, setSelectedGender] = useState('');
 
   //Alertas
   const notifyVi = () => {
@@ -78,6 +77,14 @@ function DatosPersonales() {
           `${import.meta.env.VITE_BACKEND_URL}/users/${user.id}`
         );
         setUserData(response.data);
+        setName(userData.name)
+        setLastName(userData.last_name)
+        setDni(userData.dni)
+        setEmail(userData.email)
+        setAltEmail(userData.alt_email)
+        setPhoneNumber(userData.phone_number)
+        setSelectedDniType(userData.dniTypeId)
+        setSelectedGender(userData.genderId)
       } catch (error) {
         console.error('Error al obtener los datos del usuario:', error);
         notifyE();
@@ -135,6 +142,8 @@ function DatosPersonales() {
     const formData = new FormData(event.currentTarget);
     const inputName = formData.get('name');
     const inputLastName = formData.get('last_name');
+    
+    console.log('ACTUALIZA PERFIL');
 
     const form = {
       name,
@@ -146,6 +155,8 @@ function DatosPersonales() {
       phone_number: phoneNumber,
       genderId: selectedGender,
     };
+    
+    console.log(form);
 
     if (
       !validateInput(inputName, 'el nombre') ||
@@ -158,6 +169,8 @@ function DatosPersonales() {
       `${import.meta.env.VITE_BACKEND_URL}/users/${user.id}`,
       form
     );
+    
+    console.log(data);
 
     if (data.status === 401) {
       notifyE();
@@ -179,8 +192,8 @@ function DatosPersonales() {
           onSubmit={handleUpdate}
         >
           <div className="grid grid-cols-2 gap-x-8">
-            <div className="flex flex-col justify-center gap-4">
-              <div className="relative">
+            <div className="flex flex-col gap-y-4 items-center">
+              <div className="relative w-full">
                 {name && (
                   <label
                     htmlFor="name"
@@ -201,7 +214,7 @@ function DatosPersonales() {
                 />
               </div>
 
-              <div className="relative">
+              <div className="relative w-full">
                 {selectedDniType && (
                   <label
                     htmlFor="dniType"
@@ -232,7 +245,7 @@ function DatosPersonales() {
                 </select>
               </div>
 
-              <div className="relative">
+              <div className="relative w-full">
                 {selectedGender && (
                   <label
                     htmlFor="gender"
@@ -262,7 +275,7 @@ function DatosPersonales() {
                 </select>
               </div>
 
-              <div className="relative">
+              <div className="relative w-full">
                 {email && (
                   <label
                     htmlFor="email"
@@ -286,7 +299,7 @@ function DatosPersonales() {
             </div>
 
             <div className="flex flex-col justify-center gap-4">
-              <div className="relative">
+              <div className="relative w-full">
                 {lastName && (
                   <label
                     htmlFor="last_name"
@@ -307,7 +320,7 @@ function DatosPersonales() {
                 />
               </div>
 
-              <div className="relative">
+              <div className="relative w-full">
                 {dni && (
                   <label
                     htmlFor="dni"
@@ -329,7 +342,7 @@ function DatosPersonales() {
                 />
               </div>
 
-              <div className="relative">
+              <div className="relative w-full">
                 {altEmail && (
                   <label
                     htmlFor="alt_email"
@@ -349,7 +362,7 @@ function DatosPersonales() {
                 />
               </div>
 
-              <div className="relative">
+              <div className="relative w-full">
                 {phoneNumber && (
                   <label
                     htmlFor="phone_number"

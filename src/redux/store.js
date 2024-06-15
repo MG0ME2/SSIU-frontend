@@ -21,6 +21,7 @@ import { userSlice } from './states/userSlice';
 import variableIndicatorReducer from './states/variableIndicatorSlice';
 import companySectorReducer from './states/companySectorSlice';
 import academicDataReducer from './states/academicDataSlice';
+import employmentDataReducer from './states/employmentDataSlice.js';
 import studyTypesReducer from './states/studyTypesSlice';
 
 
@@ -36,6 +37,7 @@ export const store = configureStore({
     variableIndicator: variableIndicatorReducer,
     companySector: companySectorReducer,
     academicData: academicDataReducer,
+    employmenData: employmentDataReducer,
     studyTypes: studyTypesReducer,
     user: userSlice,
     

@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export const fetchStudyTypes = createAsyncThunk(
-  'studyTypes/fetchAll',
+  'studyTypes/fetchStudyTypes',
   async () => {
       const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/study-types`);
       return response.data;
@@ -12,7 +12,7 @@ export const fetchStudyTypes = createAsyncThunk(
 const studyTypesSlice = createSlice({
   name: 'studyTypes',
   initialState: {
-    data: [],
+    studys: [],
     status: 'idle',
     error: null,
   },
@@ -24,7 +24,7 @@ const studyTypesSlice = createSlice({
       })
       .addCase(fetchStudyTypes.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.sectors = action.payload;
+        state.studys = action.payload;
       })
       .addCase(fetchStudyTypes.rejected, (state, action) => {
         state.status = 'failed';
