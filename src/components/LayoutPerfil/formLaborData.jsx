@@ -170,7 +170,7 @@ function DatosLaborales() {
         >
           <div className="grid grid-cols-2 gap-x-8 w-[700px]">
             <div className="flex flex-col justify-center gap-4">
-              <div className="">
+              <div className="relative w-full">
                 {empresaActual && (
                   <label
                     htmlFor="empresaActual"
@@ -184,7 +184,7 @@ function DatosLaborales() {
                   id="empresaActual"
                   name="empresaActual"
                   placeholder="Nombre de empresa actual"
-                  className="mt-1 p-2 border rounded"
+                  className="mt-1 p-2 border rounded w-full"
                   value={empresaActual}
                   onChange={(e) => setEmpresaActual(e.target.value)}
                 />
@@ -204,7 +204,7 @@ function DatosLaborales() {
                   id="direccionEmpresa"
                   name="direccionEmpresa"
                   placeholder="Dirección de la empresa"
-                  className="mt-1 p-2 border rounded"
+                  className="mt-1 p-2 border rounded w-full"
                   value={direccionEmpresa}
                   onChange={(e) => setDireccionEmpresa(e.target.value)}
                 />
@@ -250,7 +250,7 @@ function DatosLaborales() {
                   id="contactoEmpresa"
                   name="contactoEmpresa"
                   placeholder="Contacto de la empresa"
-                  className="mt-1 p-2 border rounded"
+                  className="mt-1 p-2 border rounded w-full"
                   value={contactoEmpresa}
                   onChange={(e) => setContactoEmpresa(e.target.value)}
                 />
@@ -271,7 +271,7 @@ function DatosLaborales() {
                   id="cargoEmpresa"
                   name="cargoEmpresa"
                   placeholder="Cargo en la empresa"
-                  className="mt-1 p-2 border rounded"
+                  className="mt-1 p-2 border rounded w-full"
                   value={cargoEmpresa}
                   onChange={(e) => setCargoEmpresa(e.target.value)}
                 />

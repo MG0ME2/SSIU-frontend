@@ -166,9 +166,9 @@ function DatosEducation() {
         className="flex flex-col gap-4 items-center "
         onSubmit={handleUpdate}
       >
-        <div className="grid grid-cols-2 gap-x-8 ">
-          <div className="flex flex-col gap-y-4 items-center ">
-            <div className="relative ">
+        <div className="grid grid-cols-2 gap-x-8 w-[700px]">
+          <div className="flex flex-col justify-center gap-4">
+            <div className="relative w-full">
               {estudyType && (
                 <label
                   htmlFor="tipoEstudio"
@@ -180,7 +180,7 @@ function DatosEducation() {
               <select
                 id="tipoEstudio"
                 name="tipoEstudio"
-                className="mt-1 p-2 border rounded "
+                className="mt-1 p-2 border rounded w-full"
                 value={estudyType}
                 onChange={(e) => setStudyType(e.target.value)}
               >
@@ -192,7 +192,7 @@ function DatosEducation() {
               </select>
             </div>
 
-            <div className="relative ">
+            <div className="relative w-full">
               {nombreTitulación && (
                 <label
                   htmlFor="nombreTitulacion"
@@ -206,13 +206,13 @@ function DatosEducation() {
                 id="nombreTitulacion"
                 name="nombreTitulacion"
                 placeholder="Nombre de la titulación"
-                className="mt-1 p-2 border rounded "
+                className="mt-1 p-2 border rounded w-full"
                 value={nombreTitulación}
                 onChange={(e) => setTitulación(e.target.value)}
                 />
             </div>
 
-            <div className="w-auto">
+            <div className="relative w-full">
               {nombreInstitución && (
                 <label
                   htmlFor="nombreInstitucion"
@@ -226,7 +226,7 @@ function DatosEducation() {
                 id="nombreInstitucion"
                 name="nombreInstitucion"
                 placeholder="Nombre de la institución educativa"
-                className="mt-1 p-2 border rounded "
+                className="mt-1 p-2 border rounded w-full"
                 value={nombreInstitución}
                 onChange={(e) => setInstitución(e.target.value)}
               />
@@ -236,7 +236,7 @@ function DatosEducation() {
           <div
             className="flex flex-col gap-y-4 items-center">
             <div
-              className="relative ">
+              className="relative w-full">
               {fechaTitulación && (
                 <label
                   htmlFor="fechaTitulacion"
@@ -252,14 +252,14 @@ function DatosEducation() {
                 id="fechaTitulacion"
                 name="fechaTitulacion"
                 placeholder="Fecha de titulación"
-                className="mt-1 p-2 border rounded "
+                className="mt-1 p-2 border rounded w-full"
                 value={fechaTitulación}
                 onChange={(e) => setfechaTitulación(e.target.value)}
               />
             </div>
             
             <div
-              className="relative ">
+              className="relative w-full">
               <label
                 htmlFor="sectorLaboral"
                 className="absolute -top-4 left-2 text-xs text-gray-600"
@@ -267,7 +267,7 @@ function DatosEducation() {
                 Nacionalidad de la empresa
               </label>
               <select
-                className="mt-1 p-2 border rounded "
+                className="mt-1 p-2 border rounded w-full"
                 value={nationality}
                 onChange={(e) => setNationality(e.target.value)}
                 id="nationality"

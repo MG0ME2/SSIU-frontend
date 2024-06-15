@@ -191,10 +191,10 @@ function DatosPersonales() {
           className="flex flex-col gap-4 items-center"
           onSubmit={handleUpdate}
         >
-          <div className="grid grid-cols-2 gap-x-8">
-            <div className="flex flex-col gap-y-4 items-center">
+          <div className="grid grid-cols-2 gap-x-8 w-[700px]">
+            <div className="flex flex-col justify-center gap-4">
               <div className="relative w-full">
-                {name && (
+                {!name && (
                   <label
                     htmlFor="name"
                     className="absolute -top-4 left-2 text-xs text-gray-600"
@@ -215,7 +215,7 @@ function DatosPersonales() {
               </div>
 
               <div className="relative w-full">
-                {selectedDniType && (
+                {!selectedDniType && (
                   <label
                     htmlFor="dniType"
                     className="absolute -top-4 left-2 text-xs text-gray-600"
@@ -246,7 +246,7 @@ function DatosPersonales() {
               </div>
 
               <div className="relative w-full">
-                {selectedGender && (
+                {!selectedGender && (
                   <label
                     htmlFor="gender"
                     className="absolute -top-4 left-2 text-xs text-gray-600"
@@ -264,7 +264,7 @@ function DatosPersonales() {
                   <option key={user.gender.id} value={user.gender.id}>
                     {user.gender.description}
                   </option>
-                  {optionGenders?.map(
+                  {!optionGenders?.map(
                     (option) =>
                       option.id !== user.gender.id && (
                         <option key={option.id} value={option.id}>
@@ -276,7 +276,7 @@ function DatosPersonales() {
               </div>
 
               <div className="relative w-full">
-                {email && (
+                {!email && (
                   <label
                     htmlFor="email"
                     className="absolute -top-4 left-2 text-xs text-gray-600"
@@ -300,7 +300,7 @@ function DatosPersonales() {
 
             <div className="flex flex-col justify-center gap-4">
               <div className="relative w-full">
-                {lastName && (
+                {!lastName && (
                   <label
                     htmlFor="last_name"
                     className="absolute -top-4 left-2 text-xs text-gray-600"
@@ -321,7 +321,7 @@ function DatosPersonales() {
               </div>
 
               <div className="relative w-full">
-                {dni && (
+                {!dni && (
                   <label
                     htmlFor="dni"
                     className="absolute -top-4 left-2 text-xs text-gray-600"
@@ -343,7 +343,7 @@ function DatosPersonales() {
               </div>
 
               <div className="relative w-full">
-                {altEmail && (
+                {!altEmail && (
                   <label
                     htmlFor="alt_email"
                     className="absolute -top-4 left-2 text-xs text-gray-600"
@@ -363,7 +363,7 @@ function DatosPersonales() {
               </div>
 
               <div className="relative w-full">
-                {phoneNumber && (
+                {!phoneNumber && (
                   <label
                     htmlFor="phone_number"
                     className="absolute -top-4 left-2 text-xs text-gray-600"
