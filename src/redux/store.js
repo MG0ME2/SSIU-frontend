@@ -38,7 +38,6 @@ export const store = configureStore({
     academicData: academicDataReducer,
     employmenData: employmentDataReducer,
     studyTypes: studyTypesReducer,
-    user: userSlice,
     photo: persistedPhotoReducer, 
     
   },
