@@ -48,7 +48,7 @@ const LayoutPerfilQuality = () => {
       </div>
       
       {/* Tab */}
-      <div className="flex flex-col items-center h-[42%] gap-4">
+      <div className="flex flex-col items-center h-[62%] gap-4">
         <div className="flex justify-center w-full px-4 py-2 rounded-t-lg">
           <button
             className={`px-4 py-2 rounded-t-lg ${

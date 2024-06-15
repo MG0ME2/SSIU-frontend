@@ -1,34 +1,38 @@
-import { useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { useSelector, useDispatch } from 'react-redux';
 
+// components
 import ButtonPrimary from '../Buttons/primary.jsx';
-
+//images
 import IconSaves from '../../assets/Img/IconSaves.svg';
-
-import { setUsers } from '../../redux/states/userSlice.js';
+//redux
+import { fetchUsersData } from '../../redux/states/authSlice.js';
 import {
-  updateAcademicData,
   fetchAcademicDataByUser,
 } from '../../redux/states/academicDataSlice';
 import { fetchStudyTypes } from '../../redux/states/studyTypesSlice';
 
 function DatosEducation() {
   const dispatch = useDispatch();
-
-  const [optionEstudyType, setOptionEstudyType] = useState([]);
+  
+  // Selector
   const { user } = useSelector((state) => state.auth);
-  //const { academicData } = useSelector((state) => state.academicData);
+  const [optionEstudyType, setOptionEstudyType] = useState([]);
   const { studys } = useSelector((state) => state.studyTypes);
-
+  
+  const [nationality, setNationality] = useState('');
+  const defaultOptions = [
+    { id: 'nacional', description: 'Nacional' },
+    { id: 'internacional', description: 'Internacional' }
+  ];
+  
   // Estados locales para los campos del formulario - Use State
-  const [estudyType, setEstudyType] = useState(user.studyTypes);
   const [nombreTitulación, setTitulación] = useState('');
   const [nombreInstitución, setInstitución] = useState('');
   const [fechaTitulación, setfechaTitulación] = useState('');
-  const [nationality, setNationality] = useState('');
+  const [estudyType, setStudyType] = useState('');
 
   //alertas
   const notifyVi = () => {
@@ -95,14 +99,15 @@ function DatosEducation() {
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/academic-data/by/${user.id}`
         );
-        const academicData = response.data;
-        if (academicData) {
-          setNationality(academicData.nationality);
-          setTitulación(academicData.academic_title);
-          setInstitución(academicData.institution_name);
-          setfechaTitulación(academicData.degree_date);
-         // setEstudyType(academicData.studyType.id);
-          console.log(academicData.studyType.id)
+        console.log('entro a fetchAcademicData: ', response.data);
+        if (response.data) {
+          setTitulación(response.data.academic_title);
+          setInstitución(response.data.institution_name);
+          const date = new Date(response.data.degree_date);
+          const formattedDate = date.toISOString().split('T')[0];
+          setfechaTitulación(formattedDate);
+          setStudyType(response.data.studyType.id);
+          setNationality(response.data.nationality);
         }
       } catch (error) {
         console.error('Error al obtener los datos académicos:', error);
@@ -114,43 +119,38 @@ function DatosEducation() {
     fetchAcademicData();
   }, [dispatch, user.id]);
 
-  const validateInput = (input) => {
-    if (!/^[A-Za-z\s]+$/.test(input)) {
-      notifyVi();
-      return false;
-    }
-    return true;
-  };
+  // const validateInput = (input) => {
+  //   if (!/^[A-Za-z\s]+$/.test(input)) {
+  //     notifyVi();
+  //     return false;
+  //   }
+  //   return true;
+  // };
 
   const handleUpdate = async (event) => {
     event.preventDefault();
 
     const form = {
-      estudyType,
       academic_title: nombreTitulación,
       institution_name: nombreInstitución,
       degree_date: fechaTitulación,
       nationality,
+      studyTypesID: estudyType,
     };
+    
+    console.log(form)
+    
+    const { data } = await axios.put(
+      `${import.meta.env.VITE_BACKEND_URL}/academic-data/${user.id}`,
+      form
+    );
 
-    // if (
-    //   !validateInput(form.nombreTitulacion) ||
-    //   !validateInput(form.nombreInstitucion) ||
-    //   !validateInput(form.nacionalidad)
-    // ) {
-    //   return;
-    // }
-
-    try {
-      const response = await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/academic-data/${user.id}`,
-        form
-      );
-      dispatch(setUsers(response.data));
-      notifyS();
-    } catch (error) {
-      console.error('Error al actualizar los datos:', error);
+    if (data.status === 401) {
       notifyE();
+    } else {
+      dispatch(fetchUsersData(data));
+      //setUserData(data);
+      notifyS();
     }
   };
 
@@ -160,26 +160,27 @@ function DatosEducation() {
 
   return (
     <div>
+      <div>
       <ToastContainer />
       <form
-        className="flex flex-col gap-4 items-center"
+        className="flex flex-col gap-4 items-center "
         onSubmit={handleUpdate}
       >
-        <div className="grid grid-cols-2 gap-x-8">
-          <div className="flex flex-col gap-y-4 items-center">
+        <div className="grid grid-cols-2 gap-x-8 w-[700px]">
+          <div className="flex flex-col justify-center gap-2">
             <div className="relative w-full">
-              <label
-                htmlFor="estudyType"
-                className="absolute -top-4 left-2 text-xs text-gray-600"
-              >
-                Tipo de Estudio
-              </label>
+                <label
+                  htmlFor="tipoEstudio"
+                  className="text-xs text-gray-600 pl-2"
+                >
+                  Tipo de Estudio
+                </label>
               <select
                 id="estudyType"
                 name="estudyType"
                 className="mt-1 p-2 border rounded w-full"
                 value={estudyType}
-                onChange={(e) => setEstudyType(e.target.value)}
+                onChange={(e) => setStudyType(e.target.value)}
               >
                 {studys &&
                   studys.map((study) => (
@@ -191,14 +192,12 @@ function DatosEducation() {
             </div>
 
             <div className="relative w-full">
-              {nombreTitulación && (
                 <label
                   htmlFor="nombreTitulacion"
-                  className="absolute -top-4 left-2 text-xs text-gray-600"
+                  className="text-xs text-gray-600 pl-2"
                 >
                   Nombre de la titulación
                 </label>
-              )}
               <input
                 type="text"
                 id="nombreTitulacion"
@@ -211,14 +210,12 @@ function DatosEducation() {
             </div>
 
             <div className="relative w-full">
-              {nombreInstitución && (
                 <label
                   htmlFor="nombreInstitucion"
-                  className="absolute -top-4 left-2 text-xs text-gray-600"
+                  className="text-xs text-gray-600 pl-2"
                 >
                   Nombre de la institución
                 </label>
-              )}
               <input
                 type="text"
                 id="nombreInstitucion"
@@ -230,17 +227,19 @@ function DatosEducation() {
               />
             </div>
           </div>
-
-          <div className="flex flex-col gap-y-4 items-center">
-            <div className="relative w-full">
-              {fechaTitulación && (
+          
+          <div
+            className="flex flex-col gap-2 items-center">
+            <div
+              className="relative w-full">
                 <label
                   htmlFor="fechaTitulacion"
-                  className="absolute -top-4 left-2 text-xs text-gray-600"
+                  className="text-xs text-gray-600 pl-2"
                 >
-                  Fecha de titulación
+                  Fecha
+                  de
+                  titulación
                 </label>
-              )}
               <input
                 type="date"
                 id="fechaTitulacion"
@@ -252,32 +251,42 @@ function DatosEducation() {
               
               />
             </div>
-
-            <div className="relative w-full">
-              {nationality && (
-                <label
-                  htmlFor="nacionalidad"
-                  className="absolute -top-4 left-2 text-xs text-gray-600"
-                >
-                  Nacionalidad
-                </label>
-              )}
-              <input
-                type="text"
-                id="nacionalidad"
-                name="nacionalidad"
-                placeholder="Nacionalidad"
+            
+            <div
+              className="relative w-full">
+              <label
+                htmlFor="sectorLaboral"
+                className="text-xs text-gray-600 pl-2"
+              >
+                Nacionalidad de la empresa
+              </label>
+              <select
                 className="mt-1 p-2 border rounded w-full"
                 value={nationality}
                 onChange={(e) => setNationality(e.target.value)}
-              />
+                id="nationality"
+                name="nationality"
+              >
+                {defaultOptions.map((option) => (
+                  <option
+                    key={option.id}
+                    value={option.id}>
+                    {option.description}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
         </div>
-        <ButtonPrimary title="Guardar" icono={IconSaves} typeB="submit" />
+        <ButtonPrimary
+          title="Guardar"
+          icono={IconSaves}
+          typeB="submit" />
       </form>
+        </div>
     </div>
   );
 }
+
 
 export default DatosEducation;
