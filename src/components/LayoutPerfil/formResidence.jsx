@@ -5,7 +5,9 @@ import { ToastContainer, toast } from 'react-toastify';
 //import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setDniType, setUsers } from '../../redux/states/userSlice.js';
+
+import { fetchDniType, fetchUsersData } from '../../redux/states/authSlice.js';
+//import { setDniType, setUsers } from '../../redux/states/userSlice.js';
 import ButtonPrimary from '../Buttons/primary.jsx';
 import IconSaves from '../../assets/Img/IconSaves.svg';
 
@@ -55,7 +57,7 @@ function DatosResidencia() {
           `${import.meta.env.VITE_BACKEND_URL}/dni-types`
         );
         if (response.data.length > 1) {
-          dispatch(setDniType(response.data[0]));
+          dispatch(fetchDniType(response.data[0]));
           setOptions(response.data);
         } else {
           setOptions([]);
@@ -121,7 +123,7 @@ function DatosResidencia() {
     if (data.status === 401) {
       notifyE();
     } else {
-      dispatch(setUsers(data));
+      dispatch(fetchUsersData(data));
       setUserData(data);
       notifyS();
       
@@ -142,12 +144,12 @@ function DatosResidencia() {
               <input
                 type="text"
                 placeholder="Pais de residencia"
-                className="mt-1 p-2 border rounded"
+                className="mt-1 p-2 border rounded  w-full"
               />
               <input
                 type="text"
                 placeholder="Dirección de residencia"
-                className="mt-1 p-2 border rounded"
+                className="mt-1 p-2 border rounded  w-full"
               />
               <div>
               </div>
@@ -156,12 +158,12 @@ function DatosResidencia() {
               <input
                 type="text"
                 placeholder="Ciudad de residencia"
-                className="mt-1 p-2 border rounded "
+                className="mt-1 p-2 border rounded  w-full"
               />
               <input
                 type="text"
                 placeholder="Barrio"
-                className="mt-1 p-2 border rounded"
+                className="mt-1 p-2 border rounded  w-full"
               />
               <div>
               </div>

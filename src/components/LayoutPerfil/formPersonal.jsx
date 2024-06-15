@@ -9,13 +9,12 @@ import { Navigate } from 'react-router-dom';
 import { useLocalStorage } from '../localStorage/index.jsx';
 import ButtonPrimary from '../Buttons/primary.jsx';
 import IconSaves from '../../assets/Img/IconSaves.svg';
-import { setDniType, setUsers } from '../../redux/states/userSlice.js';
+import { fetchUsersData } from '../../redux/states/authSlice.js';
 
 function DatosPersonales() {
   //useState
   const dispatch = useDispatch();
-  const { user, dniType } = useSelector((state) => state.auth);
-  const [userData, setUserData] = useState({}); // Estado local para almacenar los datos del usuario
+  const { user } = useSelector((state) => state.auth);
   const [options, setOptions] = useState([]);
   const [optionGenders, setOptionGenders] = useState([]);
 
@@ -76,15 +75,14 @@ function DatosPersonales() {
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/users/${user.id}`
         );
-        setUserData(response.data);
-        setName(userData.name)
-        setLastName(userData.last_name)
-        setDni(userData.dni)
-        setEmail(userData.email)
-        setAltEmail(userData.alt_email)
-        setPhoneNumber(userData.phone_number)
-        setSelectedDniType(userData.dniTypeId)
-        setSelectedGender(userData.genderId)
+        setName(response.data.name);
+        setLastName(response.data.last_name);
+        setDni(response.data.dni);
+        setEmail(response.data.email);
+        setAltEmail(response.data.alt_email);
+        setPhoneNumber(response.data.phone_number);
+        setSelectedDniType(response.data.dniTypeId);
+        setSelectedGender(response.data.genderId);
       } catch (error) {
         console.error('Error al obtener los datos del usuario:', error);
         notifyE();
@@ -142,7 +140,7 @@ function DatosPersonales() {
     const formData = new FormData(event.currentTarget);
     const inputName = formData.get('name');
     const inputLastName = formData.get('last_name');
-    
+
     console.log('ACTUALIZA PERFIL');
 
     const form = {
@@ -155,7 +153,7 @@ function DatosPersonales() {
       phone_number: phoneNumber,
       genderId: selectedGender,
     };
-    
+
     console.log(form);
 
     if (
@@ -169,17 +167,14 @@ function DatosPersonales() {
       `${import.meta.env.VITE_BACKEND_URL}/users/${user.id}`,
       form
     );
-    
+
     console.log(data);
 
     if (data.status === 401) {
       notifyE();
     } else {
-      dispatch(setUsers(data));
-      setUserData(data);
+      dispatch(fetchUsersData(data));
       notifyS();
-
-      //  )
     }
   };
 
@@ -191,8 +186,8 @@ function DatosPersonales() {
           className="flex flex-col gap-4 items-center"
           onSubmit={handleUpdate}
         >
-          <div className="grid grid-cols-2 gap-x-8">
-            <div className="flex flex-col gap-y-4 items-center">
+          <div className="grid grid-cols-2 gap-x-8 w-[700px]">
+            <div className="flex flex-col justify-center gap-4">
               <div className="relative w-full">
                 {name && (
                   <label
@@ -264,7 +259,7 @@ function DatosPersonales() {
                   <option key={user.gender.id} value={user.gender.id}>
                     {user.gender.description}
                   </option>
-                  {optionGenders?.map(
+                  {!optionGenders?.map(
                     (option) =>
                       option.id !== user.gender.id && (
                         <option key={option.id} value={option.id}>

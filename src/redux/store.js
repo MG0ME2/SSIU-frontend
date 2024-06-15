@@ -17,7 +17,6 @@ import storage from 'redux-persist/lib/storage';
 
 // Slices
 import { persistedAuthReducer } from './states/authSlice';
-import { userSlice } from './states/userSlice';
 import variableIndicatorReducer from './states/variableIndicatorSlice';
 import companySectorReducer from './states/companySectorSlice';
 import academicDataReducer from './states/academicDataSlice';
@@ -39,7 +38,6 @@ export const store = configureStore({
     academicData: academicDataReducer,
     employmenData: employmentDataReducer,
     studyTypes: studyTypesReducer,
-    user: userSlice,
     
   },
   middleware: (getDefaultMiddleware) =>

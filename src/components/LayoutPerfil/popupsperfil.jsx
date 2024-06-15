@@ -36,23 +36,20 @@ const ChangePasswordPopup = ({onClose}) => {
   };
   
   return (
-    <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
-      <div className="bg-white p-6 rounded-lg shadow-md ">
-        <div className="flex items-center justify-center">
+    <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-50">
+      <div className="bg-white p-6 rounded-lg shadow-md relative w-11/12 max-w-md z-50">
+        <FaTimes
+          className="absolute top-2 right-2 text-red-600 cursor-pointer"
+          onClick={onClose}
+        />
+        <div className="flex items-center justify-center mb-4">
           <img
             src={IconHomeLogin}
             alt="Icono para home"
             className="w-20 object-cover"
           />
         </div>
-        <FaTimes
-          className="absolute top-2 right-2 text-red-600 cursor-pointer"
-          onClick={onClose}
-        />
-        
-        <div className="flex items-center justify-center">
-          <h2 className="text-lg font-semibold mb-4">Cambiar Contraseña</h2>
-        </div>
+        <h2 className="text-lg font-semibold mb-4 text-center">Cambiar Contraseña</h2>
         <form onSubmit={handleSave}>
           <div className="relative mb-4">
             <input
@@ -62,7 +59,6 @@ const ChangePasswordPopup = ({onClose}) => {
               autoComplete="currentPassword"
               placeholder="Ingresar contraseña actual"
               value={currentPassword}
-              // onChange={handleChange}
               onChange={(e) => setCurrentPassword(e.target.value)}
               className="mt-1 p-2 border rounded w-full pr-10"
               required
@@ -71,24 +67,24 @@ const ChangePasswordPopup = ({onClose}) => {
               type="button"
               className="absolute inset-y-0 right-0 flex items-center px-3"
               onClick={() => handleTogglePasswordVisibility('currentPassword')}
-              style={{top: '50%', transform: 'translateY(-50%)'}} // Alinea el botón verticalmente
+              style={{ top: '50%', transform: 'translateY(-50%)' }}
             >
               {showPasswords.currentPassword ? (
                 <img
                   className="h-5 w-5 text-gray-400"
                   src={IconEye}
-                  alt="ÍconoEyeOn"
+                  alt="Ícono Eye On"
                 />
               ) : (
                 <img
-                  className="h-5 w-5 text-gray-400 "
+                  className="h-5 w-5 text-gray-400"
                   src={IconOffEye}
-                  alt="ÍconoEyeOff"
+                  alt="Ícono Eye Off"
                 />
               )}
             </button>
           </div>
-          
+
           <div className="relative mb-4">
             <input
               type={showPasswords.newPassword ? 'text' : 'password'}
@@ -109,31 +105,31 @@ const ChangePasswordPopup = ({onClose}) => {
                 top: '50%',
                 transform: 'translateY(-50%)',
                 right: '8px',
-              }} // Alinea el botón verticalmente y ajusta la posición a la derecha
+              }}
             >
               {showPasswords.newPassword ? (
                 <img
                   className="h-5 w-5 text-gray-400"
                   src={IconEye}
-                  alt="ÍconoEyeOn"
+                  alt="Ícono Eye On"
                 />
               ) : (
                 <img
-                  className="h-5 w-5 text-gray-400 "
+                  className="h-5 w-5 text-gray-400"
                   src={IconOffEye}
-                  alt="ÍconoEyeOff"
+                  alt="Ícono Eye Off"
                 />
               )}
             </button>
           </div>
-          
+
           <div className="relative mb-4">
             <input
               type={showPasswords.confirmNewPassword ? 'text' : 'password'}
               id="confirmNewPassword"
               name="confirmNewPassword"
               autoComplete="newPassword"
-              placeholder="Confirmar contraseña nueva"
+              placeholder="Confirmar nueva contraseña"
               value={confirmNewPassword}
               onChange={(e) => setConfirmNewPassword(e.target.value)}
               className="mt-1 p-2 border rounded w-full pr-10"
@@ -147,24 +143,24 @@ const ChangePasswordPopup = ({onClose}) => {
                 top: '50%',
                 transform: 'translateY(-50%)',
                 right: '8px',
-              }} // Alinea el botón verticalmente y ajusta la posición a la derecha
+              }}
             >
               {showPasswords.confirmNewPassword ? (
                 <img
                   className="h-5 w-5 text-gray-400"
                   src={IconEye}
-                  alt="ÍconoEyeOn"
+                  alt="Ícono Eye On"
                 />
               ) : (
                 <img
-                  className="h-5 w-5 text-gray-400 "
+                  className="h-5 w-5 text-gray-400"
                   src={IconOffEye}
-                  alt="ÍconoEyeOff"
+                  alt="Ícono Eye Off"
                 />
               )}
             </button>
           </div>
-          
+
           <div className="flex items-center justify-center space-x-4 mt-4">
             <ButtonPrimary
               title={'Guardar'}
@@ -178,5 +174,6 @@ const ChangePasswordPopup = ({onClose}) => {
     </div>
   );
 };
+
 
 export default ChangePasswordPopup;
