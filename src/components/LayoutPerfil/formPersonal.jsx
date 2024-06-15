@@ -187,16 +187,14 @@ function DatosPersonales() {
           onSubmit={handleUpdate}
         >
           <div className="grid grid-cols-2 gap-x-8 w-[700px]">
-            <div className="flex flex-col justify-center gap-4">
+            <div className="flex flex-col justify-center gap-2">
               <div className="relative w-full">
-                {name && (
                   <label
                     htmlFor="name"
-                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                    className="text-xs text-gray-600 pl-2"
                   >
                     Nombre
                   </label>
-                )}
                 <input
                   type="text"
                   id="name"
@@ -210,14 +208,12 @@ function DatosPersonales() {
               </div>
 
               <div className="relative w-full">
-                {selectedDniType && (
                   <label
                     htmlFor="dniType"
-                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                    className="text-xs text-gray-600 pl-2"
                   >
                     Tipo de DNI
                   </label>
-                )}
                 <select
                   className="mt-1 p-2 border rounded w-full"
                   value={selectedDniType}
@@ -241,14 +237,12 @@ function DatosPersonales() {
               </div>
 
               <div className="relative w-full">
-                {selectedGender && (
                   <label
                     htmlFor="gender"
-                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                    className="text-xs text-gray-600 pl-2"
                   >
                     Género
                   </label>
-                )}
                 <select
                   className="mt-1 p-2 border rounded w-full"
                   value={selectedGender}
@@ -259,7 +253,7 @@ function DatosPersonales() {
                   <option key={user.gender.id} value={user.gender.id}>
                     {user.gender.description}
                   </option>
-                  {!optionGenders?.map(
+                  {optionGenders?.map(
                     (option) =>
                       option.id !== user.gender.id && (
                         <option key={option.id} value={option.id}>
@@ -271,14 +265,12 @@ function DatosPersonales() {
               </div>
 
               <div className="relative w-full">
-                {email && (
                   <label
                     htmlFor="email"
-                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                    className="text-xs text-gray-600 pl-2"
                   >
                     Correo Institucional
                   </label>
-                )}
                 <input
                   type="email"
                   id="email"
@@ -293,16 +285,14 @@ function DatosPersonales() {
               </div>
             </div>
 
-            <div className="flex flex-col justify-center gap-4">
+            <div className="flex flex-col justify-center gap-2">
               <div className="relative w-full">
-                {lastName && (
                   <label
                     htmlFor="last_name"
-                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                    className="text-xs text-gray-600 pl-2"
                   >
                     Apellido
                   </label>
-                )}
                 <input
                   type="text"
                   id="last_name"
@@ -316,14 +306,12 @@ function DatosPersonales() {
               </div>
 
               <div className="relative w-full">
-                {dni && (
                   <label
                     htmlFor="dni"
-                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                    className="text-xs text-gray-600 pl-2"
                   >
                     Número de identificación
                   </label>
-                )}
                 <input
                   type="number"
                   id="dni"
@@ -338,14 +326,12 @@ function DatosPersonales() {
               </div>
 
               <div className="relative w-full">
-                {altEmail && (
                   <label
                     htmlFor="alt_email"
-                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                    className="text-xs text-gray-600 pl-2"
                   >
                     Correo alternativo
                   </label>
-                )}
                 <input
                   type="email"
                   id="alt_email"
@@ -358,14 +344,12 @@ function DatosPersonales() {
               </div>
 
               <div className="relative w-full">
-                {phoneNumber && (
                   <label
                     htmlFor="phone_number"
-                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                    className="text-xs text-gray-600 pl-2"
                   >
                     Número de teléfono
                   </label>
-                )}
                 <input
                   type="number"
                   id="phone_number"

@@ -167,16 +167,14 @@ function DatosLaborales() {
           onSubmit={handleUpdate}
         >
           <div className="grid grid-cols-2 gap-x-8 w-[700px]">
-            <div className="flex flex-col justify-center gap-4">
+            <div className="flex flex-col justify-center gap-2">
               <div className="relative w-full">
-                {empresaActual && (
                   <label
                     htmlFor="empresaActual"
-                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                    className="text-xs text-gray-600 pl-2"
                   >
                     Nombre de empresa actual
                   </label>
-                )}
                 <input
                   type="text"
                   id="empresaActual"
@@ -189,14 +187,12 @@ function DatosLaborales() {
               </div>
 
               <div className="relative w-full">
-                {direccionEmpresa && (
                   <label
                     htmlFor="direccionEmpresa"
-                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                    className="text-xs text-gray-600 pl-2"
                   >
                     Dirección de la empresa
                   </label>
-                )}
                 <input
                   type="text"
                   id="direccionEmpresa"
@@ -211,7 +207,7 @@ function DatosLaborales() {
               <div className="relative w-full">
                 <label
                   htmlFor="sectorLaboral"
-                  className="absolute -top-4 left-2 text-xs text-gray-600"
+                  className="text-xs text-gray-600 pl-2"
                 >
                   Sector Empresarial
                 </label>
@@ -232,13 +228,13 @@ function DatosLaborales() {
             </div>
             
             <div
-              className="flex flex-col justify-center gap-4">
+              className="flex flex-col justify-center gap-2">
               <div
                 className="relative w-full">
                 {contactoEmpresa && (
                   <label
                     htmlFor="contactoEmpresa"
-                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                    className="text-xs text-gray-600 pl-2"
                   >
                     Contacto de la empresa
                   </label>
@@ -259,7 +255,7 @@ function DatosLaborales() {
                 {cargoEmpresa && (
                   <label
                     htmlFor="cargoEmpresa"
-                    className="absolute -top-4 left-2 text-xs text-gray-600"
+                    className="text-xs text-gray-600 pl-2"
                   >
                     Cargo en la empresa
                   </label>
@@ -279,7 +275,7 @@ function DatosLaborales() {
                 className="relative w-full">
                 <label
                   htmlFor="sectorLaboral"
-                  className="absolute -top-4 left-2 text-xs text-gray-600"
+                  className="text-xs text-gray-600 pl-2"
                 >
                   Nacionalidad de la empresa
                 </label>

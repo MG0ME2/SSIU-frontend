@@ -167,16 +167,14 @@ function DatosEducation() {
         onSubmit={handleUpdate}
       >
         <div className="grid grid-cols-2 gap-x-8 w-[700px]">
-          <div className="flex flex-col justify-center gap-4">
+          <div className="flex flex-col justify-center gap-2">
             <div className="relative w-full">
-              {estudyType && (
                 <label
                   htmlFor="tipoEstudio"
-                  className="absolute -top-4 left-2 text-xs text-gray-600"
+                  className="text-xs text-gray-600 pl-2"
                 >
                   Tipo de Estudio
                 </label>
-              )}
               <select
                 id="tipoEstudio"
                 name="tipoEstudio"
@@ -193,14 +191,12 @@ function DatosEducation() {
             </div>
 
             <div className="relative w-full">
-              {nombreTitulación && (
                 <label
                   htmlFor="nombreTitulacion"
-                  className="absolute -top-4 left-2 text-xs text-gray-600"
+                  className="text-xs text-gray-600 pl-2"
                 >
                   Nombre de la titulación
                 </label>
-              )}
               <input
                 type="text"
                 id="nombreTitulacion"
@@ -213,14 +209,12 @@ function DatosEducation() {
             </div>
 
             <div className="relative w-full">
-              {nombreInstitución && (
                 <label
                   htmlFor="nombreInstitucion"
-                  className="absolute -top-4 left-2 text-xs text-gray-600"
+                  className="text-xs text-gray-600 pl-2"
                 >
                   Nombre de la institución
                 </label>
-              )}
               <input
                 type="text"
                 id="nombreInstitucion"
@@ -234,19 +228,17 @@ function DatosEducation() {
           </div>
           
           <div
-            className="flex flex-col gap-y-4 items-center">
+            className="flex flex-col gap-2 items-center">
             <div
               className="relative w-full">
-              {fechaTitulación && (
                 <label
                   htmlFor="fechaTitulacion"
-                  className="absolute -top-4 left-2 text-xs text-gray-600"
+                  className="text-xs text-gray-600 pl-2"
                 >
                   Fecha
                   de
                   titulación
                 </label>
-              )}
               <input
                 type="date"
                 id="fechaTitulacion"
@@ -262,7 +254,7 @@ function DatosEducation() {
               className="relative w-full">
               <label
                 htmlFor="sectorLaboral"
-                className="absolute -top-4 left-2 text-xs text-gray-600"
+                className="text-xs text-gray-600 pl-2"
               >
                 Nacionalidad de la empresa
               </label>
