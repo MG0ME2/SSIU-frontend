@@ -8,7 +8,7 @@ import ButtonPrimary from '../Buttons/primary.jsx';
 //images
 import IconSaves from '../../assets/Img/IconSaves.svg';
 //redux
-import { setUsers } from '../../redux/states/userSlice.js';
+import { fetchUsersData } from '../../redux/states/authSlice.js';
 import {
   fetchAcademicDataByUser,
 } from '../../redux/states/academicDataSlice';
@@ -148,7 +148,7 @@ function DatosEducation() {
     if (data.status === 401) {
       notifyE();
     } else {
-      dispatch(setUsers(data));
+      dispatch(fetchUsersData(data));
       //setUserData(data);
       notifyS();
     }
@@ -293,5 +293,6 @@ function DatosEducation() {
     </div>
   );
 }
+
 
 export default DatosEducation;

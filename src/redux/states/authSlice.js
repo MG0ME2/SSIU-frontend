@@ -24,6 +24,24 @@ export const loginAsync = createAsyncThunk(
   }
 );
 
+export const fetchDniType = createAsyncThunk(
+  'dniType/fetchDniType',
+  async () => {
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/dniType`);
+    return response.data;
+  }
+);
+
+export const fetchUsersData = createAsyncThunk(
+  'user/fetchUsersData',
+  async () => {
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/user`);
+    return response.data;
+  }
+);
+
+
+
 // Define la configuración de persistencia para el slice de autenticación
 const authPersistConfig = {
   key: 'auth',
@@ -36,7 +54,7 @@ export const authSlice = createSlice({
     user: {},
     token: null,
     isLoggedIn: false,
-    dniType: {},
+    dniType: [],
   },
   reducers: {
     login: (state, action) => {
@@ -57,6 +75,12 @@ export const authSlice = createSlice({
         state.user = action.payload.user;
         state.token = action.payload.token;
         state.isLoggedIn = true;
+      })
+      .addCase(fetchDniType.fulfilled, (state, action) => {
+        state.dniType = action.payload;
+      })
+      .addCase(fetchUsersData.fulfilled, (state, action) => {
+        state.user = action.payload;
       })
       .addCase(loginAsync.rejected, (state) => {
         state.user = null;

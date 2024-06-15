@@ -9,9 +9,7 @@ import ButtonPrimary from '../Buttons/primary.jsx';
 //images
 import IconSaves from '../../assets/Img/IconSaves.svg';
 //redux
-import {
-  setUsers,
-} from '../../redux/states/userSlice.js';
+import { fetchUsersData } from '../../redux/states/authSlice.js';
 import { fetchCompanySectors } from '../../redux/states/companySectorSlice';
 import {
   fetchEmploymentDataByUser,
@@ -155,7 +153,7 @@ function DatosLaborales() {
     if (data.status === 401) {
       notifyE();
     } else {
-      dispatch(setUsers(data));
+      dispatch(fetchUsersData(data));
       notifyS();
     }
   };
