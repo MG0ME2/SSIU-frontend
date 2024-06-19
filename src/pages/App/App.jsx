@@ -25,7 +25,11 @@ import {
   SuperAdminRequestSatges
 } from '../SuperAdmin/index';
 /// Admin
-import { AdminPerfil, AdminHome } from '../Admin/index';
+import { 
+  AdminPerfil, 
+  AdminHome, 
+  SsiuHome 
+} from '../Admin/index';
 
 // Styles
 import './App.css';
@@ -66,6 +70,7 @@ const AppRoutes = () => {
       <Route element={<ProtectedRoute role="admin" redirectTo="/" />}>
         <Route path="/admin" element={<AdminHome />} />
         <Route path="/admin/perfil" element={<AdminPerfil />} />
+        <Route path="/admin/home-ssiu" element={<SsiuHome />} />
       </Route>
 
       {/*QualityInstitutional*/}

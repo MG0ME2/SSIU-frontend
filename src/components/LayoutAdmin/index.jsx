@@ -63,7 +63,7 @@ const LayoutAdmin = ({ children }) => {
               </li>
 
               <li>
-                <NavItem to="/admin" currentPath={location.pathname}>
+                <NavItem to="/admin/home-ssiu" currentPath={location.pathname}>
                   <img
                     src={IconBook}
                     alt="Icono book 2"
@@ -90,6 +90,12 @@ const LayoutAdmin = ({ children }) => {
                 </NavItem>
               </li>
 
+              <li className="text-white opacity-70 sm:p-0">
+                <p className="text-xs flex items-center justify-center">
+                  Configuración de reportes
+                </p>
+              </li>
+
               <li>
                 <NavItem to="/admin" currentPath={location.pathname}>
                   <img
@@ -97,9 +103,27 @@ const LayoutAdmin = ({ children }) => {
                     alt="Icono book 2"
                     className="w-4 h-4 mr-2"
                   />
-                  Configuracion de privacidad
+                  <h1 className='text-justify'>Configuracion de reportes publico</h1>
                 </NavItem>
               </li>
+
+              <li className="text-white opacity-70 sm:p-0">
+                <p className="text-xs flex items-center justify-center">
+                  Proyectos
+                </p>
+              </li>
+
+              <li>
+                <NavItem to="/admin" currentPath={location.pathname}>
+                  <img
+                    src={IconBook}
+                    alt="Icono book 2"
+                    className="w-4 h-4 mr-2"
+                  />
+                  Validación de proyectos
+                </NavItem>
+              </li>
+
             </ul>
           </div>
 
