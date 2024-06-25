@@ -11,19 +11,20 @@ import { useDispatch, useSelector } from 'react-redux';
 //import { useLocalStorage } from '../../components/localStorage';
 //import { login } from '../../redux/states/authSlice';
 
+// eslint-disable-next-line react/prop-types
 const ProtectedRoute = ({ role, children, redirectTo = '/login' }) => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
+  
+  console.log('USER: ',user);
+  console.log('token: ', token);
 
   if (!isLoggedIn || !user || !token) {
     return <Navigate to={redirectTo} />;
   }// verificar si user y rol exsite
   else if (
-    isLoggedIn &&
-    user.role &&
-    user.role.length > 0 &&
-    user.role[0].description.includes(role)
+    isLoggedIn && user.role[0].description.includes(role)
   ) {
     return children ? children : <Outlet />;
   }
