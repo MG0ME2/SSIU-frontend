@@ -1,49 +1,66 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import axios from 'axios';
 
-// Definir la acción asincrónica para actualizar las fechas de las etapas
-export const updateStageDates = createAsyncThunk(
-  'etapa/updateDates',
-  async ({ userId, etapas }, { rejectWithValue }) => {
+
+// Definir la acción asincrónica para actualizar las fechas de las stages
+export const fetchStageDates = createAsyncThunk(
+  'stage/updateDates',
+  async ({ stag }, { rejectWithValue }) => {
     try {
-      // Simular la llamada a la API para guardar las fechas en la base de datos
-      // Aquí deberías hacer la llamada real a tu backend para guardar las fechas
-      const response = await axios.put(
-        `${import.meta.env.VITE_BACKEND_URL}/stages/${userId}`,
-        etapas
+      //Mapea los datos que se requieren para crear las fechas
+      const DataAditional = stag.map((stage, index) => ({
+        ...stage,
+        description: `etapa ${index + 1}`,
+        type_MDI: `medición de impacto a graudao`,
+        status_id: 1,
+        academic_program_id: 1,
+      }));
+
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/stage`,
+        DataAditional
       );
-      return response.data;
+      return response;
     } catch (error) {
-      return rejectWithValue(error.response.data);
+      return rejectWithValue(error.response);
     }
   }
 );
 
-// Definir el slice de etapa
+// Configuración de persistencia
+const stagePersistConfig = {
+  key: 'stage',
+  storage,
+};
+
+// Definir el slice de stage
 const stageSlice = createSlice({
-  name: 'etapa',
+  name: 'stage',
   initialState: {
-    etapas: [], // Estado inicial vacío para las fechas de las etapas
+    stages: {}, // Estado inicial vacío para las fechas de las stages
     loading: false, // Estado para controlar el estado de carga
     error: null, // Estado para manejar errores
   },
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(updateStageDates.pending, (state) => {
+      .addCase(fetchStageDates.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(updateStageDates.fulfilled, (state, action) => {
+      .addCase(fetchStageDates.fulfilled, (state, action) => {
         state.loading = false;
-        // Actualizar el estado con las nuevas fechas de las etapas
-        state.etapas = action.payload;
+        state.stages = action.payload;
       })
-      .addCase(updateStageDates.rejected, (state, action) => {
+      .addCase(fetchStageDates.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
   },
 });
 
-export default stageSlice.reducer;
+const persistedStageReducer = persistReducer(stagePersistConfig, stageSlice.reducer);
+
+export default persistedStageReducer;

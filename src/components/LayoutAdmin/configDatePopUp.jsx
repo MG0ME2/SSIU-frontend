@@ -9,23 +9,28 @@ import ButtonOnclick from '../Buttons/onclick';
 
 import IconDate from '../../assets/Img/IconDate.svg';
 
-import { updateStageDates } from '../../redux/states/stageSlice';
+import { fetchStageDates } from '../../redux/states/stageSlice';
+import { fetchStatus } from '../../redux/states/statusSlice';
 
 const ConfigDatePopUp = ({ onClose, onSubmit }) => {
+  const dispatch = useDispatch();
+  const { stages } = useSelector((state) => state.stage);
+  const { user } = useSelector((state) => state.auth);
+  const { status } = useSelector((state) => state.status);
 
-    const dispatch = useDispatch();
-    const { user } = useSelector((state) => state.auth);
-  
-// Estado local para las fechas de las etapas
-const [etapas, setEtapas] = useState([
-    { id: 1, fechaInicio: '', fechaFin: '' },
-    { id: 2, fechaInicio: '', fechaFin: '' },
-    { id: 3, fechaInicio: '', fechaFin: '' },
-    { id: 4, fechaInicio: '', fechaFin: '' },
-    { id: 5, fechaInicio: '', fechaFin: '' },
-    { id: 6, fechaInicio: '', fechaFin: '' },
-  ]);
-  
+  const getCurrentTime = () => {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    return `${hours}:${minutes}:00`;
+  };
+
+  const [ids] = useState([1, 2, 3, 4, 5, 6]);
+
+  const [etapas, setEtapas] = useState(
+    ids.map(() => ({ fechaInicio: '', fechaFin: '' }))
+  );
+
   const notifyE = () => {
     toast.error('Error al guardar los datos', {
       position: 'top-right',
@@ -51,20 +56,39 @@ const [etapas, setEtapas] = useState([
       theme: 'light',
     });
   };
-  const notify = () => {
-    toast.warning(getWarnignMessage());
-  };
 
   const handleGuardarFechas = async (e) => {
     e.preventDefault();
     try {
-      await dispatch(updateStageDates({ userId: user.id, etapas })).unwrap();
+
+      //const id = status.id
+      // Ajustar las fechas para incluir la hora actual
+      const etapasConHoraActual = etapas.map((etapa) => ({
+        fechaInicio: etapa.fechaInicio
+          ? `${etapa.fechaInicio} ${getCurrentTime()}`
+          : '',
+        fechaFin: etapa.fechaFin ? `${etapa.fechaFin} ${getCurrentTime()}` : '',
+      }));
+
+      await dispatch(
+        fetchStageDates({ etapas: etapasConHoraActual })
+      ).unwrap();
       notifyS();
       onClose();
-      navigate('/admin/home-ssiu/activeStage1')
     } catch (error) {
       console.error('Error al guardar las fechas de las etapas:', error);
       notifyE();
+      dispatch(fetchStatus());
+      console.log(
+        'estado: ',
+        status,
+        ' user: ',
+        user.id,
+        '  datos: ',
+        etapas,
+        '  stage: ',
+        stages
+      );
     }
   };
 
@@ -80,18 +104,18 @@ const [etapas, setEtapas] = useState([
           <h2 className="text-lg font-semibold">Guardar Fechas de Etapas</h2>
         </div>
         <form onSubmit={handleGuardarFechas}>
-          {etapas.map((etapa) => (
-            <div key={etapa.id} className="mb-4">
+          {ids.map((id, index) => (
+            <div key={id} className="mb-4">
               <div className="flex items-center justify-center">
                 <div className="w-full max-w-lg">
                   <div className="flex items-center mb-1">
                     <div className="font-bold mr-4">
                       <label className="block text-sm text-gray-800">
-                        Etapa {etapa.id}
+                        Etapa {id}
                       </label>
                     </div>
                     <div className="ml-1">
-                      {etapa.id === 1 && (
+                      {index === 0 && (
                         <label className="font-bold block text-sm text-gray-800 mb-1">
                           Fecha Inicio
                         </label>
@@ -99,11 +123,13 @@ const [etapas, setEtapas] = useState([
                       <input
                         type="date"
                         className="mt-1 p-1 border rounded w-full"
-                        value={etapa.fechaInicio}
+                        value={etapas[index].fechaInicio}
                         onChange={(e) =>
                           setEtapas((prevEtapas) =>
-                            prevEtapas.map((prevEtapa) =>
-                              prevEtapa.id === etapa.id ? { ...prevEtapa, fechaInicio: e.target.value } : prevEtapa
+                            prevEtapas.map((prevEtapa, i) =>
+                              i === index
+                                ? { ...prevEtapa, fechaInicio: e.target.value }
+                                : prevEtapa
                             )
                           )
                         }
@@ -111,7 +137,7 @@ const [etapas, setEtapas] = useState([
                       />
                     </div>
                     <div className="ml-5">
-                      {etapa.id === 1 && (
+                      {index === 0 && (
                         <label className="font-bold block text-sm text-gray-800 mb-1">
                           Fecha Fin
                         </label>
@@ -119,11 +145,13 @@ const [etapas, setEtapas] = useState([
                       <input
                         type="date"
                         className="mt-1 p-1 border rounded w-full"
-                        value={etapa.fechaFin}
+                        value={etapas[index].fechaFin}
                         onChange={(e) =>
                           setEtapas((prevEtapas) =>
-                            prevEtapas.map((prevEtapa) =>
-                              prevEtapa.id === etapa.id ? { ...prevEtapa, fechaFin: e.target.value } : prevEtapa
+                            prevEtapas.map((prevEtapa, i) =>
+                              i === index
+                                ? { ...prevEtapa, fechaFin: e.target.value }
+                                : prevEtapa
                             )
                           )
                         }
@@ -136,7 +164,11 @@ const [etapas, setEtapas] = useState([
             </div>
           ))}
           <div className="flex items-center justify-center mt-4">
-            <ButtonOnclick icono={IconDate} title="Guardar Fechas" type="submit" />
+            <ButtonOnclick
+              icono={IconDate}
+              title="Guardar Fechas"
+              type="submit"
+            />
           </div>
         </form>
       </div>

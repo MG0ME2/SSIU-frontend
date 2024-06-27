@@ -23,8 +23,9 @@ import academicDataReducer from './states/academicDataSlice';
 import employmentDataReducer from './states/employmentDataSlice.js';
 import studyTypesReducer from './states/studyTypesSlice';
 import persistedPhotoReducer from './states/photoSlice';
-import stageSlice from './states/stageSlice.js'; 
+import persistedStageReducer from './states/stageSlice.js'; 
 import hoveredStageReducer from './states/hoveredStageSlice.js';
+import persistedStatusReducer from './states/statusSlice.js';
 
 
 const authPersistConfig = {
@@ -41,8 +42,9 @@ export const store = configureStore({
     employmenData: employmentDataReducer,
     studyTypes: studyTypesReducer,
     photo: persistedPhotoReducer,
-    stage: stageSlice,
-    hoveredStage: hoveredStageReducer, 
+    stage: persistedStageReducer,
+    hoveredStage: hoveredStageReducer,
+    status: persistedStatusReducer
     
   },
   middleware: (getDefaultMiddleware) =>

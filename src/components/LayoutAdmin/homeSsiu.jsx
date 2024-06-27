@@ -50,11 +50,10 @@ function HomeSSIU() {
   
   return (
     <div className="flex flex-grow items-center justify-center flex-col mb-4">
-
       <div className="text-lg font-semibold mb-4 ml-0">
         Medición de Impacto a Graduados
       </div>
-
+  
       <div className="flex items-center justify-between mb-4 ml-0 space-x-4">
         <ButtonOnclick
           title={'Configurar ciclo de medición'}
@@ -64,7 +63,7 @@ function HomeSSIU() {
         {showConfigDatePopUp && (
           <ConfigDatePopUp onClose={handleAddDateMDIClick} />
         )}
-
+  
         <ButtonPrimary
           title={'Iniciar Ciclo'}
           icono={IconStart}
@@ -72,44 +71,48 @@ function HomeSSIU() {
           to={'/admin/home-ssiu/activeStage1'}
         />
       </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full h-full place-items-center">
-  {[1, 2, 3, 4, 5, 6].map((stage) => (
-    <div
-      key={`stage-${stage}`}
-      className="relative group w-32 h-32 flex items-center justify-center rounded-full bg-blue-100 overflow-hidden"
-      onMouseEnter={() => handleMouseEnter(stage)}
-      onMouseLeave={handleMouseLeave}
-      style={{ transition: 'transform 0.3s' }}
-    >
-      {/* Mostrar el ícono de check si no hay hover */}
-      <img
-        src={IconOnlyCheck}
-        className={`absolute transform transition duration-300 ${hoveredStage === stage ? 'opacity-0' : 'opacity-100'}`}
-      />
-      
-      {/* Mostrar el texto de la etapa dentro del círculo si hay hover */}
-      {hoveredStage === stage && (
-        <div className="absolute inset-0 flex items-center justify-center transition duration-300">
-          <span className="text-slate-950 text-center px-4">{`Etapa ${stage}`}</span>
-        </div>
-      )}
-      
-      {/* Mostrar el texto que corresponde a la etapa fuera del círculo si hay hover */}
-      {hoveredStage === stage && (
-        <div className="absolute top-[-5rem] flex items-center justify-center w-full">
-          <div className="bg-white shadow-md rounded-full py-2 px-4">
-            <h1 className="text-slate-950 text-center">{getStageText(stage)}</h1>
+  
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full h-full place-items-center relative">
+        {[1, 2, 3, 4, 5, 6].map((stage, index) => (
+          <div
+            key={`stage-${stage}`}
+            className="relative group w-32 h-32 flex items-center justify-center rounded-full bg-blue-100 overflow-hidden"
+            onMouseEnter={() => handleMouseEnter(stage)}
+            onMouseLeave={handleMouseLeave}
+            style={{
+              transition: 'transform 0.3s',
+              transform: hoveredStage === stage ? 'translateY(3rem)' : 'none', // Desplazamiento hacia abajo al activar el hover
+            }}
+          >
+            {/* Mostrar el ícono de check si no hay hover */}
+            <img
+              src={IconOnlyCheck}
+              className={`absolute transform transition duration-300 ${hoveredStage === stage ? 'opacity-0' : 'opacity-100'}`}
+            />
+            
+            {/* Mostrar el texto de la etapa dentro del círculo si hay hover */}
+            {hoveredStage === stage && (
+              <div className="absolute inset-0 flex items-center justify-center transition duration-300">
+                <span className="text-slate-950 text-center px-4">{`Etapa ${stage}`}</span>
+              </div>
+            )}
+  
           </div>
-        </div>
-      )}
-    </div>
-  ))}
-</div>
-
-
+        ))}
+  
+        {/* Mostrar el texto que corresponde a la etapa encima y fuera del círculo si hay hover */}
+        {hoveredStage && (
+          <div className="absolute top-[calc(100% + 0.5rem)] left-1/2 transform -translate-x-1/2">
+            <div className="bg-white shadow-md rounded-full py-2 px-4">
+              <h1 className="text-slate-950 text-center">{getStageText(hoveredStage)}</h1>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
+  
+  
 }
 
 export default HomeSSIU;
