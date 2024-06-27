@@ -4,9 +4,51 @@ import storage from 'redux-persist/lib/storage';
 import axios from 'axios';
 
 
-// Definir la acción asincrónica para actualizar las fechas de las stages
-export const fetchStageDates = createAsyncThunk(
-  'stage/updateDates',
+// Put 
+export const fetchStageDatesPut = createAsyncThunk(
+  'stagePut/fetchStageDatesPut',
+  async ({ stageId, stag }, { rejectWithValue }) => {
+    try {
+      //Mapea los datos que se requieren para crear las fechas
+      const DataAditional = stag.map(stage => ({
+        ...stage,
+        description: `etapa ${stage.id}`,
+        type_MDI: `medición de impacto a graudao`,
+        status_id: 1,
+        academic_program_id: 1,
+      }));
+
+      const response = await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/stage/${stageId}`,
+        DataAditional
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// Get
+export const fetchStageDatesGet = createAsyncThunk(
+  'stageGet/fetchStageDatesGet',
+  async ({ dato }, { rejectWithValue }) => {
+    try {
+        const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/stage/academic-program/1`,
+        dato
+      );
+      console.log("slice: ",response.data);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+// Post
+export const fetchStageDatesPost = createAsyncThunk(
+  'stagePost/fetchStageDatesPost',
   async ({ stag }, { rejectWithValue }) => {
     try {
       //Mapea los datos que se requieren para crear las fechas
@@ -46,15 +88,23 @@ const stageSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchStageDates.pending, (state) => {
+      .addCase(fetchStageDatesPost.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchStageDates.fulfilled, (state, action) => {
+      .addCase(fetchStageDatesPut.fulfilled, (state, action) => {
         state.loading = false;
-        state.stages = action.payload;
+        state.stages = action.payload.stages;
       })
-      .addCase(fetchStageDates.rejected, (state, action) => {
+      .addCase(fetchStageDatesGet.fulfilled, (state, action) => {
+        state.loading = false;
+        state.stages = action.payload.stages;
+      })
+      .addCase(fetchStageDatesPost.fulfilled, (state, action) => {
+        state.loading = false;
+        state.stages = action.payload.stages;
+      })
+      .addCase(fetchStageDatesPost.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

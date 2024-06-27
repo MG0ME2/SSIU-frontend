@@ -9,7 +9,7 @@ import ButtonOnclick from '../Buttons/onclick';
 
 import IconDate from '../../assets/Img/IconDate.svg';
 
-import { fetchStageDates } from '../../redux/states/stageSlice';
+import { fetchStageDatesGet, fetchStageDatesPost, fetchStageDatesPut } from '../../redux/states/stageSlice';
 import { fetchStatus } from '../../redux/states/statusSlice';
 
 const ConfigDatePopUp = ({ onClose, onSubmit }) => {
@@ -61,7 +61,8 @@ const ConfigDatePopUp = ({ onClose, onSubmit }) => {
     e.preventDefault();
     try {
 
-      //const id = status.id
+      const id = status.id
+
       // Ajustar las fechas para incluir la hora actual
       const etapasConHoraActual = etapas.map((etapa) => ({
         fechaInicio: etapa.fechaInicio
@@ -70,11 +71,23 @@ const ConfigDatePopUp = ({ onClose, onSubmit }) => {
         fechaFin: etapa.fechaFin ? `${etapa.fechaFin} ${getCurrentTime()}` : '',
       }));
 
-      await dispatch(
-        fetchStageDates({ etapas: etapasConHoraActual })
-      ).unwrap();
+      // post
+      // await dispatch(
+      //   fetchStageDatesPost({ etapas: etapasConHoraActual })
+      // ).unwrap();
+
+      // put
+      // dispatch(
+      //   fetchStageDatesPut( id , etapasConHoraActual)
+      // )
+
+      // get
+      dispatch(
+        fetchStageDatesGet()
+      )
+      
       notifyS();
-      onClose();
+    //  onClose();
     } catch (error) {
       console.error('Error al guardar las fechas de las etapas:', error);
       notifyE();
