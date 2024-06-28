@@ -9,7 +9,11 @@ import ButtonOnclick from '../Buttons/onclick';
 
 import IconDate from '../../assets/Img/IconDate.svg';
 
-import { fetchStageDatesGet, fetchStageDatesPost, fetchStageDatesPut } from '../../redux/states/stageSlice';
+import {
+  fetchStageDatesGet,
+  fetchStageDatesPost,
+  fetchStageDatesPut,
+} from '../../redux/states/stageSlice';
 import { fetchStatus } from '../../redux/states/statusSlice';
 
 const ConfigDatePopUp = ({ onClose, onSubmit }) => {
@@ -28,7 +32,7 @@ const ConfigDatePopUp = ({ onClose, onSubmit }) => {
   const [ids] = useState([1, 2, 3, 4, 5, 6]);
 
   const [etapas, setEtapas] = useState(
-    ids.map(() => ({ fechaInicio: '', fechaFin: '' }))
+    ids.map(() => ({ start_date: '', finish_date: '' }))
   );
 
   const notifyE = () => {
@@ -59,49 +63,31 @@ const ConfigDatePopUp = ({ onClose, onSubmit }) => {
 
   const handleGuardarFechas = async (e) => {
     e.preventDefault();
+    
+    // desglozar el array
     try {
-
-      const id = status.id
-
-      // Ajustar las fechas para incluir la hora actual
-      const etapasConHoraActual = etapas.map((etapa) => ({
-        fechaInicio: etapa.fechaInicio
-          ? `${etapa.fechaInicio} ${getCurrentTime()}`
-          : '',
-        fechaFin: etapa.fechaFin ? `${etapa.fechaFin} ${getCurrentTime()}` : '',
+      const stageAditionData = etapas.map((etapa, index) => ({
+        ...etapa,
+        start_date: etapa.start_date,
+        finish_date: etapa.finish_date,
+        description: `etapa ${index + 1}`,
+        type_MDI: `medición de impacto a graudao`,
+        statusId: 1,
+        academicProgramId: 1,
       }));
-
+     
       // post
-      // await dispatch(
-      //   fetchStageDatesPost({ etapas: etapasConHoraActual })
-      // ).unwrap();
+      for (const etapa of stageAditionData) {
 
-      // put
-      // dispatch(
-      //   fetchStageDatesPut( id , etapasConHoraActual)
-      // )
+        dispatch(fetchStageDatesPost({ stage: etapa }))
 
-      // get
-      dispatch(
-        fetchStageDatesGet()
-      )
-      
+      }
+
       notifyS();
-    //  onClose();
+      //  onClose();
     } catch (error) {
       console.error('Error al guardar las fechas de las etapas:', error);
       notifyE();
-      dispatch(fetchStatus());
-      console.log(
-        'estado: ',
-        status,
-        ' user: ',
-        user.id,
-        '  datos: ',
-        etapas,
-        '  stage: ',
-        stages
-      );
     }
   };
 
@@ -136,17 +122,17 @@ const ConfigDatePopUp = ({ onClose, onSubmit }) => {
                       <input
                         type="date"
                         className="mt-1 p-1 border rounded w-full"
-                        value={etapas[index].fechaInicio}
+                        value={etapas[index].start_date }
                         onChange={(e) =>
                           setEtapas((prevEtapas) =>
                             prevEtapas.map((prevEtapa, i) =>
                               i === index
-                                ? { ...prevEtapa, fechaInicio: e.target.value }
+                                ? { ...prevEtapa, start_date: e.target.value }
                                 : prevEtapa
                             )
                           )
                         }
-                        required
+                       required
                       />
                     </div>
                     <div className="ml-5">
@@ -158,12 +144,12 @@ const ConfigDatePopUp = ({ onClose, onSubmit }) => {
                       <input
                         type="date"
                         className="mt-1 p-1 border rounded w-full"
-                        value={etapas[index].fechaFin}
+                        value={etapas[index].finish_date}
                         onChange={(e) =>
                           setEtapas((prevEtapas) =>
                             prevEtapas.map((prevEtapa, i) =>
                               i === index
-                                ? { ...prevEtapa, fechaFin: e.target.value }
+                                ? { ...prevEtapa, finish_date: e.target.value }
                                 : prevEtapa
                             )
                           )
