@@ -84,7 +84,7 @@ const ConfigDatePopUp = ({ onClose, onSubmit }) => {
       }
 
       notifyS();
-      //  onClose();
+      onClose();
     } catch (error) {
       console.error('Error al guardar las fechas de las etapas:', error);
       notifyE();

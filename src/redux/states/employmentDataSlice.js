@@ -1,11 +1,13 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 export const fetchEmploymentDataByUser = createAsyncThunk(
-  'employmentData/fetchByUser',
+  "employmentData/fetchByUser",
   async (userId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/employment-data/by/${userId}`);
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/employment-data/by/${userId}`
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -14,10 +16,13 @@ export const fetchEmploymentDataByUser = createAsyncThunk(
 );
 
 export const updateEmploymentData = createAsyncThunk(
-  'employmentData/update',
+  "employmentData/update",
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/employment-data/${id}`, data);
+      const response = await axios.put(
+        `${import.meta.env.VITE_BACKEND_URL}/employment-data/${id}`,
+        data
+      );
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -26,7 +31,7 @@ export const updateEmploymentData = createAsyncThunk(
 );
 
 const employmentDataSlice = createSlice({
-  name: 'employmentData',
+  name: "employmentData",
   initialState: {
     data: [],
     loading: false,
@@ -53,7 +58,9 @@ const employmentDataSlice = createSlice({
       })
       .addCase(updateEmploymentData.fulfilled, (state, action) => {
         state.loading = false;
-        const index = state.data.findIndex((item) => item.id === action.payload.id);
+        const index = state.data.findIndex(
+          (item) => item.id === action.payload.id
+        );
         if (index !== -1) {
           state.data[index] = action.payload;
         }

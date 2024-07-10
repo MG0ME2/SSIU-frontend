@@ -20,12 +20,13 @@ import { persistedAuthReducer } from './states/authSlice';
 import variableIndicatorReducer from './states/variableIndicatorSlice';
 import companySectorReducer from './states/companySectorSlice';
 import academicDataReducer from './states/academicDataSlice';
-import employmentDataReducer from './states/employmentDataSlice.js';
+import employmentDataReducer from './states/employmentDataSlice';
 import studyTypesReducer from './states/studyTypesSlice';
 import persistedPhotoReducer from './states/photoSlice';
-import persistedStageReducer from './states/stageSlice.js'; 
-import hoveredStageReducer from './states/hoveredStageSlice.js';
-import persistedStatusReducer from './states/statusSlice.js';
+import persistedStageReducer from './states/stageSlice'; 
+import hoveredStageReducer from './states/hoveredStageSlice';
+import persistedStatusReducer from './states/statusSlice';
+import searchVariableIndicadorReducer from './states/searchVariableIndicadorSlice';
 
 
 const authPersistConfig = {
@@ -44,7 +45,8 @@ export const store = configureStore({
     photo: persistedPhotoReducer,
     stage: persistedStageReducer,
     hoveredStage: hoveredStageReducer,
-    status: persistedStatusReducer
+    status: persistedStatusReducer,
+    searchVI: searchVariableIndicadorReducer
     
   },
   middleware: (getDefaultMiddleware) =>

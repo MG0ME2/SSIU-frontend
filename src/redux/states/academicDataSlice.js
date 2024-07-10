@@ -27,6 +27,21 @@ export const updateAcademicData = createAsyncThunk(
   }
 );
 
+export const createAcademicData = createAsyncThunk(
+  'academicData/create',
+  async (academicData, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}/academic-data`, // URL del endpoint para crear datos académicos
+        academicData // Datos que deseas enviar en la solicitud POST
+      );
+      return response.data; // Retorna los datos creados desde el backend (opcional)
+    } catch (error) {
+      return rejectWithValue(error.response.data); // Manejo de errores
+    }
+  }
+);
+
 const academicDataSlice = createSlice({
   name: 'academicData',
   initialState: {
@@ -61,6 +76,19 @@ const academicDataSlice = createSlice({
         }
       })
       .addCase(updateAcademicData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(createAcademicData.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(createAcademicData.fulfilled, (state, action) => {
+        state.loading = false;
+        // Puedes actualizar el estado con los datos devueltos si es necesario
+        state.data.push(action.payload); // Ejemplo: agregar los nuevos datos al estado
+      })
+      .addCase(createAcademicData.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

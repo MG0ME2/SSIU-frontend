@@ -30,7 +30,7 @@ const LayoutQualityInstitutional = ({children}) => {
               className="w-11 h-full"
             />
           </ul>
-          <p className="pl-2"> Admin name</p>
+          <p className="pl-2"> Institutional name</p>
         </div>
         
         <div className="flex justify-between flex-col h-full ">

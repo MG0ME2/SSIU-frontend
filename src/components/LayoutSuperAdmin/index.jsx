@@ -36,10 +36,21 @@ const LayoutSuperAdmin = ({children}) => {
         <div className="flex justify-between flex-col h-full ">
           <div className="my-4">
             <ul className="flex flex-col gap-2">
+            <li>
+                <NavItem to="/superadmin/perfil" currentPath={location.pathname}>
+                  <img
+                    src={IconHome}
+                    alt="Icono book 2"
+                    className="w-4 h-4 mr-2"
+                  />
+                  Perfil
+                </NavItem>
+              </li>
+
               <li>
                 <NavItem to="/superadmin/GestionDeVariablesYIndicadores" currentPath={location.pathname}>
                   <img
-                    src={IconHome}
+                    src={IconBook}
                     alt="Icono book 1"
                     className="w-4 h-4 mr-2"
                   />

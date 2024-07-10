@@ -1,5 +1,4 @@
 import React from 'react';
-import { useState } from 'react';
 
 import LayoutSuperAdmin from '../../components/LayoutSuperAdmin';
 import VariableIndicatorTable from '../../components/LayoutSuperAdmin/variableIndicatorTable';

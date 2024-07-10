@@ -2,15 +2,15 @@
  * este slice correponde a los estado del super admin (tablas)
  */
 
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 const initialState = {
   variables: [],
   indicators: [],
   questions: [],
   programAcademics: [],
-  status: 'idle',
+  status: "idle",
   error: null,
 };
 
@@ -22,52 +22,80 @@ const initialState = {
  El primer argumento es un nombre único para la acción ('variableIndicator/fetchVariables').
  El segundo argumento es una función asincrónica que realiza la solicitud a la API y devuelve los datos obtenidos.
  */
-export const fetchVariables = createAsyncThunk(  'variable/fetchVariables',  async (_, { getState }) => {
+export const fetchVariables = createAsyncThunk(
+  "variable/fetchVariables",
+  async (_, { getState }) => {
     const token = getState().auth.token;
-    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/variable`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
+    const response = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/variable`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    });
-  console.log('fetchVariables: ',response.data);
-return response.data.sort((a, b) => a.id - b.id);
-});
+    );
+    // console.log('fetchVariables: ', response.data);
+    return response.data.sort((a, b) => a.id - b.id);
+  }
+);
 
-export const fetchIndicators = createAsyncThunk('indicators/fetchIndicators', async ( parameter, { getState }) => {
-  const token = getState().auth.token;
-  const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/indicator/by/${parameter}`, {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  });
-  console.log('fetchIndicators: ',response.data);
-  
-  return response.data.sort((a, b) => a.id - b.id);
-});
+export const fetchIndicators = createAsyncThunk(
+  "indicators/fetchIndicators",
+  async (parameter, { getState }) => {
+    const token = getState().auth.token;
+    const response = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/indicator/by/${parameter}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    //console.log('fetchIndicators: ', response.data);
+    return response.data.sort((a, b) => a.id - b.id);
+  }
+);
 
-export const fetchQuestion = createAsyncThunk('question/fetchQuestion', async ( parameter, { getState }) => {
-  const token = getState().auth.token;
-  const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/question/by/${parameter}`, {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  });
-  console.log('fetchQuestion: ',response.data);
-  return response.data;
-});
+export const fetchQuestion = createAsyncThunk(
+  "question/fetchQuestion",
+  async (parameter, { getState }) => {
+    const token = getState().auth.token;
+    const response = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/question/by/${parameter}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    //  console.log('fetchQuestion: ', response.data);
+    return response.data;
+  }
+);
 
-export const fetchProgramAcedemic = createAsyncThunk('programAcademic/fetchQuestion', async () => {
-  const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/academic-program`);
-  return response.data;
-});
+export const fetchProgramAcedemic = createAsyncThunk(
+  "programAcademic/fetchQuestion",
+  async () => {
+    const response = await axios.get(
+      `${import.meta.env.VITE_BACKEND_URL}/academic-program`
+    );
+    return response.data;
+  }
+);
 
-export const reactivateStage = createAsyncThunk('stages/reactivateStage', async (stageId) => {
-  const response = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/stage/${stageId}`, { active: true });
-  return response.data;
-});
+export const reactivateStage = createAsyncThunk(
+  "stages/reactivateStage",
+  async (stageId) => {
+    const response = await axios.patch(
+      `${import.meta.env.VITE_BACKEND_URL}/stage/${stageId}`,
+      { active: true }
+    );
+    return response.data;
+  }
+);
 
 const variableIndicatorSlice = createSlice({
-  name: 'variableIndicator',
+  name: "variableIndicator",
   initialState,
   reducers: {
     addVariable: (state, action) => {
@@ -100,7 +128,9 @@ const variableIndicatorSlice = createSlice({
       .addCase(reactivateStage.fulfilled, (state, action) => {
         // Actualizar el estado de active en la etapa reactivada
         const { id } = action.payload;
-        const index = state.programAcademics.findIndex(stage => stage.id === id);
+        const index = state.programAcademics.findIndex(
+          (stage) => stage.id === id
+        );
         if (index !== -1) {
           state.programAcademics[index].active = true;
         }
@@ -108,5 +138,6 @@ const variableIndicatorSlice = createSlice({
   },
 });
 
-export const { addVariable, addIndicator, addQuestion, addProgramAcedemic } = variableIndicatorSlice.actions;
+export const { addVariable, addIndicator, addQuestion, addProgramAcedemic } =
+  variableIndicatorSlice.actions;
 export default variableIndicatorSlice.reducer;

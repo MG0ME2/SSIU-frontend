@@ -6,7 +6,7 @@ import IconDate from '../../assets/Img/IconDate.svg';
 import IconStart from '../../assets/Img/IconStart.svg';
 import IconOnlyCheck from '../../assets/Img/IconOnlyCheck.svg';
 
-import ButtonPrimary from '../Buttons/primary';
+
 import ButtonOnclick from '../Buttons/onclick';
 
 import ConfigDatePopUp from './configDatePopUp';
@@ -76,6 +76,7 @@ function HomeSSIU() {
           title={'Configurar ciclo de medición'}
           icono={IconDate}
           onClick={handleAddDateMDIClick}
+          disabled={cycleStarted}
         />
         {showConfigDatePopUp && (
           <ConfigDatePopUp onClose={handleAddDateMDIClick} />

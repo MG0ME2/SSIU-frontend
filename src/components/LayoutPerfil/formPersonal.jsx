@@ -30,7 +30,7 @@ function DatosPersonales() {
 
   //Alertas
   const notifyVi = () => {
-    toast.warn('No se admiten números o símbolos en', {
+    toast.warn('No se admiten números o símbolos', {
       position: 'top-right',
       autoClose: 5000,
       hideProgressBar: false,
@@ -128,7 +128,8 @@ function DatosPersonales() {
   }, [dispatch]);
 
   const validateInput = (input) => {
-    if (!/^[A-Za-z\s]+$/.test(input)) {
+    // Permitir letras, espacios y letras acentuadas (tildes)
+    if (!/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/.test(input)) {
       notifyVi();
       return false;
     }

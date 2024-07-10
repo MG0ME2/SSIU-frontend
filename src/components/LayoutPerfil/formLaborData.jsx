@@ -39,7 +39,7 @@ function DatosLaborales() {
 
   // alerts
   const notifyVi = () => {
-    toast.warn('No se admiten números o símbolos en', {
+    toast.warn('No se admiten números o símbolos', {
       position: 'top-right',
       autoClose: 5000,
       hideProgressBar: false,
@@ -75,6 +75,15 @@ function DatosLaborales() {
       progress: undefined,
       theme: 'light',
     });
+  };
+
+  const validateInput = (input) => {
+    // Permitir letras, espacios y letras acentuadas (tildes)
+    if (!/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/.test(input)) {
+      notifyVi();
+      return false;
+    }
+    return true;
   };
 
   useEffect(() => {
@@ -122,17 +131,12 @@ function DatosLaborales() {
     fetchEmploymentData();
   }, [dispatch, user.id]);
 
-  // const validateInput = (input) => {
-  //   if (!/^[A-Za-z\s]+$/.test(input)) {
-  //     notifyVi();
-  //     return false;
-  //   }
-  //   return true;
-  // };
 
   const handleUpdate = async (event) => {
     event.preventDefault();
-    //const inputName = formData.get('name');
+    const formData = new FormData(event.currentTarget);
+    const inputNameBusiness = formData.get('empresaActual');
+    const inputNamePosition = formData.get('cargoEmpresa');
 
     const form = {
       name: empresaActual,
@@ -144,6 +148,13 @@ function DatosLaborales() {
     };
     
     console.log(form)
+
+    if (
+      !validateInput(inputNameBusiness) || 
+      !validateInput(inputNamePosition)
+    ) {
+      return;
+    }
 
     const { data } = await axios.put(
       `${import.meta.env.VITE_BACKEND_URL}/employment-data/${user.id}`,
@@ -240,7 +251,7 @@ function DatosLaborales() {
                   </label>
                 )}
                 <input
-                  type="text"
+                  type="number"
                   id="contactoEmpresa"
                   name="contactoEmpresa"
                   placeholder="Contacto de la empresa"

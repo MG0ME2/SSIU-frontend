@@ -87,6 +87,15 @@ function DatosResidencia() {
     getGeographic_location();
   }, [dispatch]);
 
+  const validateInput = (input) => {
+    // Permitir letras, espacios y letras acentuadas (tildes)
+    if (!/^[A-Za-zÁÉÍÓÚáéíóúñÑ\s]+$/.test(input)) {
+      notifyVi();
+      return false;
+    }
+    return true;
+  };
+
   const handleUpdate = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);

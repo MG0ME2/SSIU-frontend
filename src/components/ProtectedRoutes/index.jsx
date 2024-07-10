@@ -17,8 +17,8 @@ const ProtectedRoute = ({ role, children, redirectTo = '/login' }) => {
   const user = useSelector((state) => state.auth.user);
   const token = useSelector((state) => state.auth.token);
   
-  console.log('USER: ',user);
-  console.log('token: ', token);
+  // console.log('USER: ',user);
+  // console.log('token: ', token);
 
   if (!isLoggedIn || !user || !token) {
     return <Navigate to={redirectTo} />;
