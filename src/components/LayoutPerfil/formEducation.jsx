@@ -182,8 +182,7 @@ function DatosEducation() {
                 value={estudyType}
                 onChange={(e) => setStudyType(e.target.value)}
               >
-                {studys &&
-                  studys.map((study) => (
+                   {studys.map((study) => (
                     <option key={study.id} value={study.id}>
                       {study.description}
                     </option>
@@ -206,7 +205,7 @@ function DatosEducation() {
                 className="mt-1 p-2 border rounded w-full"
                 value={nombreTitulación}
                 onChange={(e) => setTitulación(e.target.value)}
-              />
+                />
             </div>
 
             <div className="relative w-full">
@@ -248,7 +247,6 @@ function DatosEducation() {
                 className="mt-1 p-2 border rounded w-full"
                 value={fechaTitulación ? new Date(fechaTitulación).toISOString().slice(0, 10) : ''}
                 onChange={(e) => setfechaTitulación(e.target.value)}
-              
               />
             </div>
             

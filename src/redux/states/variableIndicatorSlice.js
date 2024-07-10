@@ -14,34 +14,55 @@ const initialState = {
   error: null,
 };
 
+//const token = useSelector((state) => state.auth.token);
+
 /**
  * Esta función crea una acción asincrónica (thunk) llamada fetchVariables.
  Esta acción se utiliza para realizar una solicitud GET a la API para obtener variables.
  El primer argumento es un nombre único para la acción ('variableIndicator/fetchVariables').
  El segundo argumento es una función asincrónica que realiza la solicitud a la API y devuelve los datos obtenidos.
  */
-export const fetchVariables = createAsyncThunk('variable/fetchVariables', async () => {
-  const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/status`); 
-  return response.data;
+export const fetchVariables = createAsyncThunk(  'variable/fetchVariables',  async (_, { getState }) => {
+    const token = getState().auth.token;
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/variable`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+  console.log('fetchVariables: ',response.data);
+return response.data.sort((a, b) => a.id - b.id);
 });
 
-export const fetchIndicators = createAsyncThunk('indicadore/fetchIndicators', async () => {
-  const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/status`); 
-  return response.data;
+export const fetchIndicators = createAsyncThunk('indicators/fetchIndicators', async ( parameter, { getState }) => {
+  const token = getState().auth.token;
+  const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/indicator/by/${parameter}`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  console.log('fetchIndicators: ',response.data);
+  
+  return response.data.sort((a, b) => a.id - b.id);
 });
 
-export const fetchQuestion = createAsyncThunk('question/fetchQuestion', async () => {
-  const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/status`); 
+export const fetchQuestion = createAsyncThunk('question/fetchQuestion', async ( parameter, { getState }) => {
+  const token = getState().auth.token;
+  const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/question/by/${parameter}`, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  console.log('fetchQuestion: ',response.data);
   return response.data;
 });
 
 export const fetchProgramAcedemic = createAsyncThunk('programAcademic/fetchQuestion', async () => {
-  const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/status`); 
+  const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/academic-program`);
   return response.data;
 });
 
 export const reactivateStage = createAsyncThunk('stages/reactivateStage', async (stageId) => {
-  const response = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/status/${stageId}`, { active: true });
+  const response = await axios.patch(`${import.meta.env.VITE_BACKEND_URL}/stage/${stageId}`, { active: true });
   return response.data;
 });
 
