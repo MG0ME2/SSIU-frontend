@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 
+
 // redux
 import {
   fetchIndicators,
@@ -30,8 +31,10 @@ const VariableIndicatorTable = () => {
   const indicators = useSelector((state) => state.variableIndicator.indicators);
   const preguntas = useSelector((state) => state.variableIndicator.questions);
   const token = useSelector((state) => state.auth.token);
-  const searchQueryVariables = useSelector((state) => state.searchVI.searchQueryVariables);
-  const searchQueryIndicators = useSelector((state) => state.searchVI.searchQueryIndicators);
+
+  const searchQueryVariables = useSelector((state) => state.searchVI.searchQueryVariable);
+  const searchQueryIndicators = useSelector((state) => state.searchVI.searchQueryIndicator);
+  console.log('prueba',searchQueryIndicators)
 
   const [showAddVariablePopup, setShowAddVariablePopup] = useState(false);
   const [showAddIndicatorPopup, setShowAddIndicatorPopup] = useState(false);
@@ -45,18 +48,15 @@ const VariableIndicatorTable = () => {
     setSelectedRow(index);
     setSelectedRowI(0);
     setSelectedRowQ(0);
-    //console.log('Clicked row V:', index);
     console.log("Row data V:", variables[index]);
 
     const rowDataId = variables[index];
-    //console.log('rowDataId_V: ', rowDataId.id);
     const indicatorsResult = await dispatch(
       fetchIndicators(rowDataId.id)
     ).unwrap();
 
-    //console.log('indicators: --> ', indicatorsResult);
     const rowDataId_I = indicatorsResult[0];
-    //console.log('rowDataId_I: ', rowDataId_I.id);
+
     dispatch(fetchQuestion(rowDataId_I.id));
   };
 
@@ -156,18 +156,17 @@ const VariableIndicatorTable = () => {
     fetchData();
   }, [dispatch]);
 
-  // const filteredVariables = variables.filter((variable) => {
-  //   if (variable.name) {
-  //     console.log("Variable name:", variable.name);
-  //     return variable.name.toLowerCase().includes(searchQueryVariables.toLowerCase());
-  //   } else {
-  //     return false; // O manejar el caso de variable.name siendo undefined como sea necesario
-  //   }
-  // });
+  console.log('prueba, antes',searchQueryIndicators)
 
-  // const filteredIndicators = indicators.filter((indicator) =>
-  //   indicator.name && indicator.name.toLowerCase().includes(searchQueryIndicators.toLowerCase())
-  // );
+  const filteredVariables = variables.filter((variable) =>
+    variable.name?.toLowerCase().includes(searchQueryVariables.toLowerCase())
+  );
+  
+  const filteredIndicators = indicators.filter((indicator) =>
+    indicator.name?.toLowerCase().includes(searchQueryIndicators.toLowerCase())
+  );
+
+   console.log('prueba, antes',searchQueryIndicators)
 
   return (
     <div id={"contenedor"}>
@@ -182,11 +181,9 @@ const VariableIndicatorTable = () => {
                 type="text"
                 placeholder="Buscar variables"
                 className="border p-2 rounded w-full"
-                // value={searchQueryVariables}
-                // onChange={(e) =>
-                //   dispatch(setSearchQueryVariable(e.target.value))
-                // }
-                />
+                value={searchQueryVariables}
+                onChange={(e) => dispatch(setSearchQueryVariable(e.target.value))}
+              />
             </div>
             <div className="overflow-y-auto h-40 max-h-40 mb-4">
               <table className="table-auto w-full border border-gray-400">
@@ -204,7 +201,7 @@ const VariableIndicatorTable = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {variables.map((variable, index) => (
+                  {filteredVariables.map((variable, index) => (
                     <tr
                       key={index}
                       id={index}
@@ -252,11 +249,9 @@ const VariableIndicatorTable = () => {
                 type="text"
                 placeholder="Buscar indicadores"
                 className="border p-2 rounded w-full"
-                // value={searchQueryIndicators}
-                // onChange={(e) =>
-                //   dispatch(setSearchQueryIndicator(e.target.value))
-                // }
-                />
+                value={searchQueryIndicators}
+                onChange={(e) => dispatch(setSearchQueryIndicator(e.target.value))}
+              />
             </div>
             <div className="overflow-y-auto h-40 max-h-40 mb-4">
               <table className="table-auto w-full border border-gray-400">
@@ -274,7 +269,7 @@ const VariableIndicatorTable = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {indicators.map((indicator, index) => (
+                {filteredIndicators.map((indicator, index) => (
                     <tr
                       key={index}
                       onClick={() => handleRowClickI(index)}
