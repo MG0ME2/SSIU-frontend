@@ -25,6 +25,8 @@ import AddVariablePopUp from "./add-VariablePopUp";
 import AddIndicadorPopUp from "./add-IndicadorPopUp";
 import AddQuestionPopUp from "./add-QuestionPopUp";
 
+
+
 const VariableIndicatorTable = () => {
   const dispatch = useDispatch();
   const variables = useSelector((state) => state.variableIndicator.variables);
