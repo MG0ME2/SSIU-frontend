@@ -1,30 +1,30 @@
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
 
 // redux
 import {
   fetchIndicators,
   fetchQuestion,
   fetchVariables,
-} from "../../redux/states/variableIndicatorSlice";
+} from '../../redux/states/variableIndicatorSlice';
 import {
   setSearchQueryVariable,
   setSearchQueryIndicator,
-} from "../../redux/states/searchVariableIndicadorSlice";
+} from '../../redux/states/searchVariableIndicadorSlice';
 
 // icon
-import IconPencil from "../../assets/Img/IconPencil.svg";
-import IconAdd from "../../assets/Img/IconAdd.svg";
+import IconPencil from '../../assets/Img/IconPencil.svg';
+import IconAdd from '../../assets/Img/IconAdd.svg';
 
 // component
-import ButtonIcon from "../Buttons/Icon";
-import ButtonOnclick from "../Buttons/onclick";
-import AddVariablePopUp from "./add-VariablePopUp";
-import AddIndicadorPopUp from "./add-IndicadorPopUp";
-import AddQuestionPopUp from "./add-QuestionPopUp";
-
+import ButtonOnclick from '../Buttons/onclick';
+import AddVariablePopUp from './add-VariablePopUp';
+import AddIndicadorPopUp from './add-IndicadorPopUp';
+import AddQuestionPopUp from './add-QuestionPopUp';
+import ChangeIndicadorPopUp from './change-IndicadorPopUp';
+import ChangeVarPopUp from './change-VarPopUp';
+import ChangeQuestPopUp from './change-QuestionPopUp';
 
 
 const VariableIndicatorTable = () => {
@@ -34,13 +34,23 @@ const VariableIndicatorTable = () => {
   const preguntas = useSelector((state) => state.variableIndicator.questions);
   const token = useSelector((state) => state.auth.token);
 
-  const searchQueryVariables = useSelector((state) => state.searchVI.searchQueryVariable);
-  const searchQueryIndicators = useSelector((state) => state.searchVI.searchQueryIndicator);
-  console.log('prueba',searchQueryIndicators)
+  const searchQueryVariables = useSelector(
+    (state) => state.searchVI.searchQueryVariable
+  );
+  const searchQueryIndicators = useSelector(
+    (state) => state.searchVI.searchQueryIndicator
+  );
+  console.log('prueba', searchQueryIndicators);
 
   const [showAddVariablePopup, setShowAddVariablePopup] = useState(false);
+  const [showChangeVarPopup, setShowChangeVarPopup] = useState(false);
+
   const [showAddIndicatorPopup, setShowAddIndicatorPopup] = useState(false);
+  const [showChangeIndicadorPopUp, setShowChangeIndicadorPopUp] = useState(false);
+
   const [showAddPreguntaPopup, setShowAddPreguntaPopup] = useState(false);
+  const [showChangePreguntaPopup, setShowChangePreguntaPopup] = useState(false);
+
 
   const [selectedRow, setSelectedRow] = useState(0);
   const [selectedRowI, setSelectedRowI] = useState(0);
@@ -50,7 +60,7 @@ const VariableIndicatorTable = () => {
     setSelectedRow(index);
     setSelectedRowI(0);
     setSelectedRowQ(0);
-    console.log("Row data V:", variables[index]);
+    console.log('Row data V:', variables[index]);
 
     const rowDataId = variables[index];
     const indicatorsResult = await dispatch(
@@ -66,7 +76,7 @@ const VariableIndicatorTable = () => {
     setSelectedRowI(index);
     setSelectedRowQ(0);
     //console.log('Clicked row I:', index);
-    console.log("Row data I:", indicators[index]);
+    console.log('Row data I:', indicators[index]);
 
     const rowDataId = indicators[index];
     //console.log('rowDataId_I: ', rowDataId.id);
@@ -76,28 +86,35 @@ const VariableIndicatorTable = () => {
   const handleRowClickQ = (index) => {
     setSelectedRowQ(index);
     //console.log('Clicked row:', index);
-    console.log("Row data Q:", preguntas[index]);
+    console.log('Row data Q:', preguntas[index]);
   };
 
+  //variable
   const handleAddVariableClick = () => {
     setShowAddVariablePopup(!showAddVariablePopup);
   };
 
+  const handleChangeVarClick = () => {
+    setShowChangeVarPopup(!showChangeVarPopup);
+  };
+
+  //indicador
   const handleAddIndicadorClick = () => {
     setShowAddIndicatorPopup(!showAddIndicatorPopup);
   };
+    
+  const handleChangeIndicadorClick = () => {
+    setShowChangeIndicadorPopUp(!showChangeIndicadorPopUp);
+  };
 
+//pregunta
   const handleAddPreguntaClick = () => {
     setShowAddPreguntaPopup(!showAddPreguntaPopup);
   };
 
-  // const handleAddIndicatorSubmit = (newIndicatorData) => {
-  //   // Lógica para agregar el nuevo indicador
-  //   // Actualiza el estado de indicadores y cierra el popup
-  //   setShowAddIndicatorPopup(false);
-  //   console.log('Nuevo indicador:', newIndicatorData);
-  //   // Aquí podrías tener lógica adicional, como enviar los datos al backend
-  // };
+  const handleChangePreguntaClick = () => {
+    setShowChangePreguntaPopup(!showChangePreguntaPopup);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -151,40 +168,43 @@ const VariableIndicatorTable = () => {
 
         dispatch(fetchQuestion(rowDataIdI.id));
       } catch (error) {
-        console.error("Error fetching Variables:", error);
+        console.error('Error fetching Variables:', error);
       }
     };
 
     fetchData();
   }, [dispatch]);
 
-  console.log('prueba, antes',searchQueryIndicators)
+  console.log('prueba, antes', searchQueryIndicators);
 
   const filteredVariables = variables.filter((variable) =>
     variable.name?.toLowerCase().includes(searchQueryVariables.toLowerCase())
   );
-  
+
   const filteredIndicators = indicators.filter((indicator) =>
     indicator.name?.toLowerCase().includes(searchQueryIndicators.toLowerCase())
   );
 
-   console.log('prueba, antes',searchQueryIndicators)
+  console.log('prueba, antes', searchQueryIndicators);
 
   return (
-    <div id={"contenedor"}>
-      <div id={"variables_indicadores"} className="mb-4">
-        <h2 className="text-2xl font-bold mb-4" style={{ color: "#28537E" }}>
+    <div id={'contenedor'}>
+      <div id={'variables_indicadores'} className="mb-4">
+        <h2 className="text-2xl font-bold mb-4" style={{ color: '#28537E' }}>
           Gestión de variables e indicadores
         </h2>
+        {/* VARIABLES */}
         <div className="flex">
-          <div id={"slice_1"} className="w-1/2 mr-4">
+          <div id={'slice_1'} className="w-1/2 mr-4">
             <div className="mb-4">
               <input
                 type="text"
                 placeholder="Buscar variables"
                 className="border p-2 rounded w-full"
                 value={searchQueryVariables}
-                onChange={(e) => dispatch(setSearchQueryVariable(e.target.value))}
+                onChange={(e) =>
+                  dispatch(setSearchQueryVariable(e.target.value))
+                }
               />
             </div>
             <div className="overflow-y-auto h-40 max-h-40 mb-4">
@@ -209,7 +229,7 @@ const VariableIndicatorTable = () => {
                       id={index}
                       onClick={() => handleRowClick(index)}
                       className={`cursor-pointer ${
-                        selectedRow === index ? "bg-blue-200" : ""
+                        selectedRow === index ? 'bg-blue-200' : ''
                       }`}
                     >
                       <td className="border px-2 py-1">
@@ -226,7 +246,13 @@ const VariableIndicatorTable = () => {
                       </td>
                       <td className="border px-1 py-1 text-center">
                         <div className="flex justify-center items-center">
-                          <ButtonIcon icono={IconPencil} />
+                          <ButtonOnclick
+                            icono={IconPencil}
+                            onClick={handleChangeVarClick}
+                          />
+                          {showChangeVarPopup && (
+                            <ChangeVarPopUp onClose={handleChangeVarClick} />
+                          )}
                         </div>
                       </td>
                     </tr>
@@ -236,7 +262,7 @@ const VariableIndicatorTable = () => {
             </div>
 
             <ButtonOnclick
-              title={"Agregar variable"}
+              title={'Agregar variable'}
               icono={IconAdd}
               onClick={handleAddVariableClick}
             />
@@ -245,14 +271,17 @@ const VariableIndicatorTable = () => {
             )}
           </div>
 
-          <div id={"slice_2"} className="w-1/2">
+          {/* INDICADOR */}
+          <div id={'slice_2'} className="w-1/2">
             <div className="mb-4">
               <input
                 type="text"
                 placeholder="Buscar indicadores"
                 className="border p-2 rounded w-full"
                 value={searchQueryIndicators}
-                onChange={(e) => dispatch(setSearchQueryIndicator(e.target.value))}
+                onChange={(e) =>
+                  dispatch(setSearchQueryIndicator(e.target.value))
+                }
               />
             </div>
             <div className="overflow-y-auto h-40 max-h-40 mb-4">
@@ -271,12 +300,12 @@ const VariableIndicatorTable = () => {
                   </tr>
                 </thead>
                 <tbody>
-                {filteredIndicators.map((indicator, index) => (
+                  {filteredIndicators.map((indicator, index) => (
                     <tr
                       key={index}
                       onClick={() => handleRowClickI(index)}
                       className={`cursor-pointer ${
-                        selectedRowI === index ? "bg-blue-200" : ""
+                        selectedRowI === index ? 'bg-blue-200' : ''
                       }`}
                     >
                       <td className="border px-2 py-1">
@@ -293,7 +322,13 @@ const VariableIndicatorTable = () => {
                       </td>
                       <td className="border px-1 py-1 text-center">
                         <div className="flex justify-center items-center">
-                          <ButtonIcon icono={IconPencil} />
+                        <ButtonOnclick
+                            icono={IconPencil}
+                            onClick={handleChangeIndicadorClick}
+                          />
+                          {showChangeIndicadorPopUp && (
+                            <ChangeIndicadorPopUp onClose={handleChangeIndicadorClick} />
+                          )}
                         </div>
                       </td>
                     </tr>
@@ -302,7 +337,7 @@ const VariableIndicatorTable = () => {
               </table>
             </div>
             <ButtonOnclick
-              title={"Agregar indicador"}
+              title={'Agregar indicador'}
               icono={IconAdd}
               onClick={handleAddIndicadorClick}
             />
@@ -312,9 +347,9 @@ const VariableIndicatorTable = () => {
           </div>
         </div>
       </div>
-
-      <div id={"preguntas"}>
-        <h2 className="text-2xl font-bold mb-4" style={{ color: "#28537E" }}>
+      {/* PREGUNTAS */}
+      <div id={'preguntas'}>
+        <h2 className="text-2xl font-bold mb-4" style={{ color: '#28537E' }}>
           Gestión de preguntas
         </h2>
         <div className="overflow-y-auto h-48 mb-4 max-h-48">
@@ -335,7 +370,7 @@ const VariableIndicatorTable = () => {
                   key={index}
                   onClick={() => handleRowClickQ(index)}
                   className={`cursor-pointer ${
-                    selectedRowQ === index ? "bg-blue-200" : ""
+                    selectedRowQ === index ? 'bg-blue-200' : ''
                   }`}
                 >
                   <td className="border px-4 py-2">
@@ -352,16 +387,22 @@ const VariableIndicatorTable = () => {
                     <div className="flex justify-center items-center">
                       <span
                         className={
-                          pregunta.active ? "text-green-500" : "text-red-500"
+                          pregunta.active ? 'text-green-500' : 'text-red-500'
                         }
                       >
                         {pregunta.status.description}
                       </span>
                     </div>
                   </td>
-                  <td className="border px-4 py-2 text-center">
-                    <div className="flex justify-center items-center">
-                      <ButtonIcon icono={IconPencil} />
+                  <td className="border px-1 py-1 text-center">
+                    <div className="flex justify-center items-center ">
+                      <ButtonOnclick
+                        icono={IconPencil}
+                        onClick={handleChangePreguntaClick}
+                      />
+                          {showChangePreguntaPopup && (
+                            <ChangeQuestPopUp onClose={handleChangePreguntaClick} />
+                          )}
                     </div>
                   </td>
                 </tr>
@@ -370,9 +411,10 @@ const VariableIndicatorTable = () => {
           </table>
         </div>
         <ButtonOnclick
-          title={"Agregar preguntas"}
+          title={'Agregar preguntas'}
           icono={IconAdd}
           onClick={handleAddPreguntaClick}
+          className="mt-4" 
         />
         {showAddPreguntaPopup && (
           <AddQuestionPopUp onClose={handleAddPreguntaClick} />

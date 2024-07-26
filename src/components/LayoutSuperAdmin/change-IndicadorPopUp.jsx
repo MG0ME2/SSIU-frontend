@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -7,7 +7,7 @@ import IconAdd from '../../assets/Img/IconAdd.svg';
 import { fetchIndicators } from '../../redux/states/variableIndicatorSlice';
 
 
-const ChangeIndicadorPopUp = ({ onClose, onSubmit }) => {
+const ChangeVarPopUp = ({ onClose, onSubmit }) => {
 
   const dispatch = useDispatch();
   const indicators = useSelector((state) => state.variableIndicator.indicators);
@@ -93,33 +93,16 @@ const ChangeIndicadorPopUp = ({ onClose, onSubmit }) => {
   };
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
+    <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-15 z-40">
       <div className="bg-white p-6 rounded-lg shadow-md relative">
         <FaTimes
           className="absolute top-2 right-2 text-red-600 cursor-pointer"
           onClick={onClose}
         />
         <div className="flex items-center justify-center mb-4">
-          <h2 className="text-lg font-semibold">Agregar nuevo indicador</h2>
+          <h2 className="text-lg font-semibold">Actualizar indicador</h2>
         </div>
         <form onSubmit={handleUpdate}>
-        {/* {programsAcedemicName && (
-                  <label
-                    htmlFor="programsAcedemicName"
-                    className="block text-xs text-gray-600 mt-2"
-                  >
-                    Nombre del programa academico
-                  </label>
-                )}
-                <input
-                  type="text"
-                  name="programsAcedemicName"
-                  placeholder="Nombre Del Programa"
-                  value={programsAcedemicName}
-                  onChange={(e) => setprogramsAcedemicName(e.target.value)}
-                  className="mt-1 p-2 border rounded"
-                  required
-                /> */}
           <div className="mb-4">
           {indicadorName && (
                   <label
@@ -131,45 +114,9 @@ const ChangeIndicadorPopUp = ({ onClose, onSubmit }) => {
                 )}
             <input
               type="text"
-              placeholder="Nombre del indicador"
+              placeholder="Actualice indicador"
               value={indicadorName}
               onChange={(e) => setindIcadorName(e.target.value)}
-              className="mt-1 p-2 border rounded w-full"
-              required
-            />
-          </div>
-          <div className="mb-4">
-          {SelectIndicadorStatus && (
-                  <label
-                    htmlFor="SelectIndicadorStatus"
-                    className="block text-xs text-gray-600 mt-2"
-                  >
-                    Estado del indicador
-                  </label>
-                )}
-            <input
-              type="text"
-              placeholder="Estado del indicador"
-              value={SelectIndicadorStatus}
-              onChange={(e) => setSelectedStatusId(e.target.value)}
-              className="mt-1 p-2 border rounded w-full"
-              required
-            />
-          </div>
-          <div className="mb-4">
-          {indicadorAsociaVar && (
-                  <label
-                    htmlFor="indicadorAsociaVar"
-                    className="block text-xs text-gray-600 mt-2"
-                  >
-                    Codigo de indicator asocioanda
-                  </label>
-                )}
-            <input
-              type="text"
-              placeholder="Codigo de indicator asociada"
-              value={indicadorAsociaVar}
-              onChange={(e) => setindIcadorAsociaVar(e.target.value)}
               className="mt-1 p-2 border rounded w-full"
               required
             />
@@ -183,4 +130,4 @@ const ChangeIndicadorPopUp = ({ onClose, onSubmit }) => {
   );
 };
 
-export default ChangeIndicadorPopUp;
+export default ChangeVarPopUp;

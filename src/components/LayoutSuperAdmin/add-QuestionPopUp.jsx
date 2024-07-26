@@ -68,24 +68,6 @@ const AddQuestionPopUp = ({ onClose, onSubmit }) => {
               required
             />
           </div>
-          <div className="mb-4">
-          {questioncode && (
-                  <label
-                    htmlFor="questioncode"
-                    className="block text-xs text-gray-600 mt-2"
-                  >
-                    Codigo de question asociado
-                  </label>
-                )}
-            <input
-              type="text"
-              placeholder="Codigo de question asociado"
-              value={questioncode}
-              onChange={(e) => setquestioncode(e.target.value)}
-              className="mt-1 p-2 border rounded w-full"
-              required
-            />
-          </div>
           <div className="flex items-center justify-center">
             <ButtonPrimary icono={IconAdd} title="Agregar pregunta" typeB="submit" />
           </div>

@@ -8,14 +8,14 @@ import ButtonPrimary from '../Buttons/primary';
 import IconAdd from '../../assets/Img/IconAdd.svg';
 
 import {
-  PostfetchVariables,
+  PutfetchVariables,
   fetchVariables,
 } from '../../redux/states/variableIndicatorSlice';
 
-const AddVariablePopUp = ({ onClose, onSubmit }) => {
+const ChangeQuestPopUp = ({ onClose, variableId, initialName}) => {
   const dispatch = useDispatch();
   const variables = useSelector((state) => state.variableIndicator.variables);
-  const [variableName, setVariableName] = useState('');
+  const [variableName, setVariableName] = useState(initialName);
 
   const notifyE = () => {
     toast.error('Error al guardar la variable', {
@@ -53,11 +53,11 @@ const AddVariablePopUp = ({ onClose, onSubmit }) => {
         statusId: 1,
       };
 
-      dispatch(PostfetchVariables({ dataAdd: aditionData }))
+      dispatch(PutfetchVariables({varId: variables.id , dataAdd: aditionData }))
         .unwrap()
         .then(() => {
-          notifyS(); // Notificar éxito
-          onClose(); // Cerrar el pop-up
+          notifyS(); 
+          onClose(); 
           dispatch(fetchVariables());
         });
     } catch (error) {
@@ -67,29 +67,21 @@ const AddVariablePopUp = ({ onClose, onSubmit }) => {
   };
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-50">
-      <ToastContainer />
+    <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-10 z-50">
       <div className="bg-white p-6 rounded-lg shadow-md relative">
+      <ToastContainer />
         <FaTimes
           className="absolute top-2 right-2 text-red-600 cursor-pointer"
           onClick={onClose}
         />
         <div className="flex items-center justify-center mb-4">
-          <h2 className="text-lg font-semibold">Agregar nueva variable</h2>
+          <h2 className="text-lg font-semibold">Actualizar pregunta</h2>
         </div>
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
-            {variableName && (
-              <label
-                htmlFor="variableName"
-                className="block text-xs text-gray-600 mt-2"
-              >
-                Nombre de la variable
-              </label>
-            )}
             <input
               type="text"
-              placeholder="Nombre de la variable"
+              placeholder="Actualice pregunta"
               value={variableName}
               onChange={(e) => setVariableName(e.target.value)}
               className="mt-1 p-2 border rounded w-full"
@@ -109,4 +101,4 @@ const AddVariablePopUp = ({ onClose, onSubmit }) => {
   );
 };
 
-export default AddVariablePopUp;
+export default ChangeQuestPopUp;

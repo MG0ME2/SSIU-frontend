@@ -2,16 +2,15 @@
  * este slice correponde a los estado del super admin (tablas)
  */
 
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const initialState = {
   variables: [],
   indicators: [],
   questions: [],
   programAcademics: [],
-  status: "idle",
+  status: 'idle',
   error: null,
 };
 
@@ -23,8 +22,10 @@ const initialState = {
  El primer argumento es un nombre único para la acción ('variableIndicator/fetchVariables').
  El segundo argumento es una función asincrónica que realiza la solicitud a la API y devuelve los datos obtenidos.
  */
+
+// variable
 export const fetchVariables = createAsyncThunk(
-  "variable/fetchVariables",
+  'variable/fetchVariables',
   async (_, { getState }) => {
     const token = getState().auth.token;
     const response = await axios.get(
@@ -40,8 +41,43 @@ export const fetchVariables = createAsyncThunk(
   }
 );
 
+export const PostfetchVariables = createAsyncThunk(
+  'Postvariable/PostfetchVariables',
+  async ({ dataAdd }, { getState }) => {
+    const token = getState().auth.token;
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    const response = await axios.post(
+      `${import.meta.env.VITE_BACKEND_URL}/variable`,
+      dataAdd,
+      { headers }
+    );
+    // console.log('fetchVariables: ', response.data);
+    return response.data;
+  }
+);
+
+export const PutfetchVariables = createAsyncThunk(
+  'Putvariable/PutfetchVariables',
+  async ({ varId, dataAdd }, { getState }) => {
+    const token = getState().auth.token;
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    const response = await axios.put(
+      `${import.meta.env.VITE_BACKEND_URL}/variable${varId}`,
+      dataAdd,
+      { headers }
+    );
+    // console.log('fetchVariables: ', response.data);
+    return response.data;
+  }
+);
+
+// indicadores
 export const fetchIndicators = createAsyncThunk(
-  "indicators/fetchIndicators",
+  'indicators/fetchIndicators',
   async (parameter, { getState }) => {
     const token = getState().auth.token;
     const response = await axios.get(
@@ -57,8 +93,27 @@ export const fetchIndicators = createAsyncThunk(
   }
 );
 
+export const PostfetchIndicators = createAsyncThunk(
+  'Postindicators/PostfetchIndicators',
+  async ({ dataAdd }, { getState }) => {
+    const token = getState().auth.token;
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+    const response = await axios.post(
+      `${import.meta.env.VITE_BACKEND_URL}/indicator`,
+      dataAdd,
+      { headers }
+    );
+    // console.log('fetchVariables: ', response.data);
+    return response.data;
+  }
+);
+
+
+// preguntas
 export const fetchQuestion = createAsyncThunk(
-  "question/fetchQuestion",
+  'question/fetchQuestion',
   async (parameter, { getState }) => {
     const token = getState().auth.token;
     const response = await axios.get(
@@ -74,8 +129,9 @@ export const fetchQuestion = createAsyncThunk(
   }
 );
 
+// programa academico
 export const fetchProgramAcedemic = createAsyncThunk(
-  "programAcademic/fetchQuestion",
+  'programAcademic/fetchQuestion',
   async () => {
     const response = await axios.get(
       `${import.meta.env.VITE_BACKEND_URL}/academic-program`
@@ -84,8 +140,9 @@ export const fetchProgramAcedemic = createAsyncThunk(
   }
 );
 
+// reactivar etapa
 export const reactivateStage = createAsyncThunk(
-  "stages/reactivateStage",
+  'stages/reactivateStage',
   async (stageId) => {
     const response = await axios.patch(
       `${import.meta.env.VITE_BACKEND_URL}/stage/${stageId}`,
@@ -96,7 +153,7 @@ export const reactivateStage = createAsyncThunk(
 );
 
 const variableIndicatorSlice = createSlice({
-  name: "variableIndicator",
+  name: 'variableIndicator',
   initialState,
   reducers: {
     addVariable: (state, action) => {
