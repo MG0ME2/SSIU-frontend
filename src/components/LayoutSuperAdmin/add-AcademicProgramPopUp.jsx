@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { FaTimes } from 'react-icons/fa';
-import { useDispatch, useSelector  } from 'react-redux';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // components
 import ButtonPrimary from '../Buttons/primary';
 import ButtonOnclick from '../Buttons/onclick'
@@ -8,29 +10,81 @@ import ButtonOnclick from '../Buttons/onclick'
 import IconAdd from '../../assets/Img/IconAdd.svg';
 import IconUpload from '../../assets/Img/IconUpload.svg';
 //redux
-import { setPhotoUrl  } from '../../redux/states/photoSlice'; // Importa la acción de Redux
-
+import { setPhotoUrl  } from '../../redux/states/photoSlice';
+import { fetchAcademicProgram, createAcademicProgram  } from '../../redux/states/academicProgramSlice'; 
 
 
 const AddAcademicProgramsPopUp = ({ onClose, onSubmit }) => {
   const dispatch = useDispatch();
+
+
   const [programsAcedemicName, setprogramsAcedemicName] = useState('');
   const [programsAcedemicStatus, setprogramsAcedemicStatus] = useState('');
   const [programsAcedemicEmail, setprogramsAcedemicEmail] = useState('');
 
   const photoUrl = useSelector((state) => state.photo.photoUrl);
 
+  const notifyE = () => {
+    toast.error('Error al guardar la variable', {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
+  };
+
+  const notifyS = () => {
+    toast.success('Se guardaron los datos exitosamente', {
+      position: 'top-right',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
+  };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0]; // Obtener el primer archivo seleccionado
     if (file) {
       // Simular la subida de la foto y obtener la URL
       const uploadedPhotoUrl = URL.createObjectURL(file);
-
       // Dispatch para almacenar la URL de la foto en Redux
       dispatch(setPhotoUrl(uploadedPhotoUrl));
       // prueba url (eliminar)
       console.log("URL de la foto cargada:", uploadedPhotoUrl);
+    }
+  };
+
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+      try {
+      const dataAdd = {
+        name: programsAcedemicName,
+        code: programsAcedemicStatus,
+        email: programsAcedemicEmail,
+        photoUrl: photoUrl,
+        statusId: 1,
+        userId: 6,
+      };
+
+      dispatch(createAcademicProgram({ dataAdd }))
+        .unwrap()
+        .then(() => {
+          notifyS(); // Notificar éxito
+          onClose(); // Cerrar el pop-up
+          dispatch(fetchAcademicProgram());
+        });
+    } catch (error) {
+      console.error('Error al guardar la variable:', error);
+      notifyE();
     }
   };
 
@@ -41,6 +95,7 @@ const AddAcademicProgramsPopUp = ({ onClose, onSubmit }) => {
 
   return (
     <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
+      <ToastContainer />
       <div className="bg-white p-6 rounded-lg shadow-md relative w-full max-w-2xl">
         <FaTimes
           className="absolute top-2 right-2 text-red-600 cursor-pointer"
@@ -49,7 +104,7 @@ const AddAcademicProgramsPopUp = ({ onClose, onSubmit }) => {
         <div className="text-center mb-6">
           <h2 className="text-xl font-semibold">Añadir Programa Academico</h2>
         </div>
-        <form className="flex flex-wrap -mx-4">
+        <form onSubmit={handleSubmit} className="flex flex-wrap -mx-4">
           <div className="w-full md:w-2/3 px-4">
             <fieldset className="mb-6">
               <legend className="text-lg font-semibold text-blue-600 mb-5">Datos Del Programa</legend>

@@ -4,8 +4,8 @@ import axios from 'axios';
 
 // redux
 import {
-fetchProgramAcedemic
-} from '../../redux/states/variableIndicatorSlice';
+fetchAcademicProgram
+} from '../../redux/states/academicProgramSlice';
 
 // icon
 import IconPencil from '../../assets/Img/IconPencil.svg';
@@ -15,35 +15,44 @@ import IconAdd from '../../assets/Img/IconAdd.svg';
 import ButtonIcon from '../Buttons/Icon';
 import ButtonPrimary from '../Buttons/primary';
 import ButtonOnclick from '../Buttons/onclick';
+
+import ChangeAPPopUp from './change-AcedemicProgram'; 
 import AddAcademicProgramsPopUp from './add-AcademicProgramPopUp';
+
 
 const AcademicPrograms = () => {
   const dispatch = useDispatch();
   const [statuses, setStatuses] = useState([]);
-  const academic = useSelector((state) => state.variableIndicator.questions);
+  const academicProgram = useSelector((state) => state.academicProgram.data);
 
   const [showAddAcademicPopup, setshowAddAcademicPopup] = useState(false);
+  const [showChangeAPPopUp, setShowChangeAPPopUp] = useState(false);
 
 
   const handleAddacademicClick = () => {
     setshowAddAcademicPopup(!showAddAcademicPopup);
   };
-
+  
+  const handleChangeIndicadorClick = () => {
+    setShowChangeAPPopUp(!showChangeAPPopUp);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/status`
-        );
-        setStatuses(response.data);
-        dispatch(fetchProgramAcedemic());
+
+        dispatch(fetchAcademicProgram());
       } catch (error) {
-        console.error('Error fetching statuses:', error);
+        console.error('Error fetching academic programs:', error);
       }
     };
+
     fetchData();
   }, [dispatch]);
+
+  useEffect(() => {
+    console.log("Componente AcademicPrograms, datos de programas académicos:", academicProgram);
+  }, [academicProgram]);
 
   return (
     <div>
@@ -61,24 +70,30 @@ const AcademicPrograms = () => {
             </tr>
           </thead>
           <tbody>
-            {academic.map((variable, index) => (
+            {academicProgram.map((program, index) => (
               <tr key={index}>
                 <td className="border px-4 py-2">
-                  <div className="flex justify-center items-center">{variable.name}</div>
+                  <div className="flex justify-center items-center">{program.name}</div>
                 </td>
                 <td className="border px-4 py-2">
-                  <div className="flex justify-center items-center">{variable.type}</div>
+                  <div className="flex justify-center items-center">{program.code}</div>
                 </td>
                 <td className="border px-4 py-2">
                   <div className="flex justify-center items-center">
-                    <span className={variable.active ? 'text-green-500' : 'text-red-500'}>
-                      {statuses.find((status) => status.id === variable.status)?.description || 'Desconocido'}
+                  <span className="text-green-500">
+                    {program.status.description}
                     </span>
                   </div>
                 </td>
                 <td className="border px-4 py-2 text-center">
                   <div className="flex justify-center items-center">
-                    <ButtonIcon icono={IconPencil} />
+                  <ButtonOnclick
+                            icono={IconPencil}
+                            onClick={handleChangeIndicadorClick}
+                          />
+                          {showChangeAPPopUp && (
+                            <ChangeAPPopUp onClose={handleChangeIndicadorClick} />
+                          )}
                   </div>
                 </td>
               </tr>

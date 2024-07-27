@@ -34,6 +34,8 @@ const VariableIndicatorTable = () => {
   const preguntas = useSelector((state) => state.variableIndicator.questions);
   const token = useSelector((state) => state.auth.token);
 
+  console.log("hay algo?", variables)
+
   const searchQueryVariables = useSelector(
     (state) => state.searchVI.searchQueryVariable
   );
