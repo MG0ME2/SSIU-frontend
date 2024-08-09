@@ -12,10 +12,10 @@ import {
   fetchVariables,
 } from '../../redux/states/variableIndicatorSlice';
 
-const ChangeVarPopUp = ({ onClose, variableId, initialName}) => {
+const ChangeVarPopUp = ({ onClose, variable}) => {
   const dispatch = useDispatch();
   const variables = useSelector((state) => state.variableIndicator.variables);
-  const [variableName, setVariableName] = useState(initialName);
+  const [variableName, setVariableName] = useState('');
 
   const notifyE = () => {
     toast.error('Error al guardar la variable', {
@@ -43,23 +43,31 @@ const ChangeVarPopUp = ({ onClose, variableId, initialName}) => {
     });
   };
 
+  useEffect(() => {
+    if (variable) {
+      setVariableName(variable.name || '');
+    }
+  }, [variable]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     try {
+
+      if (!variable || !variable.id) {
+        throw new Error('Variable no válida');
+      }
+
       const aditionData = {
         name: variableName,
         statusId: 1,
       };
 
       dispatch(PutfetchVariables({varId: variables.id , dataAdd: aditionData }))
-        .unwrap()
-        .then(() => {
+        .unwrap();
           notifyS(); 
           onClose(); 
           dispatch(fetchVariables());
-        });
     } catch (error) {
       console.error('Error al guardar la variable:', error);
       notifyE();
@@ -91,7 +99,7 @@ const ChangeVarPopUp = ({ onClose, variableId, initialName}) => {
           <div className="flex items-center justify-center">
             <ButtonPrimary
               icono={IconAdd}
-              title="Agregar Variable"
+              title="Actualizar Variable"
               typeB="submit"
             />
           </div>

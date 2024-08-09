@@ -34,15 +34,13 @@ const VariableIndicatorTable = () => {
   const preguntas = useSelector((state) => state.variableIndicator.questions);
   const token = useSelector((state) => state.auth.token);
 
-  console.log("hay algo?", variables)
-
   const searchQueryVariables = useSelector(
     (state) => state.searchVI.searchQueryVariable
   );
   const searchQueryIndicators = useSelector(
     (state) => state.searchVI.searchQueryIndicator
   );
-  console.log('prueba', searchQueryIndicators);
+//  console.log('prueba', searchQueryIndicators);
 
   const [showAddVariablePopup, setShowAddVariablePopup] = useState(false);
   const [showChangeVarPopup, setShowChangeVarPopup] = useState(false);
@@ -54,41 +52,62 @@ const VariableIndicatorTable = () => {
   const [showChangePreguntaPopup, setShowChangePreguntaPopup] = useState(false);
 
 
-  const [selectedRow, setSelectedRow] = useState(0);
-  const [selectedRowI, setSelectedRowI] = useState(0);
-  const [selectedRowQ, setSelectedRowQ] = useState(0);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [selectedRowI, setSelectedRowI] = useState(null);
+  const [selectedRowQ, setSelectedRowQ] = useState(null);
+
 
   const handleRowClick = async (index) => {
+    if (selectedRow !== index) {
     setSelectedRow(index);
-    setSelectedRowI(0);
-    setSelectedRowQ(0);
-    console.log('Row data V:', variables[index]);
+    setSelectedRowI(null);
+    setSelectedRowQ(null);
+   // console.log('Row data V:', variables[index]);
+    const rowData = variables[index];
 
-    const rowDataId = variables[index];
+    try {
     const indicatorsResult = await dispatch(
-      fetchIndicators(rowDataId.id)
+      fetchIndicators(rowData.id)
     ).unwrap();
-
-    const rowDataId_I = indicatorsResult[0];
-
-    dispatch(fetchQuestion(rowDataId_I.id));
+    const rowData_ID = indicatorsResult[0];
+    setSelectedRow(rowData);
+    dispatch(fetchQuestion(rowData_ID.id));
+  } catch (error) {
+    console.error('Error fetching indicators:', error);
+  }
+} else {
+  console.error('Selected row is undefined');
+}
   };
 
   const handleRowClickI = (index) => {
-    setSelectedRowI(index);
-    setSelectedRowQ(0);
-    //console.log('Clicked row I:', index);
-    console.log('Row data I:', indicators[index]);
+    if (selectedRowI !== index) {
+      setSelectedRowI(index);
+      setSelectedRowQ(null);
+      
+      const rowData = indicators[index];
+      dispatch(fetchQuestion(rowData.id));
+    }
+   // setSelectedRowI(index);
+   // setSelectedRowQ(0);
 
-    const rowDataId = indicators[index];
+    //console.log('Clicked row I:', index);
+   // console.log('Row data I:', indicators[index]);
+
+   //const rowDataId = indicators[index];
+
     //console.log('rowDataId_I: ', rowDataId.id);
-    dispatch(fetchQuestion(rowDataId.id));
+
+    // dispatch(fetchQuestion(rowDataId.id));
   };
 
   const handleRowClickQ = (index) => {
-    setSelectedRowQ(index);
+    if (selectedRowQ !== index) {
+      setSelectedRowQ(index);
+    }
+    // setSelectedRowQ(index);
     //console.log('Clicked row:', index);
-    console.log('Row data Q:', preguntas[index]);
+    //console.log('Row data Q:', preguntas[index]);
   };
 
   //variable
@@ -118,66 +137,73 @@ const VariableIndicatorTable = () => {
     setShowChangePreguntaPopup(!showChangePreguntaPopup);
   };
 
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const responseV = await axios.get(
+  //         `${import.meta.env.VITE_BACKEND_URL}/variable`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
+
+  //       //console.log('data variable: ', responseV.data);
+  //       dispatch(fetchVariables());
+
+  //       //console.log('dato inicial: ', selectedRow ? selectedRow : 0);
+
+  //       const rowDataV = responseV.data.sort((a, b) => a.id - b.id);
+  //       //console.log('handleRowClick_V: ', rowDataV);
+
+  //       const rowDataIdV = rowDataV[selectedRow ? selectedRow : 0];
+  //       //console.log('handleRowClick_V id: ', rowDataIdV.id);
+
+  //       const responseI = await axios.get(
+  //         `${import.meta.env.VITE_BACKEND_URL}/indicator/by/${rowDataIdV.id}`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
+  //       //console.log('data indicator: ', responseI.data);
+  //       dispatch(fetchIndicators(rowDataIdV.id));
+
+  //       const rowDataI = responseI.data.sort((a, b) => a.id - b.id);
+  //       //console.log('handleRowClick_V: ', rowDataI);
+
+  //       const rowDataIdI = rowDataI[selectedRowI ? selectedRowI : 0];
+  //       //console.log('handleRowClick_V id: ', rowDataIdI.id);
+
+  //       const responseQ = await axios.get(
+  //         `${import.meta.env.VITE_BACKEND_URL}/question/by/${rowDataIdI.id}`,
+  //         {
+  //           headers: {
+  //             Authorization: `Bearer ${token}`,
+  //           },
+  //         }
+  //       );
+  //       //console.log('data question: ', responseQ.data);
+
+  //       dispatch(fetchQuestion(rowDataIdI.id));
+  //     } catch (error) {
+  //       console.error('Error fetching Variables:', error);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, [dispatch]);
+
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const responseV = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/variable`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+    dispatch(fetchVariables());
+    dispatch(fetchIndicators());
+    dispatch(fetchQuestion());
+}, [dispatch]);
 
-        //console.log('data variable: ', responseV.data);
-        dispatch(fetchVariables());
-
-        //console.log('dato inicial: ', selectedRow ? selectedRow : 0);
-
-        const rowDataV = responseV.data.sort((a, b) => a.id - b.id);
-        //console.log('handleRowClick_V: ', rowDataV);
-
-        const rowDataIdV = rowDataV[selectedRow ? selectedRow : 0];
-        //console.log('handleRowClick_V id: ', rowDataIdV.id);
-
-        const responseI = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/indicator/by/${rowDataIdV.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        //console.log('data indicator: ', responseI.data);
-        dispatch(fetchIndicators(rowDataIdV.id));
-
-        const rowDataI = responseI.data.sort((a, b) => a.id - b.id);
-        //console.log('handleRowClick_V: ', rowDataI);
-
-        const rowDataIdI = rowDataI[selectedRowI ? selectedRowI : 0];
-        //console.log('handleRowClick_V id: ', rowDataIdI.id);
-
-        const responseQ = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/question/by/${rowDataIdI.id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        //console.log('data question: ', responseQ.data);
-
-        dispatch(fetchQuestion(rowDataIdI.id));
-      } catch (error) {
-        console.error('Error fetching Variables:', error);
-      }
-    };
-
-    fetchData();
-  }, [dispatch]);
-
-  console.log('prueba, antes', searchQueryIndicators);
+  // console.log('prueba, antes', searchQueryIndicators);
 
   const filteredVariables = variables.filter((variable) =>
     variable.name?.toLowerCase().includes(searchQueryVariables.toLowerCase())
@@ -187,7 +213,7 @@ const VariableIndicatorTable = () => {
     indicator.name?.toLowerCase().includes(searchQueryIndicators.toLowerCase())
   );
 
-  console.log('prueba, antes', searchQueryIndicators);
+  // console.log('prueba, antes', searchQueryIndicators);
 
   return (
     <div id={'contenedor'}>
@@ -250,10 +276,16 @@ const VariableIndicatorTable = () => {
                         <div className="flex justify-center items-center">
                           <ButtonOnclick
                             icono={IconPencil}
-                            onClick={handleChangeVarClick}
+                            onClick={() => {
+                              handleChangeVarClick();
+                              setSelectedRow(variable);
+                            }}
                           />
                           {showChangeVarPopup && (
-                            <ChangeVarPopUp onClose={handleChangeVarClick} />
+                            <ChangeVarPopUp 
+                            onClose={handleChangeVarClick}
+                            variable={selectedRow}
+                             />
                           )}
                         </div>
                       </td>
@@ -326,10 +358,18 @@ const VariableIndicatorTable = () => {
                         <div className="flex justify-center items-center">
                         <ButtonOnclick
                             icono={IconPencil}
-                            onClick={handleChangeIndicadorClick}
+                            //onClick={handleChangeIndicadorClick}
+                            //
+                            onClick={() => {
+                              handleChangeIndicadorClick();
+                              setSelectedRowI(indicator);
+                            }}
                           />
                           {showChangeIndicadorPopUp && (
-                            <ChangeIndicadorPopUp onClose={handleChangeIndicadorClick} />
+                            <ChangeIndicadorPopUp onClose={handleChangeIndicadorClick}
+                            //
+                            indicador={selectedRowI}
+                             />
                           )}
                         </div>
                       </td>
@@ -400,7 +440,12 @@ const VariableIndicatorTable = () => {
                     <div className="flex justify-center items-center ">
                       <ButtonOnclick
                         icono={IconPencil}
-                        onClick={handleChangePreguntaClick}
+                        //onClick={handleChangePreguntaClick}
+                        //
+                        onClick={() => {
+                          handleChangePreguntaClick();
+                          setSelectedRowQ(preguntas[selectedRowQ]);
+                        }}
                       />
                           {showChangePreguntaPopup && (
                             <ChangeQuestPopUp onClose={handleChangePreguntaClick} />
