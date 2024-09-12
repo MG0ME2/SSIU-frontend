@@ -25,7 +25,7 @@ import {
   SuperAdminRequestSatges,
 } from "../SuperAdmin/index";
 /// Admin
-import { AdminPerfil, AdminHome, SsiuHome } from "../Admin/index";
+import { AdminPerfil, AdminHome, SsiuHome, TestPage } from "../Admin/index";
 
 // Styles
 import "./App.css";
@@ -67,6 +67,7 @@ const AppRoutes = () => {
         <Route path="/admin" element={<AdminHome />} />
         <Route path="/admin/perfil" element={<AdminPerfil />} />
         <Route path="/admin/home-ssiu" element={<SsiuHome />} />
+        <Route path="/admin/test-status-page" element={<TestPage />} />
       </Route>
 
       {/*QualityInstitutional*/}

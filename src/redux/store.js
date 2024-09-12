@@ -28,6 +28,7 @@ import hoveredStageReducer from './states/hoveredStageSlice';
 import persistedStatusReducer from './states/statusSlice';
 import searchVariableIndicadorReducer from './states/searchVariableIndicadorSlice';
 import academicProgramReducer from './states/academicProgramSlice';
+import persistedStageStatusReducer from './states/stageStatusSlice'
 
 
 const authPersistConfig = {
@@ -48,7 +49,8 @@ export const store = configureStore({
     hoveredStage: hoveredStageReducer,
     status: persistedStatusReducer,
     searchVI: searchVariableIndicadorReducer,
-    academicProgram: academicProgramReducer
+    academicProgram: academicProgramReducer,
+    stageStatus: persistedStageStatusReducer
     
   },
   middleware: (getDefaultMiddleware) =>
