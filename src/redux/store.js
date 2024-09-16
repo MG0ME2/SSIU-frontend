@@ -15,6 +15,9 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 
+//middleware
+//import serializableMiddleware from './middleware/serializableMiddleware';
+
 // Slices
 import { persistedAuthReducer } from './states/authSlice';
 import variableIndicatorReducer from './states/variableIndicatorSlice';
@@ -28,8 +31,8 @@ import hoveredStageReducer from './states/hoveredStageSlice';
 import persistedStatusReducer from './states/statusSlice';
 import searchVariableIndicadorReducer from './states/searchVariableIndicadorSlice';
 import academicProgramReducer from './states/academicProgramSlice';
-import persistedStageStatusReducer from './states/stageStatusSlice'
-
+import persistedStageStatusReducer from './states/stageStatusSlice';
+import setCycleConfigured from './states/cycleConfigSlice'
 
 const authPersistConfig = {
   key: 'auth',
@@ -50,13 +53,15 @@ export const store = configureStore({
     status: persistedStatusReducer,
     searchVI: searchVariableIndicadorReducer,
     academicProgram: academicProgramReducer,
-    stageStatus: persistedStageStatusReducer
+    stageStatus: persistedStageStatusReducer,
+    cycleConfig: setCycleConfigured
     
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        ignoredPaths: ['stage.error.config.transformRequest'],
       },
     }),
 });

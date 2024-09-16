@@ -16,7 +16,7 @@ import {
 } from '../../redux/states/stageSlice';
 import { fetchStatus } from '../../redux/states/statusSlice';
 
-const ConfigDatePopUp = ({ onClose, onSubmit }) => {
+const ConfigDatePopUp = ({ onClose, onDatesConfigured }) => {
   const dispatch = useDispatch();
   const { stages } = useSelector((state) => state.stage);
   const { user } = useSelector((state) => state.auth);
@@ -85,6 +85,7 @@ const ConfigDatePopUp = ({ onClose, onSubmit }) => {
 
       notifyS();
       onClose();
+      onDatesConfigured(); // Llama a la función para notificar que las fechas fueron configuradas
     } catch (error) {
       console.error('Error al guardar las fechas de las etapas:', error);
       notifyE();
@@ -92,8 +93,9 @@ const ConfigDatePopUp = ({ onClose, onSubmit }) => {
   };
 
   return (
+    <div>
+    <ToastContainer />
     <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50 z-50">
-      <ToastContainer />
       <div className="bg-white p-6 rounded-lg shadow-md relative max-w-3xl z-60">
         <FaTimes
           className="absolute top-2 right-2 text-red-600 cursor-pointer"
@@ -171,6 +173,7 @@ const ConfigDatePopUp = ({ onClose, onSubmit }) => {
           </div>
         </form>
       </div>
+    </div>
     </div>
   );
 };
